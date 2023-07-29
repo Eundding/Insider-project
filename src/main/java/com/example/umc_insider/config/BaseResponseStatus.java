@@ -10,6 +10,10 @@ public enum BaseResponseStatus {
     POST_USERS_EMPTY_EMAIL(false, 2015, "이메일을 입력해주세요."),
     POST_USERS_INVALID_EMAIL(false, 2016, "이메일 형식을 확인해주세요."),
     POST_USERS_EXISTS_EMAIL(false, 2017, "중복된 이메일입니다."),
+
+    POST_USERS_EMPTY_PW(false, 2030, "비밀버호를 입력해주세요."),
+    POST_USERS_INVALID_PW(false, 2031, "비밀번호를 확인해주세요."),
+
     POST_BOARDS_EMPTY_TITLE(false, 2018, "제목은 두 글자 이상으로 작성해주세요."),
     RESPONSE_ERROR(false, 3000, "값을 불러오는데 실패하였습니다."),
     DUPLICATED_EMAIL(false, 3013, "중복된 이메일입니다."),
@@ -20,6 +24,7 @@ public enum BaseResponseStatus {
     MODIFY_FAIL_BOARDTITLE(false, 4015, "게시글 제목 수정 실패"),
     PASSWORD_ENCRYPTION_ERROR(false, 4011, "비밀번호 암호화에 실패하였습니다."),
     PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다.");
+
 
     private final boolean isSuccess;
     private final int code;

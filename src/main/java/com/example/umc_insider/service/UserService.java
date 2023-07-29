@@ -1,30 +1,35 @@
 package com.example.umc_insider.service;
 
+import com.example.umc_insider.config.BaseException;
 import com.example.umc_insider.domain.User;
-import com.example.umc_insider.dto.PostUserReq;
-import com.example.umc_insider.dto.PostUserRes;
+import com.example.umc_insider.dto.*;
+import com.example.umc_insider.utils.JwtService;
+import com.example.umc_insider.utils.SHA256;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.umc_insider.dto.GetUserRes;
 import com.example.umc_insider.repository.UserRepository;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.umc_insider.config.BaseResponseStatus.*;
+
 @RequiredArgsConstructor
 @Service
 public class UserService {
     private UserRepository userRepository;
+    private final JwtService jwtService;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, JwtService jwtService) {
         this.userRepository = userRepository;
+        this.jwtService = jwtService;
     }
 
-    public PostUserRes createUser(PostUserReq postUserReq) {
+    public PostUserRes createUser(PostUserReq postUserReq) throws BaseException{
         User user = new User();
         user.createUser(postUserReq.getUserId(), postUserReq.getNickname(), postUserReq.getEmail(), postUserReq.getPw() );
         userRepository.save(user);
@@ -43,53 +48,28 @@ public class UserService {
         }
         return userResponses;
     }
-    /**
-     * 모든 회원 조회
-     */
-//    public List<GetUserRes> getUsers() throws BaseException {
-//        try{
-//            List<User> users = userRepository.findUsers(); //Member List로 받아 GetMemberRes로 바꿔줌
-//            List<GetUserRes> GetUserRes = users.stream()
-//                    .map(user -> new GetUserRes())
-//                    .collect(Collectors.toList());
-//            return GetUserRes;
-//        } catch (Exception exception) {
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//    }
 
-//    /**
-//     * 특정 닉네임 조회
-//     */
-//    public List<GetMemberRes> getMembersByNickname(String nickname) throws BaseException {
-//        try{
-//            List<Member> members = memberRepository.findMemberByNickName(nickname);
-//            List<GetMemberRes> GetMemberRes = members.stream()
-//                    .map(member -> new GetMemberRes(member.getId(), member.getNickName(), member.getEmail(), member.getPassword()))
-//                    .collect(Collectors.toList());
-//            return GetMemberRes;
-//        } catch (Exception exception) {
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//    }
-//
-//    public PostLoginRes login(PostLoginReq postLoginReq) throws BaseException {
-//       User user = this.userRepository.findUserByUserId(postLoginReq.getUserId());
-//
-//        String password;
-//        try {
-//            password = (new AES128(Secret.USER_INFO_PASSWORD_KEY)).decrypt(user.getPassword());
-//        } catch (Exception var5) {
-//            throw new BaseException(BaseResponseStatus.PASSWORD_DECRYPTION_ERROR);
-//        }
-//
-//        if (postLoginReq.getPassword().equals(password)) {
-//            String jwt = this.jwtService.createJwt(user.getId());
-//            return new PostLoginRes(user.getId(), jwt);
-//        } else {
-//            throw new BaseException(BaseResponseStatus.FAILED_TO_LOGIN);
-//        }
-//    }
+    /**
+     * 유저 로그인
+     */
+    public PostLoginRes logIn(PostLoginReq postLoginReq) throws BaseException {
+        User user = userRepository.findUserByEmail(postLoginReq.getEmail());
+        String encryptPw;
+        try{
+            encryptPw = new SHA256().encrypt(postLoginReq.getPw());
+        } catch (Exception ignored) {
+            throw new BaseException(PASSWORD_ENCRYPTION_ERROR);
+        }
+
+
+        String originalEncryptPw = new SHA256().encrypt(user.getPw());
+        if(originalEncryptPw.equals(encryptPw)){
+            String jwt = jwtService.createJwt(user.getId());
+            return new PostLoginRes(user.getId(), jwt);
+        } else{
+            throw new BaseException(FAILED_TO_LOGIN);
+        }
+    }
 
 
 }

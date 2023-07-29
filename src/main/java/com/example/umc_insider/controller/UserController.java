@@ -1,8 +1,6 @@
 package com.example.umc_insider.controller;
 
-import com.example.umc_insider.dto.GetUserRes;
-import com.example.umc_insider.dto.PostUserReq;
-import com.example.umc_insider.dto.PostUserRes;
+import com.example.umc_insider.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -16,6 +14,9 @@ import com.example.umc_insider.service.UserService;
 
 import java.util.List;
 
+import static com.example.umc_insider.config.BaseResponseStatus.*;
+import static com.example.umc_insider.utils.ValidationRegex.isRegexEmail;
+
 //@RequiredArgsConstructor
 @RestController
 public class UserController {
@@ -26,7 +27,7 @@ public class UserController {
     }
     //회원가입
     @PostMapping("/create")
-    public BaseResponse<PostUserRes> createUser(@RequestBody PostUserReq postUserReq){
+    public BaseResponse<PostUserRes> createUser(@RequestBody PostUserReq postUserReq) throws BaseException{
         PostUserRes response = userService.createUser(postUserReq);
        // return new BaseResponse<>(userService.createUser(postUserReq));
         return new BaseResponse<>(response);
@@ -50,41 +51,37 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<?> test(){
-        return new ResponseEntity<>(HttpStatus.OK);
+
+    //로그인
+    @PostMapping("/logIn")
+    public BaseResponse<PostLoginRes> logIn(@RequestBody PostLoginReq postLoginReq){
+        try{
+            // null값 체크
+            if(postLoginReq.getEmail() == null){
+                return new BaseResponse<>(POST_USERS_EMPTY_EMAIL);
+            }
+            if(postLoginReq.getPw() == null){
+                return new BaseResponse<>(POST_USERS_EMPTY_PW);
+            }
+
+            // 이메일 형식인지 체크
+            if(!isRegexEmail(postLoginReq.getEmail())){
+                return new BaseResponse<>(POST_USERS_INVALID_EMAIL);
+            }
+
+
+
+
+            PostLoginRes postLoginRes = userService.logIn(postLoginReq);
+            return new BaseResponse<>(postLoginRes);
+//            if(!isRegexEmail(postLoginReq.getEmail())) return new BaseResponse<>(POST_USERS_INVALID_EMAIL);
+//            return new BaseResponse<>(userService.login(postLoginReq));
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
     }
 
-//    //로그인
-//    @PostMapping({"/log-in"})
-//    public BaseResponse<PostLoginRes> loginUser(@RequestBody PostLoginReq postLoginReq) {
-//        try {
-//            return !ValidationRegex.isRegexUserId(postLoginReq.getUserId()) ? new BaseResponse(BaseResponseStatus.RESPONSE_ERROR) : new BaseResponse(this.userService.login(postLoginReq));
-//        } catch (BaseException var3) {
-//            return new BaseResponse(var3.getStatus());
-//        }
-//    }
 
-
-    /**
-     * 회원 조회
-     * nickname이 파라미터에 없을 경우 모두 조회
-     */
-//    @GetMapping("Read")
-//    public BaseResponse<List<GetUserRes>> getMembers(@RequestParam(required = false) String nickName){
-//        //  @RequestParam은, 1개의 HTTP Request 파라미터를 받을 수 있는 어노테이션(?뒤의 값). default로 RequestParam은 반드시 값이 존재해야 하도록 설정되어 있지만, (전송 안되면 400 Error 유발)
-//        //  지금 예시와 같이 required 설정으로 필수 값에서 제외 시킬 수 있음
-//        //  defaultValue를 통해, 기본값(파라미터가 없는 경우, 해당 파라미터의 기본값 설정)을 지정할 수 있음
-//        try{
-//            if (nickName == null) { // query string인 nickname이 없을 경우, 그냥 전체 유저정보를 불러온다.
-//                return new BaseResponse<>(userService.getUsers());
-//            }
-//            // query string인 nickname이 있을 경우, 조건을 만족하는 유저정보들을 불러온다.
-//            return new BaseResponse<>(userService.getUsersByNickname(nickName));
-//        } catch (BaseException exception) {
-//            return new BaseResponse<>((exception.getStatus()));
-//        }
-//    }
 
 
 }

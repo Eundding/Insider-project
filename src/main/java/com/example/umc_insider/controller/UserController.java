@@ -1,30 +1,35 @@
-package umc_insider.controller;
+package com.example.umc_insider.controller;
 
+import com.example.umc_insider.dto.GetUserRes;
+import com.example.umc_insider.dto.PostUserReq;
+import com.example.umc_insider.dto.PostUserRes;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import umc_insider.config.BaseException;
-import umc_insider.config.BaseResponse;
-import umc_insider.config.BaseResponseStatus;
-import umc_insider.dto.*;
-import umc_insider.repository.UserRepository;
-import umc_insider.service.UserService;
-import umc_insider.utils.ValidationRegex;
+import com.example.umc_insider.config.BaseException;
+import com.example.umc_insider.config.BaseResponse;
+import com.example.umc_insider.repository.UserRepository;
+import com.example.umc_insider.service.UserService;
 
 import java.util.List;
 
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @RestController
-
 public class UserController {
     private final UserService userService;
-    private final UserRepository userRepository;
-
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
     //회원가입
     @PostMapping("/create")
-    public BaseResponse<PostUserRes> createUser(@RequestBody PostUserReq postUserReq) throws BaseException {
-        return new BaseResponse<>(userService.createUser(postUserReq));
+    public BaseResponse<PostUserRes> createUser(@RequestBody PostUserReq postUserReq){
+        PostUserRes response = userService.createUser(postUserReq);
+       // return new BaseResponse<>(userService.createUser(postUserReq));
+        return new BaseResponse<>(response);
 //        if (!ValidationRegex.isRegexEmail(postUserReq.getEmail())) {
 //            return new BaseResponse(BaseResponseStatus.POST_USERS_INVALID_EMAIL);
 //        } else {
@@ -35,12 +40,16 @@ public class UserController {
 //            }
 //        }
     }
+//    public Long createUser(@RequestBody PostUserReq postGoodsReq){
+//        return userService.save(postGoodsReq);
+//    }
 
     @GetMapping("/users")
     public ResponseEntity<List<GetUserRes>> getAllUsers() {
         List<GetUserRes> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
+
     @GetMapping("/test")
     public ResponseEntity<?> test(){
         return new ResponseEntity<>(HttpStatus.OK);

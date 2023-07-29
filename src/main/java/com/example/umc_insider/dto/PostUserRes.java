@@ -1,4 +1,4 @@
-package umc_insider.dto;
+package com.example.umc_insider.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

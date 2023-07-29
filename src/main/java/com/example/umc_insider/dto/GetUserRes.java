@@ -1,4 +1,4 @@
-package umc_insider.dto;
+package com.example.umc_insider.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +13,4 @@ public class GetUserRes {
     private String nickname;
     private String password;
     private String email;
-
-
-
 }

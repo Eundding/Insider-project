@@ -1,19 +1,20 @@
-package umc_insider.domain;
+package com.example.umc_insider.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+
 
 @Entity
 @Getter
 @NoArgsConstructor
-
 @Table(name = "users")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private Long id;
 
     @Column(nullable = false)
@@ -28,8 +29,12 @@ public class User {
     @Column(nullable = false)
     private String pw;
 
-//    @Column(nullable = true)
-//    private String address;
+
+    @Column(nullable = false)
+    private Timestamp created_at;
+
+    @Column(nullable = false)
+    private Timestamp updated_at;
 
 
     public User createUser(String userId, String nickName, String email, String password) {
@@ -37,7 +42,9 @@ public class User {
         this.email = email;
         this.nickname = nickName;
         this.pw = password;
-       // this.address = address;
+        this.created_at = new Timestamp(System.currentTimeMillis());
+        this.updated_at = new Timestamp(System.currentTimeMillis());
+
         return this;
     }
 

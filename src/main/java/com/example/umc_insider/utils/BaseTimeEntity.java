@@ -1,4 +1,4 @@
-package umc_insider.utils;
+package com.example.umc_insider.utils;
 
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;

@@ -1,4 +1,4 @@
-package umc_insider.config;
+package com.example.umc_insider.config;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

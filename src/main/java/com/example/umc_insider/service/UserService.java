@@ -1,36 +1,30 @@
-package umc_insider.service;
+package com.example.umc_insider.service;
 
-import jakarta.transaction.Transactional;
+import com.example.umc_insider.domain.User;
+import com.example.umc_insider.dto.PostUserReq;
+import com.example.umc_insider.dto.PostUserRes;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import umc_insider.config.BaseException;
-import umc_insider.config.BaseResponseStatus;
-import umc_insider.domain.User;
 
-import umc_insider.dto.PostUserReq;
-import umc_insider.dto.PostUserRes;
-import umc_insider.dto.GetUserRes;
-import umc_insider.repository.UserRepository;
+import com.example.umc_insider.dto.GetUserRes;
+import com.example.umc_insider.repository.UserRepository;
 
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static umc_insider.config.BaseResponseStatus.*;
 
 @RequiredArgsConstructor
 @Service
 public class UserService {
     private UserRepository userRepository;
-   // private JwtService jwtService;
 
+    @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-
-    public PostUserRes createUser(PostUserReq postUserReq) throws BaseException {
+    public PostUserRes createUser(PostUserReq postUserReq) {
         User user = new User();
         user.createUser(postUserReq.getUserId(), postUserReq.getNickname(), postUserReq.getEmail(), postUserReq.getPw() );
         userRepository.save(user);

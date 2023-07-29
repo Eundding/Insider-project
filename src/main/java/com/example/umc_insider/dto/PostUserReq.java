@@ -1,4 +1,4 @@
-package umc_insider.dto;
+package com.example.umc_insider.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,5 +12,4 @@ public class PostUserReq {
     private String nickname;
     private String pw;
     private String email;
-   // private String address;
 }

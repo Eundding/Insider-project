@@ -1,4 +1,4 @@
-package umc_insider.utils;
+package com.example.umc_insider.utils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

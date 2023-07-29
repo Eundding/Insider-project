@@ -1,5 +1,4 @@
-package umc_insider.config;
-import lombok.AllArgsConstructor;
+package com.example.umc_insider.config;
 import lombok.Getter;
 import lombok.Setter;
 

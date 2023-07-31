@@ -29,7 +29,7 @@ public class UserController {
     @PostMapping("/create")
     public BaseResponse<PostUserRes> createUser(@RequestBody PostUserReq postUserReq) throws BaseException{
         PostUserRes response = userService.createUser(postUserReq);
-       // return new BaseResponse<>(userService.createUser(postUserReq));
+
         return new BaseResponse<>(response);
 //        if (!ValidationRegex.isRegexEmail(postUserReq.getEmail())) {
 //            return new BaseResponse(BaseResponseStatus.POST_USERS_INVALID_EMAIL);
@@ -41,9 +41,7 @@ public class UserController {
 //            }
 //        }
     }
-//    public Long createUser(@RequestBody PostUserReq postGoodsReq){
-//        return userService.save(postGoodsReq);
-//    }
+
 
     @GetMapping("/users")
     public ResponseEntity<List<GetUserRes>> getAllUsers() {
@@ -68,14 +66,9 @@ public class UserController {
             if(!isRegexEmail(postLoginReq.getEmail())){
                 return new BaseResponse<>(POST_USERS_INVALID_EMAIL);
             }
-
-
-
-
             PostLoginRes postLoginRes = userService.logIn(postLoginReq);
             return new BaseResponse<>(postLoginRes);
-//            if(!isRegexEmail(postLoginReq.getEmail())) return new BaseResponse<>(POST_USERS_INVALID_EMAIL);
-//            return new BaseResponse<>(userService.login(postLoginReq));
+
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
         }

@@ -1,4 +1,4 @@
-package com.example.umc_insider.dto;
+package com.example.umc_insider.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,12 +18,7 @@ public class PatchPostsReq {
 
 
 
-//service
-//@Transactional
-//public void modifyPosts(PatchPostsReq patchPostsReq) {
-//    Posts posts = postsRepository.getReferenceById(patchPostsReq.getId());
-//    posts.updateNickName(patchMemberReq.getNickname());
-//}
+
 
 
 //controller

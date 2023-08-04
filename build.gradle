@@ -50,6 +50,14 @@ dependencies {
 
 }
 
+task copyPrivate(type: Copy) {
+	copy {
+		from './insider-private'
+		include "*.yml"
+		into 'src/main/resources'
+	}
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }

@@ -17,31 +17,31 @@ public class Goods {
     private Long id; // PK
 
     @Column(nullable = false)
-    private String name; // nickname
+    private String title;
 
     @Column(nullable = false)
-    private Integer price;
+    private String price;
 
     @Column(nullable = true)
     private String weight;
 
     @Column(nullable = false)
-    private String rest;
-
-    @Column(nullable = false)
-    private String person;
+    private Integer rest;
 
     @Column(nullable = false)
     private String shelf_life;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Long users_id; // PK, FK
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Long markets_id; // PK, FK
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Integer sale;
+
+    @Column(nullable = true)
+    private String imageUrl;
 
     @Column(nullable = false)
     private Timestamp created_at;
@@ -49,16 +49,17 @@ public class Goods {
     @Column(nullable = false)
     private Timestamp updated_at;
 
-    public Goods createGoods(String name, Integer price, String weight, String rest, String person, String shelf_life, Long usersId, Long marketsId, Integer sale) {
-        this.name = name;
+
+
+    public Goods createGoods(String title, String price,  Integer rest, String shelf_life, Long usersId, Long marketsId, Integer sale, String imageUrl) {
+        this.title = title;
         this.price = price;
-        this.weight = weight;
         this.rest = rest;
-        this.person = person;
         this.shelf_life = shelf_life;
         this.users_id = usersId;
         this.markets_id = marketsId;
         this.sale = sale;
+        this.imageUrl = imageUrl;
         this.created_at = new Timestamp(System.currentTimeMillis());
         this.updated_at = new Timestamp(System.currentTimeMillis());
 

@@ -8,4 +8,9 @@ import lombok.Getter;
 public class PostGoodsRes {
     private Long id;
     private String title;
+    private String price;
+    private String imageUrl;
+
+    public PostGoodsRes(Long id, String title, String price) {
+    }
 }

@@ -16,6 +16,16 @@ public class Goods {
     @Column(name="id")
     private Long id; // PK
 
+    @ManyToOne
+    @JoinColumn(name = "users_id")
+    private Users users_id; // PK, FK
+
+    @ManyToOne
+    @JoinColumn(name = "markets_id")
+    private Users markets_id; // PK, FK
+
+    // goods zipcode 추가하는 건 어떤가요?
+
     @Column(nullable = false)
     private String title;
 
@@ -32,12 +42,6 @@ public class Goods {
     private String shelf_life;
 
     @Column(nullable = true)
-    private Long users_id; // PK, FK
-
-    @Column(nullable = true)
-    private Long markets_id; // PK, FK
-
-    @Column(nullable = true)
     private Integer sale;
 
     @Column(nullable = true)
@@ -50,8 +54,7 @@ public class Goods {
     private Timestamp updated_at;
 
 
-
-    public Goods createGoods(String title, String price,  Integer rest, String shelf_life, Long usersId, Long marketsId, Integer sale, String imageUrl) {
+    public Goods createGoods(String title, String price, Integer rest, String shelf_life, Users usersId, Users marketsId, Integer sale, String imageUrl) {
         this.title = title;
         this.price = price;
         this.rest = rest;
@@ -65,5 +68,51 @@ public class Goods {
 
         return this;
     }
+
+    public void setTitle(String title) {
+        this.title = title;
+        this.updated_at = new Timestamp(System.currentTimeMillis());
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+        this.updated_at = new Timestamp(System.currentTimeMillis());
+    }
+
+    public void setRest(Integer rest) {
+        this.rest = rest;
+        this.updated_at = new Timestamp(System.currentTimeMillis());
+    }
+
+    public void setShelf_life(String shelf_life) {
+        this.shelf_life = shelf_life;
+        this.updated_at = new Timestamp(System.currentTimeMillis());
+    }
+
+    public void setUsersId(Users usersId) {
+        this.users_id = usersId;
+        this.updated_at = new Timestamp(System.currentTimeMillis());
+    }
+
+    public void setMarketsId(Users marketsId) {
+        this.markets_id = marketsId;
+        this.updated_at = new Timestamp(System.currentTimeMillis());
+    }
+
+    public void setSale(Integer sale) {
+        this.sale = sale;
+        this.updated_at = new Timestamp(System.currentTimeMillis());
+    }
+
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+        this.updated_at = new Timestamp(System.currentTimeMillis());
+    }
+
+    public void deleteGoods() {this.rest = 0;}
+
+    public void modifyPrice(String price) { this.price = price; }
+
 
 }

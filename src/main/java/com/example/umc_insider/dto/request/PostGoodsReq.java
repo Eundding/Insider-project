@@ -1,5 +1,6 @@
 package com.example.umc_insider.dto.request;
 
+import com.example.umc_insider.domain.Users;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -10,8 +11,8 @@ public class PostGoodsReq {
     private String price;
     private Integer rest;
     private String shelf_life;
-    Long usersId;
-    Long marketsId;
+    Users usersId;
+    Users marketsId;
     Integer sale;
     private String imageUrl;
 }

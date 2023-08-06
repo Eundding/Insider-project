@@ -22,7 +22,7 @@ public class Goods {
 
     @ManyToOne
     @JoinColumn(name = "markets_id")
-    private Users markets_id; // PK, FK
+    private Markets markets_id; // PK, FK
 
     // goods zipcode 추가하는 건 어떤가요?
 
@@ -54,7 +54,7 @@ public class Goods {
     private Timestamp updated_at;
 
 
-    public Goods createGoods(String title, String price, Integer rest, String shelf_life, Users usersId, Users marketsId, Integer sale, String imageUrl) {
+    public Goods createGoods(String title, String price, Integer rest, String shelf_life, Users usersId, Markets marketsId, Integer sale, String imageUrl) {
         this.title = title;
         this.price = price;
         this.rest = rest;
@@ -94,7 +94,7 @@ public class Goods {
         this.updated_at = new Timestamp(System.currentTimeMillis());
     }
 
-    public void setMarketsId(Users marketsId) {
+    public void setMarketsId(Markets marketsId) {
         this.markets_id = marketsId;
         this.updated_at = new Timestamp(System.currentTimeMillis());
     }
@@ -113,6 +113,5 @@ public class Goods {
     public void deleteGoods() {this.rest = 0;}
 
     public void modifyPrice(String price) { this.price = price; }
-
 
 }

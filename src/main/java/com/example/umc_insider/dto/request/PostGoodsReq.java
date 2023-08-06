@@ -12,8 +12,16 @@ public class PostGoodsReq {
     private String price;
     private Integer rest;
     private String shelf_life;
-    Users usersId;
-    Markets marketsId;
-    Integer sale;
+    Users users_id;
+    Markets markets_id;
+    private Integer sale;
     private String imageUrl;
+
+    public Users getUsersId() {
+        return users_id;
+    }
+
+    public Markets getMarketsId() {
+        return markets_id;
+    }
 }

@@ -14,6 +14,7 @@ import com.example.umc_insider.service.UsersService;
 import com.example.umc_insider.utils.JwtService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.HttpStatus;
@@ -27,12 +28,11 @@ import java.util.List;
 @RequestMapping("/goods")
 public class GoodsController {
     private final GoodsService goodsService;
-    private final UsersService usersService;
-    private final GoodsRepository goodsRepository;
-    private final JwtService jwtService;
+//    private final GoodsRepository goodsRepository;
+//    private final JwtService jwtService;
 //    private final S3Service s3Service;
 
-//    @Autowired
+    //    @Autowired
 //    public GoodsController(GoodsService goodsService, S3Service s3Service){
 //        this.goodsService = goodsService;
 //        this.s3Service = s3Service;
@@ -55,14 +55,14 @@ public class GoodsController {
 //    }
 
     // 상품등록
-    @PostMapping("/goods")
+    @PostMapping("/create")
     public BaseResponse<PostGoodsRes> createGoods(@RequestBody PostGoodsReq postgoodsReq) throws BaseException {
-        try {
+//        try {
             PostGoodsRes response = goodsService.createGoods(postgoodsReq);
             return new BaseResponse<>(response);
-        } catch (BaseException e) {
-            return new BaseResponse<>(e.getStatus());
-        }
+//        } catch (BaseException e) {
+//            return new BaseResponse<>(e.getStatus());
+//        }
     }
 
     // 상품조회
@@ -72,18 +72,18 @@ public class GoodsController {
     }
 
     // 상품삭제
-    @PostMapping("/delete")
-    public BaseResponse<String> deleteGoods(@RequestParam long id, long users_id, long markets_id) throws BaseException {
-        // jwt에서 idx 추출
-        long userIdByJwt = jwtService.getId();
-        Goods goods = goodsRepository.getReferenceById(id);
-        Users user = goods.getUsers_id();
-
-        PatchGoodsReq patchGoodsReq = new PatchGoodsReq(id, users_id, markets_id);
-        goodsService.deleteGoods(patchGoodsReq);
-        String result = "상품이 삭제되었습니다.";
-        return new BaseResponse<>(result);
-    }
+//    @PostMapping("/delete")
+//    public BaseResponse<String> deleteGoods(@RequestParam long id, long users_id, long markets_id) throws BaseException {
+//        // jwt에서 idx 추출
+//        long userIdByJwt = jwtService.getId();
+//        Goods goods = goodsRepository.getReferenceById(id);
+//        Users user = goods.getUsers_id();
+//
+//        PatchGoodsReq patchGoodsReq = new PatchGoodsReq(id, users_id, markets_id);
+//        goodsService.deleteGoods(patchGoodsReq);
+//        String result = "상품이 삭제되었습니다.";
+//        return new BaseResponse<>(result);
+//    }
 
     // 상품 가격변경
     @PostMapping("/modifyPrice")

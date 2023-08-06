@@ -1,5 +1,7 @@
 package com.example.umc_insider.dto.response;
 
+import com.example.umc_insider.domain.Markets;
+import com.example.umc_insider.domain.Users;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -10,7 +12,4 @@ public class PostGoodsRes {
     private String title;
     private String price;
     private String imageUrl;
-
-    public PostGoodsRes(Long id, String title, String price) {
-    }
 }

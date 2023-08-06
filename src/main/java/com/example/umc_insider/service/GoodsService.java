@@ -2,6 +2,7 @@ package com.example.umc_insider.service;
 
 import com.example.umc_insider.config.BaseException;
 import com.example.umc_insider.config.BaseResponseStatus;
+import com.example.umc_insider.domain.Markets;
 import com.example.umc_insider.domain.Users;
 import com.example.umc_insider.domain.Goods;
 import com.example.umc_insider.dto.request.PatchGoodsReq;
@@ -11,6 +12,7 @@ import com.example.umc_insider.dto.response.GetGoodsRes;
 import com.example.umc_insider.dto.response.PostGoodsRes;
 import com.example.umc_insider.repository.UserRepository;
 import com.example.umc_insider.repository.GoodsRepository;
+import com.example.umc_insider.repository.MarketsRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -26,7 +28,8 @@ import java.util.stream.Collectors;
 @Service
 public class GoodsService {
     private GoodsRepository goodsRepository;
-    private UserRepository userRepository;
+    private UserRepository usersRepository;
+    private MarketsRepository marketsRepository;
 
     @Autowired
     public GoodsService(GoodsRepository goodsRepository){
@@ -36,23 +39,33 @@ public class GoodsService {
     // 상품등록
     public PostGoodsRes createGoods(PostGoodsReq postGoodsReq) throws BaseException {
         try {
+            Users users = usersRepository.findUsersById(postGoodsReq.getUsersId().getId()); // 사용자 정보 가져오기
+            Markets markets = marketsRepository.findMartketsById(postGoodsReq.getMarketsId().getId()); // 시장 정보 가져오기
+
             Goods newGoods = new Goods();
             newGoods.setTitle(postGoodsReq.getTitle());
             newGoods.setPrice(postGoodsReq.getPrice());
             newGoods.setRest(postGoodsReq.getRest());
             newGoods.setShelf_life(postGoodsReq.getShelf_life());
-            newGoods.setUsersId(postGoodsReq.getUsersId());
-            newGoods.setMarketsId(postGoodsReq.getMarketsId());
+            newGoods.setUsersId(users); // 가져온 사용자 정보로 설정
+            newGoods.setMarketsId(markets); // 가져온 시장 정보로 설정
             newGoods.setSale(postGoodsReq.getSale());
             newGoods.setImageUrl(postGoodsReq.getImageUrl());
 
             Goods savedGoods = goodsRepository.save(newGoods);
 
-            return new PostGoodsRes(savedGoods.getId(), savedGoods.getTitle(), savedGoods.getPrice());
+            return new PostGoodsRes(
+                    savedGoods.getId(),
+                    savedGoods.getTitle(),
+                    savedGoods.getPrice(),
+                    savedGoods.getImageUrl()
+            );
+
         } catch (Exception e) {
             throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
         }
     }
+
 
 //    public PostGoodsRes createGoods(PostGoodsReq postGoodsReq){
 //        Goods goods = new Goods();

@@ -50,6 +50,7 @@ dependencies {
 
 }
 
+processResources.dependsOn('copyGitSubmodule')
 task copyPrivate(type: Copy) {
 	copy {
 		from './insider-private'

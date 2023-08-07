@@ -50,6 +50,7 @@ dependencies {
 
 }
 
+processResources.dependsOn('copyPrivate')
 task copyPrivate(type: Copy) {
 	copy {
 		from './insider-private'

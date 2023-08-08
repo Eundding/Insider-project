@@ -1,16 +1,16 @@
 package com.example.umc_insider.controller;
 
-import com.example.umc_insider.dto.*;
-import lombok.RequiredArgsConstructor;
+import com.example.umc_insider.dto.request.PostLoginReq;
+import com.example.umc_insider.dto.request.PostUserReq;
+import com.example.umc_insider.dto.response.GetUserRes;
+import com.example.umc_insider.dto.response.PostLoginRes;
+import com.example.umc_insider.dto.response.PostUserRes;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.umc_insider.config.BaseException;
 import com.example.umc_insider.config.BaseResponse;
-import com.example.umc_insider.repository.UserRepository;
-import com.example.umc_insider.service.UserService;
+import com.example.umc_insider.service.UsersService;
 
 import java.util.List;
 
@@ -20,15 +20,15 @@ import static com.example.umc_insider.utils.ValidationRegex.isRegexEmail;
 //@RequiredArgsConstructor
 @RestController
 public class UserController {
-    private final UserService userService;
+    private final UsersService usersService;
     @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public UserController(UsersService usersService) {
+        this.usersService = usersService;
     }
     //회원가입
     @PostMapping("/create")
     public BaseResponse<PostUserRes> createUser(@RequestBody PostUserReq postUserReq) throws BaseException{
-        PostUserRes response = userService.createUser(postUserReq);
+        PostUserRes response = usersService.createUser(postUserReq);
 
         return new BaseResponse<>(response);
 //        if (!ValidationRegex.isRegexEmail(postUserReq.getEmail())) {
@@ -45,12 +45,12 @@ public class UserController {
 
     @GetMapping("/users")
     public ResponseEntity<List<GetUserRes>> getAllUsers() {
-        List<GetUserRes> users = userService.getAllUsers();
+        List<GetUserRes> users = usersService.getAllUsers();
         return ResponseEntity.ok(users);
     }
 
 
-    //로그인
+    // 로그인
     @PostMapping("/logIn")
     public BaseResponse<PostLoginRes> logIn(@RequestBody PostLoginReq postLoginReq){
         try{
@@ -66,7 +66,7 @@ public class UserController {
             if(!isRegexEmail(postLoginReq.getEmail())){
                 return new BaseResponse<>(POST_USERS_INVALID_EMAIL);
             }
-            PostLoginRes postLoginRes = userService.logIn(postLoginReq);
+            PostLoginRes postLoginRes = usersService.logIn(postLoginReq);
             return new BaseResponse<>(postLoginRes);
 
         } catch (BaseException exception) {

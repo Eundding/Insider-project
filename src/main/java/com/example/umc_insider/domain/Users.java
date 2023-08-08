@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @Getter
 @NoArgsConstructor
 @Table(name = "users")
-public class User {
+public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -37,7 +37,7 @@ public class User {
     private Timestamp updated_at;
 
 
-    public User createUser(String userId, String nickName, String email, String password) {
+    public Users createUser(String userId, String nickName, String email, String password) {
         this.user_id = userId;
         this.email = email;
         this.nickname = nickName;

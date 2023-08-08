@@ -1,15 +1,16 @@
-package com.example.umc_insider.dto;
+package com.example.umc_insider.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @AllArgsConstructor
-public class PostUserReq {
-    // from front
-    // id, nick, pw, again_pw, email, address
+public class GetUserRes {
+    private Long id;
     private String userId;
     private String nickname;
-    private String pw;
+    private String password;
     private String email;
 }

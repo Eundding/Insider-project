@@ -13,16 +13,16 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface GoodsRepository extends JpaRepository<Goods, Long> {
 
-    @Query("select g from Goods g where g.rest is not null")
+    @Query("select g from Goods g where g.rest is null")
     List<Goods> findGoods();
 
-    @Query("select g from Goods g where g.title = :title and g.rest is not null")
+    @Query("select g from Goods g where g.title = :title and g.rest is null")
     List<Goods> findGoodsByTitle(@Param("title") String title);
 
-    @Query("select g from Goods g where g.users_id = :users_id and g.rest is not null")
+    @Query("select g from Goods g where g.users_id = :users_id and g.rest is null")
     List<Goods> findGoodsByUser(@Param("users_id") Users users_id);
 
-    @Query("select g from Goods g where g.markets_id = :markets_id and g.rest is not null")
+    @Query("select g from Goods g where g.markets_id = :markets_id and g.rest is null")
     List<Goods> findGoodsByMarket(@Param("markets_id") Markets markets_id);
 
     @Query("select count(g) from Goods g where g.id = :id")

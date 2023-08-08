@@ -36,62 +36,6 @@ public class GoodsService {
         this.goodsRepository = goodsRepository;
     }
 
-//    // 상품등록
-//    public PostGoodsRes createGoods(PostGoodsReq postGoodsReq) throws BaseException {
-//        try {
-//            Users users = usersRepository.findUsersById(postGoodsReq.getUsersId().getId()); // 사용자 정보 가져오기
-//            Markets markets = marketsRepository.findMartketsById(postGoodsReq.getMarketsId().getId()); // 시장 정보 가져오기
-//
-//            Goods newGoods = new Goods();
-//            newGoods.setTitle(postGoodsReq.getTitle());
-//            newGoods.setPrice(postGoodsReq.getPrice());
-//            newGoods.setRest(postGoodsReq.getRest());
-//            newGoods.setShelf_life(postGoodsReq.getShelf_life());
-//            newGoods.setUsersId(users); // 가져온 사용자 정보로 설정
-//            newGoods.setMarketsId(markets); // 가져온 시장 정보로 설정
-//            newGoods.setSale(postGoodsReq.getSale());
-//            newGoods.setImageUrl(postGoodsReq.getImageUrl());
-//
-//            Goods savedGoods = goodsRepository.save(newGoods);
-//
-//            return new PostGoodsRes(
-//                    savedGoods.getId(),
-//                    savedGoods.getTitle(),
-//                    savedGoods.getPrice(),
-//                    savedGoods.getImageUrl()
-//            );
-//
-//        } catch (Exception e) {
-//            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
-//        }
-//    }
-
-
-//    public PostGoodsRes createGoods(PostGoodsReq postGoodsReq) throws BaseException {
-//        try {
-//            Goods goods = new Goods();
-//            // 유저 검색
-//            Users user = usersRepository.findUsersById(postGoodsReq.getUsersId().getId());
-//
-//            // 시장 검색
-//            Markets market = marketsRepository.findMartketsById(postGoodsReq.getMarketsId().getId());
-//
-//            // 지역 검색
-//        /*
-//        추후 추가
-//        */
-//
-//            // 상품 등록
-//            goods.createGoods(postGoodsReq.getTitle(), postGoodsReq.getPrice(), postGoodsReq.getRest(), postGoodsReq.getShelf_life(), user, market, postGoodsReq.getSale(), postGoodsReq.getImageUrl());
-//            goodsRepository.save(goods);
-//            return new PostGoodsRes(goods.getId(), goods.getTitle(), goods.getPrice(), goods.getImageUrl());
-//        }
-//
-//        catch (Exception e){
-//            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
-//        }
-//
-//    }
 
     // 상품 등록
     public PostGoodsRes createGoods(PostGoodsReq postGoodsReq) throws BaseException {

@@ -57,12 +57,13 @@ public class GoodsController {
     // 상품등록
     @PostMapping("/create")
     public BaseResponse<PostGoodsRes> createGoods(@RequestBody PostGoodsReq postgoodsReq) throws BaseException {
-//        try {
+        try {
             PostGoodsRes response = goodsService.createGoods(postgoodsReq);
             return new BaseResponse<>(response);
-//        } catch (BaseException e) {
-//            return new BaseResponse<>(e.getStatus());
-//        }
+//            return new BaseResponse<>(goodsService.createGoods(postgoodsReq));
+        } catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
     }
 
     // 상품조회

@@ -67,30 +67,42 @@ public class GoodsService {
 //    }
 
 
+//    public PostGoodsRes createGoods(PostGoodsReq postGoodsReq) throws BaseException {
+//        try {
+//            Goods goods = new Goods();
+//            // 유저 검색
+//            Users user = usersRepository.findUsersById(postGoodsReq.getUsersId().getId());
+//
+//            // 시장 검색
+//            Markets market = marketsRepository.findMartketsById(postGoodsReq.getMarketsId().getId());
+//
+//            // 지역 검색
+//        /*
+//        추후 추가
+//        */
+//
+//            // 상품 등록
+//            goods.createGoods(postGoodsReq.getTitle(), postGoodsReq.getPrice(), postGoodsReq.getRest(), postGoodsReq.getShelf_life(), user, market, postGoodsReq.getSale(), postGoodsReq.getImageUrl());
+//            goodsRepository.save(goods);
+//            return new PostGoodsRes(goods.getId(), goods.getTitle(), goods.getPrice(), goods.getImageUrl());
+//        }
+//
+//        catch (Exception e){
+//            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+//        }
+//
+//    }
+
+    // 상품 등록
     public PostGoodsRes createGoods(PostGoodsReq postGoodsReq) throws BaseException {
         try {
             Goods goods = new Goods();
-            // 유저 검색
-            Users user = usersRepository.findUsersById(postGoodsReq.getUsersId().getId());
-
-            // 시장 검색
-            Markets market = marketsRepository.findMartketsById(postGoodsReq.getMarketsId().getId());
-
-            // 지역 검색
-        /*
-        추후 추가
-        */
-
-            // 상품 등록
-            goods.createGoods(postGoodsReq.getTitle(), postGoodsReq.getPrice(), postGoodsReq.getRest(), postGoodsReq.getShelf_life(), user, market, postGoodsReq.getSale(), postGoodsReq.getImageUrl());
+            goods.createGoods(postGoodsReq.getTitle(), postGoodsReq.getPrice(), postGoodsReq.getRest(), postGoodsReq.getShelf_life());
             goodsRepository.save(goods);
-            return new PostGoodsRes(goods.getId(), goods.getTitle(), goods.getPrice(), goods.getImageUrl());
-        }
-
-        catch (Exception e){
+            return new PostGoodsRes(goods.getTitle());
+        } catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
             throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
         }
-
     }
 
     // 상품 조회

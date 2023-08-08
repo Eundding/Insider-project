@@ -53,21 +53,30 @@ public class Goods {
     @Column(nullable = false)
     private Timestamp updated_at;
 
-
-    public Goods createGoods(String title, String price, Integer rest, String shelf_life, Users usersId, Markets marketsId, Integer sale, String imageUrl) {
+    public Goods createGoods(String title, String price, Integer rest, String shelf_life){
         this.title = title;
         this.price = price;
         this.rest = rest;
         this.shelf_life = shelf_life;
-        this.users_id = usersId;
-        this.markets_id = marketsId;
-        this.sale = sale;
-        this.imageUrl = imageUrl;
-        this.created_at = new Timestamp(System.currentTimeMillis());
-        this.updated_at = new Timestamp(System.currentTimeMillis());
 
         return this;
     }
+
+
+//    public Goods createGoods(String title, String price, Integer rest, String shelf_life, Users usersId, Markets marketsId, Integer sale, String imageUrl) {
+//        this.title = title;
+//        this.price = price;
+//        this.rest = rest;
+//        this.shelf_life = shelf_life;
+//        this.users_id = usersId;
+//        this.markets_id = marketsId;
+//        this.sale = sale;
+//        this.imageUrl = imageUrl;
+//        this.created_at = new Timestamp(System.currentTimeMillis());
+//        this.updated_at = new Timestamp(System.currentTimeMillis());
+//
+//        return this;
+//    }
 
     public void setTitle(String title) {
         this.title = title;

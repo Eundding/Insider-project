@@ -58,6 +58,8 @@ public class Goods {
         this.price = price;
         this.rest = rest;
         this.shelf_life = shelf_life;
+        this.created_at = new Timestamp(System.currentTimeMillis());
+        this.updated_at = new Timestamp(System.currentTimeMillis());
 
         return this;
     }

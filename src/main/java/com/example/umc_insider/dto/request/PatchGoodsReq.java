@@ -10,7 +10,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class PatchGoodsReq {
     private long id;
-    private long users_id;
-    private long markets_id;
+//    private long users_id;
+//    private long markets_id;
 
 }

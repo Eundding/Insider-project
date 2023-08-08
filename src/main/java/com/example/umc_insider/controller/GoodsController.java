@@ -38,11 +38,6 @@ public class GoodsController {
 //        this.s3Service = s3Service;
 //    }
 
-//    @Autowired
-//    public GoodsController(GoodsService goodsService) {
-//        this.goodsService = goodsService;
-//    }
-
 
 //    @PostMapping("/goods")
 //    public BaseResponse<PostGoodsRes> createGoods(@RequestBody PostGoodsReq postgoodsReq, @RequestPart("image") MultipartFile image) throws BaseException {
@@ -73,18 +68,18 @@ public class GoodsController {
     }
 
     // 상품삭제
-//    @PostMapping("/delete")
-//    public BaseResponse<String> deleteGoods(@RequestParam long id, long users_id, long markets_id) throws BaseException {
-//        // jwt에서 idx 추출
+    @PostMapping("/delete")
+    public BaseResponse<String> deleteGoods(@RequestParam long id) throws BaseException {
+        // jwt에서 idx 추출
 //        long userIdByJwt = jwtService.getId();
 //        Goods goods = goodsRepository.getReferenceById(id);
 //        Users user = goods.getUsers_id();
-//
-//        PatchGoodsReq patchGoodsReq = new PatchGoodsReq(id, users_id, markets_id);
-//        goodsService.deleteGoods(patchGoodsReq);
-//        String result = "상품이 삭제되었습니다.";
-//        return new BaseResponse<>(result);
-//    }
+
+        PatchGoodsReq patchGoodsReq = new PatchGoodsReq(id);
+        goodsService.deleteGoods(patchGoodsReq);
+        String result = "상품이 삭제되었습니다.";
+        return new BaseResponse<>(result);
+    }
 
     // 상품 가격변경
     @PostMapping("/modifyPrice")

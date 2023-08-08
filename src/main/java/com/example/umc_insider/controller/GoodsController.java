@@ -68,18 +68,22 @@ public class GoodsController {
     }
 
     // 상품삭제
-    @PostMapping("/delete")
-    public BaseResponse<String> deleteGoods(@RequestParam long id) throws BaseException {
-        // jwt에서 idx 추출
-//        long userIdByJwt = jwtService.getId();
-//        Goods goods = goodsRepository.getReferenceById(id);
-//        Users user = goods.getUsers_id();
-
-        PatchGoodsReq patchGoodsReq = new PatchGoodsReq(id);
-        goodsService.deleteGoods(patchGoodsReq);
-        String result = "상품이 삭제되었습니다.";
-        return new BaseResponse<>(result);
+    @DeleteMapping ("/delete/{id}")
+    public long delete(@PathVariable long id){
+        this.goodsService.deleteGoods(id);
+        return id;
     }
+//    public BaseResponse<String> deleteGoods(@RequestParam long id) throws BaseException {
+//        // jwt에서 idx 추출
+////        long userIdByJwt = jwtService.getId();
+////        Goods goods = goodsRepository.getReferenceById(id);
+////        Users user = goods.getUsers_id();
+//
+//        PatchGoodsReq patchGoodsReq = new PatchGoodsReq(id);
+//        goodsService.deleteGoods(patchGoodsReq);
+//        String result = "상품이 삭제되었습니다.";
+//        return new BaseResponse<>(result);
+//    }
 
     // 상품 가격변경
     @PostMapping("/modifyPrice")

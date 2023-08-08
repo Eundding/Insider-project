@@ -60,10 +60,17 @@ public class GoodsService {
 
     // 상품 삭제
     @Transactional
-    public void deleteGoods(PatchGoodsReq patchGoodsReq) {
-        Goods goods = goodsRepository.getReferenceById(patchGoodsReq.getId());
-        goods.deleteGoods();
+    public void deleteGoods(long id) {
+        Goods goods = (Goods)this.goodsRepository.findById(id).orElseThrow(()->{
+            return new IllegalArgumentException("해당 게시글이 없습니다. id=" + id);
+        });
+        this.goodsRepository.delete(goods);
     }
+
+//    public void deleteGoods(PatchGoodsReq patchGoodsReq) {
+//        Goods goods = goodsRepository.getReferenceById(patchGoodsReq.getId());
+//        goods.deleteGoods();
+//    }
 
     // 상품 가격 변경
     @Transactional

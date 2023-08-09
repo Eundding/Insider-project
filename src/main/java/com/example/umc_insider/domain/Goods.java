@@ -62,7 +62,7 @@ public class Goods {
         return this;
     }
 
-    public void deleteGoods() { this.rest = 0; }
+    public void deleteGoods(int rest) { this.rest = 0;}
 
     public void modifyPrice(String price) { this.price = price; }
 

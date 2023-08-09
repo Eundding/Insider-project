@@ -1,18 +1,14 @@
 package com.example.umc_insider.service;
 
 import com.example.umc_insider.config.BaseException;
+import com.example.umc_insider.config.BaseResponse;
 import com.example.umc_insider.config.BaseResponseStatus;
-import com.example.umc_insider.domain.Markets;
-import com.example.umc_insider.domain.Users;
 import com.example.umc_insider.domain.Goods;
-import com.example.umc_insider.dto.request.PatchGoodsReq;
 import com.example.umc_insider.dto.request.PostGoodsReq;
 import com.example.umc_insider.dto.request.PostModifyPriceReq;
 import com.example.umc_insider.dto.response.GetGoodsRes;
 import com.example.umc_insider.dto.response.PostGoodsRes;
-import com.example.umc_insider.repository.UserRepository;
 import com.example.umc_insider.repository.GoodsRepository;
-import com.example.umc_insider.repository.MarketsRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -28,8 +24,6 @@ import java.util.stream.Collectors;
 @Service
 public class GoodsService {
     private GoodsRepository goodsRepository;
-    private UserRepository usersRepository;
-    private MarketsRepository marketsRepository;
 
     @Autowired
     public GoodsService(GoodsRepository goodsRepository){
@@ -49,13 +43,30 @@ public class GoodsService {
         }
     }
 
-    // 상품 조회
-    public List<GetGoodsRes> getGoods() {
-        List<Goods> goodsList = goodsRepository.findGoods();
-        List<GetGoodsRes> getGoodsRes = goodsList.stream()
-                .map(goods -> new GetGoodsRes(goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale()))
-                .collect(Collectors.toList());
-        return getGoodsRes;
+    // all 상품 조회
+    public List<GetGoodsRes> getGoods() throws BaseException {
+        try {
+            List<Goods> goodsList = goodsRepository.findGoods();
+            List<GetGoodsRes> getGoodsRes = goodsList.stream()
+                    .map(goods -> new GetGoodsRes(goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl()))
+                    .collect(Collectors.toList());
+            return getGoodsRes;
+        } catch (Exception e) {
+            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+        }
+    }
+
+    // 특정 상품 조회
+    public List<GetGoodsRes> getGoodsByTitle(String title) throws BaseException {
+        try {
+            List<Goods> goodsList = goodsRepository.findGoodsByTitle(title);
+            List<GetGoodsRes> GetGoodsRes = goodsList.stream()
+                    .map(goods -> new GetGoodsRes(goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl()))
+                    .collect(Collectors.toList());
+            return GetGoodsRes;
+        } catch (Exception exception) {
+            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+        }
     }
 
     // 상품 삭제
@@ -67,10 +78,6 @@ public class GoodsService {
         this.goodsRepository.delete(goods);
     }
 
-//    public void deleteGoods(PatchGoodsReq patchGoodsReq) {
-//        Goods goods = goodsRepository.getReferenceById(patchGoodsReq.getId());
-//        goods.deleteGoods();
-//    }
 
     // 상품 가격 변경
     @Transactional

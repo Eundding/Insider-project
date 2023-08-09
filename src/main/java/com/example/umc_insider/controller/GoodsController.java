@@ -55,7 +55,6 @@ public class GoodsController {
         try {
             PostGoodsRes response = goodsService.createGoods(postgoodsReq);
             return new BaseResponse<>(response);
-//            return new BaseResponse<>(goodsService.createGoods(postgoodsReq));
         } catch (BaseException e) {
             return new BaseResponse<>(e.getStatus());
         }
@@ -63,27 +62,27 @@ public class GoodsController {
 
     // 상품조회
     @GetMapping("/read")
-    public BaseResponse<List<GetGoodsRes>> getGoods(@RequestParam(required = false) String email){
-        return new BaseResponse<>(goodsService.getGoods());
+    public BaseResponse<List<GetGoodsRes>> getGoods(@RequestParam(required = false) String title){
+        //  @RequestParam은, 1개의 HTTP Request 파라미터를 받을 수 있는 어노테이션(?뒤의 값). default로 RequestParam은 반드시 값이 존재해야 하도록 설정되어 있지만, (전송 안되면 400 Error 유발)
+        //  지금 예시와 같이 required 설정으로 필수 값에서 제외 시킬 수 있음
+        //  defaultValue를 통해, 기본값(파라미터가 없는 경우, 해당 파라미터의 기본값 설정)을 지정할 수 있음
+        try{
+            if (title == null) { // query string인 title이 없을 경우, 그냥 전체 goods 정보를 불러온다.
+                return new BaseResponse<>(goodsService.getGoods());
+            }
+            // query string인 title이 있을 경우, 조건을 만족하는 goods 정보들을 불러온다.
+            return new BaseResponse<>(goodsService.getGoodsByTitle(title));
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
     }
 
     // 상품삭제
     @DeleteMapping ("/delete/{id}")
-    public long delete(@PathVariable long id){
+    public long deleteGoods(@PathVariable long id){
         this.goodsService.deleteGoods(id);
         return id;
     }
-//    public BaseResponse<String> deleteGoods(@RequestParam long id) throws BaseException {
-//        // jwt에서 idx 추출
-////        long userIdByJwt = jwtService.getId();
-////        Goods goods = goodsRepository.getReferenceById(id);
-////        Users user = goods.getUsers_id();
-//
-//        PatchGoodsReq patchGoodsReq = new PatchGoodsReq(id);
-//        goodsService.deleteGoods(patchGoodsReq);
-//        String result = "상품이 삭제되었습니다.";
-//        return new BaseResponse<>(result);
-//    }
 
     // 상품 가격변경
     @PostMapping("/modifyPrice")

@@ -3,16 +3,20 @@ package com.example.umc_insider.service;
 import com.example.umc_insider.config.BaseException;
 import com.example.umc_insider.config.BaseResponseStatus;
 import com.example.umc_insider.domain.Goods;
+import com.example.umc_insider.domain.Users;
 import com.example.umc_insider.dto.request.PostGoodsReq;
 import com.example.umc_insider.dto.request.PostModifyPriceReq;
 import com.example.umc_insider.dto.response.GetGoodsRes;
 import com.example.umc_insider.dto.response.PostGoodsRes;
 import com.example.umc_insider.repository.GoodsRepository;
 
+import com.example.umc_insider.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +27,11 @@ import java.util.stream.Collectors;
 @Service
 public class GoodsService {
     private GoodsRepository goodsRepository;
-
+    private UserRepository userRepository;
     @Autowired
-    public GoodsService(GoodsRepository goodsRepository){
+    public GoodsService(GoodsRepository goodsRepository, UserRepository userRepository){
         this.goodsRepository = goodsRepository;
+        this.userRepository = userRepository;
     }
 
 
@@ -34,7 +39,11 @@ public class GoodsService {
     public PostGoodsRes createGoods(PostGoodsReq postGoodsReq) throws BaseException {
         try {
             Goods goods = new Goods();
-            goods.createGoods(postGoodsReq.getTitle(), postGoodsReq.getPrice(), postGoodsReq.getRest(), postGoodsReq.getShelf_life());
+
+            Users user = userRepository.findUsersById(postGoodsReq.getUserIdx());
+            goods.setUser(user);
+
+            goods.createGoods(postGoodsReq.getTitle(), postGoodsReq.getPrice(), postGoodsReq.getRest(), postGoodsReq.getShelf_life(), postGoodsReq.getUserIdx());
             goodsRepository.save(goods);
             return new PostGoodsRes(goods.getTitle());
         } catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.

@@ -3,6 +3,7 @@ package com.example.umc_insider.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.catalina.User;
 
 import java.sql.Timestamp;
 
@@ -51,7 +52,7 @@ public class Goods {
     @Column(nullable = false)
     private Timestamp updated_at;
 
-    public Goods createGoods(String title, String price, Integer rest, String shelf_life){
+    public Goods createGoods(String title, String price, Integer rest, String shelf_life, Long userIdx){
         this.title = title;
         this.price = price;
         this.rest = rest;
@@ -71,4 +72,7 @@ public class Goods {
         this.id = id;
     }
 
+    public void setUser(Users user) {
+        this.users_id = user;
+    }
 }

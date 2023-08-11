@@ -75,4 +75,9 @@ public class Goods {
     public void setUser(Users user) {
         this.users_id = user;
     }
+
+    public void setImageUrl(String url){
+        this.imageUrl = url;
+    }
+
 }

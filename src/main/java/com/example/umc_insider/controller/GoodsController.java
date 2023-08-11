@@ -41,27 +41,20 @@ public class GoodsController {
         this.jwtService = jwtService;
     }
 
-
-//    @PostMapping("/goods")
-//    public BaseResponse<PostGoodsRes> createGoods(@RequestBody PostGoodsReq postgoodsReq, @RequestPart("image") MultipartFile image) throws BaseException {
-//        PostGoodsRes response = goodsService.createGoods(postgoodsReq);
-//        image = postgoodsReq.getImageUrl();
-//        s3Service.uploadFileToS3(image);
-//
-//        return new BaseResponse<>(response);
-//
-//    }
-
     // 상품등록
     @PostMapping("/create")
-    public BaseResponse<PostGoodsRes> createGoods(@RequestBody PostGoodsReq postgoodsReq) throws BaseException {
+    public BaseResponse<PostGoodsRes> createGoods(@RequestPart("postgoodsReq") PostGoodsReq postgoodsReq, @RequestPart("image") MultipartFile image) throws BaseException {
+//    public BaseResponse<PostGoodsRes> createGoods(@RequestBody PostGoodsReq postgoodsReq, @RequestParam("image") MultipartFile image) throws BaseException {
         try {
             Long userByJwt = jwtService.getId();
             if(postgoodsReq.getUserIdx() != userByJwt){
                 return new BaseResponse<>(BaseResponseStatus.INVALID_USER_JWT);
             }
+            this.s3Service.uploadFileToS3(image);
+            String url = this.s3Service.getURLFromS3();
 
-            PostGoodsRes response = goodsService.createGoods(postgoodsReq);
+            PostGoodsRes response = goodsService.createGoods(postgoodsReq, url);
+
             return new BaseResponse<>(response);
         } catch (BaseException e) {
             return new BaseResponse<>(e.getStatus());

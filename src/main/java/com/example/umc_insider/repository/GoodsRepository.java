@@ -21,6 +21,8 @@ public interface GoodsRepository extends JpaRepository<Goods, Long> {
 
     @Query("select g from Goods g where g.title = :title")
     List<Goods> findGoodsByTitle(@Param("title") String title);
+
+    List<Goods> findByTitleContaining(String title);
 //
 //    @Query("select g from Goods g where g.users_id = :users_id and g.rest is null")
 //    List<Goods> findGoodsByUser(@Param("users_id") Users users_id);

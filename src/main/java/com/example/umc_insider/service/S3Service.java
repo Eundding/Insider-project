@@ -21,25 +21,32 @@ public class S3Service {
     }
     private final String bucketName = "umcinsider";
     private final AmazonS3 s3Client;
-
+    private String url;
     public S3Service(AmazonS3 s3Client) {
         this.s3Client = s3Client;
     }
 
     public String uploadFileToS3(MultipartFile file) {
-        String keyName = "images/" + file.getOriginalFilename();
-
+        String keyName = "goods/" + file.getOriginalFilename();
         try {
             byte[] bytes = file.getBytes();
             s3Client.putObject(new PutObjectRequest(bucketName, keyName, new ByteArrayInputStream(bytes), new ObjectMetadata()));
-            return s3Client.getUrl(bucketName, keyName).toString();
+            url = s3Client.getUrl(bucketName, keyName).toString();
+            return url;
         } catch (IOException e) {
             throw new RuntimeException("File loading failed.", e);
         }
     }
 
-    public String getURLFromS3(String imageName) {
-        String keyName = "images/" + imageName;
-        return s3Client.getUrl(bucketName, keyName).toString();
+    public String getURLFromS3() {
+       // String keyName = "goods/" + imageName;
+        return url;
+//        return s3Client.getUrl(bucketName, keyName).toString();
     }
+
+//    public String getURLFromS3(String imageName) {
+//        String keyName = "goods/" + imageName;
+//        return url;
+////        return s3Client.getUrl(bucketName, keyName).toString();
+//    }
 }

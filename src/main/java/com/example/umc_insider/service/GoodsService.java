@@ -36,7 +36,7 @@ public class GoodsService {
 
 
     // 상품 등록
-    public PostGoodsRes createGoods(PostGoodsReq postGoodsReq) throws BaseException {
+    public PostGoodsRes createGoods(PostGoodsReq postGoodsReq, String imageUrl) throws BaseException {
         try {
             Goods goods = new Goods();
 
@@ -44,12 +44,17 @@ public class GoodsService {
             goods.setUser(user);
 
             goods.createGoods(postGoodsReq.getTitle(), postGoodsReq.getPrice(), postGoodsReq.getRest(), postGoodsReq.getShelf_life(), postGoodsReq.getUserIdx());
+            goods.setImageUrl(imageUrl);
             goodsRepository.save(goods);
             return new PostGoodsRes(goods.getTitle());
         } catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
             throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
         }
     }
+
+
+
+
 
     // all 상품 조회
     public List<GetGoodsRes> getGoods() throws BaseException {
@@ -67,7 +72,8 @@ public class GoodsService {
     // 특정 상품 조회
     public List<GetGoodsRes> getGoodsByTitle(String title) throws BaseException {
         try {
-            List<Goods> goodsList = goodsRepository.findGoodsByTitle(title);
+            //List<Goods> goodsList = goodsRepository.findGoodsByTitle(title);
+            List<Goods> goodsList = goodsRepository.findByTitleContaining(title);
             List<GetGoodsRes> GetGoodsRes = goodsList.stream()
                     .map(goods -> new GetGoodsRes(goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl()))
                     .collect(Collectors.toList());

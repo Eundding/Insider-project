@@ -50,7 +50,7 @@ public class UserController {
     }
 
 
-    //로그인
+    // 로그인
     @PostMapping("/logIn")
     public BaseResponse<PostLoginRes> logIn(@RequestBody PostLoginReq postLoginReq){
         try{

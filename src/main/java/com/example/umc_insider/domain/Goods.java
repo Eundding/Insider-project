@@ -16,6 +16,14 @@ public class Goods {
     @Column(name="id")
     private Long id; // PK
 
+    @ManyToOne
+    @JoinColumn(name = "users_id")
+    private Users users_id; // PK, FK
+
+    @ManyToOne
+    @JoinColumn(name = "markets_id")
+    private Markets markets_id; // PK, FK
+
     @Column(nullable = false)
     private String title;
 
@@ -32,12 +40,6 @@ public class Goods {
     private String shelf_life;
 
     @Column(nullable = true)
-    private Long users_id; // PK, FK
-
-    @Column(nullable = true)
-    private Long markets_id; // PK, FK
-
-    @Column(nullable = true)
     private Integer sale;
 
     @Column(nullable = true)
@@ -49,21 +51,19 @@ public class Goods {
     @Column(nullable = false)
     private Timestamp updated_at;
 
-
-
-    public Goods createGoods(String title, String price,  Integer rest, String shelf_life, Long usersId, Long marketsId, Integer sale, String imageUrl) {
+    public Goods createGoods(String title, String price, Integer rest, String shelf_life){
         this.title = title;
         this.price = price;
         this.rest = rest;
         this.shelf_life = shelf_life;
-        this.users_id = usersId;
-        this.markets_id = marketsId;
-        this.sale = sale;
-        this.imageUrl = imageUrl;
         this.created_at = new Timestamp(System.currentTimeMillis());
         this.updated_at = new Timestamp(System.currentTimeMillis());
 
         return this;
     }
+
+    public void deleteGoods(int rest) { this.rest = 0;}
+
+    public void modifyPrice(String price) { this.price = price; }
 
 }

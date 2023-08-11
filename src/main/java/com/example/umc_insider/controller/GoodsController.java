@@ -10,6 +10,7 @@ import com.example.umc_insider.repository.UserRepository;
 import com.example.umc_insider.repository.GoodsRepository;
 import com.example.umc_insider.service.GoodsService;
 //import com.example.umc_insider.service.S3Service;
+import com.example.umc_insider.service.S3Service;
 import com.example.umc_insider.service.UsersService;
 import com.example.umc_insider.utils.JwtService;
 
@@ -23,20 +24,20 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-@RequiredArgsConstructor
+
 @RestController
 @RequestMapping("/goods")
 public class GoodsController {
     private final GoodsService goodsService;
 //    private final GoodsRepository goodsRepository;
 //    private final JwtService jwtService;
-//    private final S3Service s3Service;
+    private final S3Service s3Service;
 
-    //    @Autowired
-//    public GoodsController(GoodsService goodsService, S3Service s3Service){
-//        this.goodsService = goodsService;
-//        this.s3Service = s3Service;
-//    }
+    @Autowired
+    public GoodsController(GoodsService goodsService, S3Service s3Service){
+        this.goodsService = goodsService;
+        this.s3Service = s3Service;
+    }
 
 
 //    @PostMapping("/goods")
@@ -90,5 +91,12 @@ public class GoodsController {
         goodsService.modifyPrice(postModifyPriceReq);
         String result = "상품 가격이 변경되었습니다.";
         return new BaseResponse<>(result);
+    }
+
+    // 상품 이미지 등록
+    @PostMapping({"/upload/{id}"})
+    public void uploadImg(@PathVariable("id") Long id, @RequestPart("goods") Goods goods, @RequestPart("image") MultipartFile image) {
+        goods.setId(id);
+        this.s3Service.uploadFileToS3(image);
     }
 }

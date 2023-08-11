@@ -66,4 +66,8 @@ public class Goods {
 
     public void modifyPrice(String price) { this.price = price; }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
 }

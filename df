@@ -1,0 +1,165 @@
+[33mcommit 0557ebac6f6d887c8e1c747d51d8a26b1a6677df[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Eundding <dkan9634@naver.com>
+Date:   Fri Aug 11 13:50:03 2023 +0900
+
+    S3 -ing
+
+[33mcommit c6b5f6133213a421b0e1a79a95b9359167e1e7ce[m
+Author: Eundding <dkan9634@naver.com>
+Date:   Tue Aug 8 00:45:25 2023 +0900
+
+    Fix: build설정
+
+[33mcommit 5b32ac19c31135f8a4293993a1e2286a7e9e475c[m
+Author: Eundding <dkan9634@naver.com>
+Date:   Tue Aug 8 00:06:44 2023 +0900
+
+    Fix: 배포 오류 수정
+
+[33mcommit 4c6264227eafc3094c18241b8dcf84f9b9eee07b[m
+Merge: 67e630f 8684550
+Author: Eundding <dkan9634@naver.com>
+Date:   Mon Aug 7 16:44:34 2023 +0900
+
+    Merge branch 'main' of https://github.com/UMC-4-th-INSIDER/insider-backend
+
+[33mcommit 67e630f73a8aab069bc14922515de3d3293c8e05[m
+Author: Eundding <dkan9634@naver.com>
+Date:   Mon Aug 7 16:38:23 2023 +0900
+
+    Fix: 배포 오류 수정
+
+[33mcommit cb29f7e2c79d808666a6220b0a134f9dd099bb12[m
+Author: Eundding <dkan9634@naver.com>
+Date:   Mon Aug 7 16:38:09 2023 +0900
+
+    Fix: 배포 오류 수정
+
+[33mcommit 8684550a5f48b5bdc807dbcb404c7af5e1982806[m
+Author: EunJeong Lee <104212013+Eundding@users.noreply.github.com>
+Date:   Mon Aug 7 16:22:59 2023 +0900
+
+    Fix: 배포오류 수정
+
+[33mcommit 867774eb6f9588351cf69e1d13b525dbe509b2ee[m
+Author: EunJeong Lee <104212013+Eundding@users.noreply.github.com>
+Date:   Mon Aug 7 16:07:51 2023 +0900
+
+    Fix: 배포 오류 수정
+
+[33mcommit 87aa4062e58cc373710dad915fdfc40a1b884673[m
+Author: EunJeong Lee <104212013+Eundding@users.noreply.github.com>
+Date:   Mon Aug 7 15:39:03 2023 +0900
+
+    Delete src/test/java/com/example/umc_insider directory
+
+[33mcommit d86ffb6576bac76777563b2acc14a8ae56b7fc0c[m
+Author: Eundding <dkan9634@naver.com>
+Date:   Fri Aug 4 16:54:13 2023 +0900
+
+    Feat: Add submodule
+
+[33mcommit 6bb1f5ee46246bb985a71f4641503bfbd14fbb42[m
+Author: Eundding <dkan9634@naver.com>
+Date:   Fri Aug 4 16:48:11 2023 +0900
+
+    Feat: Goods 틀
+
+[33mcommit c0bbbad979f038f9e86634670b796fb2f5352325[m
+Merge: 3e75672 1a30b42
+Author: Eundding <dkan9634@naver.com>
+Date:   Thu Aug 3 02:40:28 2023 +0900
+
+    Merge branch 'main' of https://github.com/UMC-4-th-INSIDER/insider-backend
+
+[33mcommit 3e75672a896b83c01200929be10639a296d56583[m
+Author: Eundding <dkan9634@naver.com>
+Date:   Thu Aug 3 02:37:45 2023 +0900
+
+    Fix: 오류수정
+
+[33mcommit 1a30b42cab34a73d58ae212a4d3e3c3049b0ef62[m
+Author: EunJeong Lee <104212013+Eundding@users.noreply.github.com>
+Date:   Wed Aug 2 16:28:06 2023 +0900
+
+    Delete umc_insider_backend.zip
+
+[33mcommit 3c5909de74a6180a68f37a760690173f2ceb005d[m
+Merge: f6a8923 e45899d
+Author: Eundding <dkan9634@naver.com>
+Date:   Wed Aug 2 15:10:50 2023 +0900
+
+    Feat: 회원가입, 로그인
+
+[33mcommit e45899db3e5ac883de90d0834172ff4630fd0c76[m[33m ([m[1;31morigin/eundding[m[33m, [m[1;32mdaeng[m[33m)[m
+Author: Eundding <dkan9634@naver.com>
+Date:   Wed Aug 2 14:22:53 2023 +0900
+
+    Feat: Posts -ing
+
+[33mcommit eb038e1068ea8561eceb6c5c4b95c4b1cc64cdfa[m
+Author: Eundding <dkan9634@naver.com>
+Date:   Mon Jul 31 17:45:04 2023 +0900
+
+    Fix: 로그인  오류 수정
+
+[33mcommit edef0ba5a3b9f90c0aa44e5f3924acfe6d5aa036[m
+Author: Eundding <dkan9634@naver.com>
+Date:   Sun Jul 30 02:02:27 2023 +0900
+
+    Feat: jwt 로그인
+
+[33mcommit 795c3d0d5696ecab9301d1e1187f5ee61a47c212[m
+Merge: a7d0a64 3b17d59
+Author: Eundding <dkan9634@naver.com>
+Date:   Sat Jul 29 22:51:50 2023 +0900
+
+    Merge branch 'eundding' of https://github.com/UMC-4-th-INSIDER/insider-backend into eundding
+
+[33mcommit a7d0a64ab4b3fd799a90b589d426248ab1b34a50[m
+Author: Eundding <dkan9634@naver.com>
+Date:   Sat Jul 29 22:49:46 2023 +0900
+
+    gitignore 추가
+
+[33mcommit 3b17d59554bbc2cf9dd61ccf7cef90c6ef527962[m
+Author: EunJeong Lee <104212013+Eundding@users.noreply.github.com>
+Date:   Sat Jul 29 22:39:55 2023 +0900
+
+    Feat: 회원가입
+
+[33mcommit e6daccdc7fe1384e2632f00648501533c9216c85[m
+Author: EunJeong Lee <104212013+Eundding@users.noreply.github.com>
+Date:   Sat Jul 29 22:39:25 2023 +0900
+
+    Feat: 회원가입
+
+[33mcommit 017a67d1f8839daaec7a6b95dd88aa970f311327[m[33m ([m[1;32mmaster[m[33m)[m
+Author: Eundding <dkan9634@naver.com>
+Date:   Sat Jul 29 22:38:13 2023 +0900
+
+    Feat: 회원가입
+
+[33mcommit 99336b24ffd4d52acc3eaf2e7fdc2a9333902da3[m
+Author: Eundding <dkan9634@naver.com>
+Date:   Sat Jul 29 14:36:51 2023 +0900
+
+    회원가입에러
+
+[33mcommit 9233231a653919f77c8ab14ca6a6101cbd39afaf[m
+Author: Eundding <dkan9634@naver.com>
+Date:   Sat Jul 15 16:23:26 2023 +0900
+
+    basic
+
+[33mcommit 166ffc1a73f6853ff2349b6d9f6f0cc9cc48d0ee[m
+Author: Eundding <dkan9634@naver.com>
+Date:   Sat Jul 15 09:45:04 2023 +0900
+
+    basic code
+
+[33mcommit f6a8923397d1a4af4d2b828dab0d1071612e69c3[m
+Author: stevehong12 <138182579+stevehong12@users.noreply.github.com>
+Date:   Mon Jul 3 13:38:02 2023 +0900
+
+    Initial commit

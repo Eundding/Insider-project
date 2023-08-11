@@ -80,7 +80,7 @@ public class UsersService {
      * 유저 로그인
      */
     public PostLoginRes logIn(PostLoginReq postLoginReq) throws BaseException {
-        Users users = userRepository.findUserByEmail(postLoginReq.getEmail());
+        Users users = userRepository.findUserByUserId(postLoginReq.getUserId());
         String encryptPw;
         try{
             encryptPw = new SHA256().encrypt(postLoginReq.getPw());

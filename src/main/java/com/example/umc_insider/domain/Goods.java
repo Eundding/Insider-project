@@ -58,6 +58,7 @@ public class Goods {
         this.shelf_life = shelf_life;
         this.created_at = new Timestamp(System.currentTimeMillis());
         this.updated_at = new Timestamp(System.currentTimeMillis());
+//        this.users_id = user.getId();
 
         return this;
     }

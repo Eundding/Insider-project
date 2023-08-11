@@ -55,17 +55,13 @@ public class UserController {
     public BaseResponse<PostLoginRes> logIn(@RequestBody PostLoginReq postLoginReq){
         try{
             // null값 체크
-            if(postLoginReq.getEmail() == null){
-                return new BaseResponse<>(POST_USERS_EMPTY_EMAIL);
+            if(postLoginReq.getUserId() == null){
+                return new BaseResponse<>(USERS_EMPTY_USER_ID);
             }
             if(postLoginReq.getPw() == null){
                 return new BaseResponse<>(POST_USERS_EMPTY_PW);
             }
 
-            // 이메일 형식인지 체크
-            if(!isRegexEmail(postLoginReq.getEmail())){
-                return new BaseResponse<>(POST_USERS_INVALID_EMAIL);
-            }
             PostLoginRes postLoginRes = usersService.logIn(postLoginReq);
             return new BaseResponse<>(postLoginRes);
 

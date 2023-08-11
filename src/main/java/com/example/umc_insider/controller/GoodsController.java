@@ -2,6 +2,7 @@ package com.example.umc_insider.controller;
 
 import com.example.umc_insider.config.BaseException;
 import com.example.umc_insider.config.BaseResponse;
+import com.example.umc_insider.config.BaseResponseStatus;
 import com.example.umc_insider.domain.Users;
 import com.example.umc_insider.domain.Goods;
 import com.example.umc_insider.dto.request.*;
@@ -14,6 +15,7 @@ import com.example.umc_insider.service.S3Service;
 import com.example.umc_insider.service.UsersService;
 import com.example.umc_insider.utils.JwtService;
 
+import io.jsonwebtoken.Jwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.web.bind.annotation.*;
@@ -29,14 +31,14 @@ import java.util.List;
 @RequestMapping("/goods")
 public class GoodsController {
     private final GoodsService goodsService;
-//    private final GoodsRepository goodsRepository;
-//    private final JwtService jwtService;
+    private final JwtService jwtService;
     private final S3Service s3Service;
 
     @Autowired
-    public GoodsController(GoodsService goodsService, S3Service s3Service){
+    public GoodsController(GoodsService goodsService, S3Service s3Service, JwtService jwtService){
         this.goodsService = goodsService;
         this.s3Service = s3Service;
+        this.jwtService = jwtService;
     }
 
 
@@ -54,6 +56,11 @@ public class GoodsController {
     @PostMapping("/create")
     public BaseResponse<PostGoodsRes> createGoods(@RequestBody PostGoodsReq postgoodsReq) throws BaseException {
         try {
+            Long userByJwt = jwtService.getId();
+            if(postgoodsReq.getUserIdx() != userByJwt){
+                return new BaseResponse<>(BaseResponseStatus.INVALID_USER_JWT);
+            }
+
             PostGoodsRes response = goodsService.createGoods(postgoodsReq);
             return new BaseResponse<>(response);
         } catch (BaseException e) {
@@ -94,9 +101,15 @@ public class GoodsController {
     }
 
     // 상품 이미지 등록
-    @PostMapping({"/upload/{id}"})
-    public void uploadImg(@PathVariable("id") Long id, @RequestPart("goods") Goods goods, @RequestPart("image") MultipartFile image) {
-        goods.setId(id);
-        this.s3Service.uploadFileToS3(image);
+//    @PostMapping({"/upload/{id}"})
+//    public void uploadImg(@PathVariable("id") Long id, @RequestPart("goods") Goods goods, @RequestPart("image") MultipartFile image) {
+//        goods.setId(id);
+//        this.s3Service.uploadFileToS3(image);
+//    }
+
+    @PostMapping("/img")
+    public String uploadGoodsImg(@RequestParam("image") MultipartFile image){
+        return s3Service.uploadFileToS3(image);
+        //return "success";
     }
 }

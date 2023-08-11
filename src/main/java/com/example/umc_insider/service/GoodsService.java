@@ -1,7 +1,6 @@
 package com.example.umc_insider.service;
 
 import com.example.umc_insider.config.BaseException;
-import com.example.umc_insider.config.BaseResponse;
 import com.example.umc_insider.config.BaseResponseStatus;
 import com.example.umc_insider.domain.Goods;
 import com.example.umc_insider.dto.request.PostGoodsReq;

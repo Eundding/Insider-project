@@ -1,10 +1,12 @@
 package com.example.umc_insider.domain;
 
+import com.example.umc_insider.dto.request.PostGoodsReq;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.catalina.User;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 
 @Entity
@@ -60,8 +62,17 @@ public class Goods {
         this.created_at = new Timestamp(System.currentTimeMillis());
         this.updated_at = new Timestamp(System.currentTimeMillis());
 //        this.users_id = user.getId();
-
         return this;
+    }
+    public Goods(PostGoodsReq postgoodsReq, Users user) {
+        super();
+        this.users_id = user;
+        this.title = postgoodsReq.getTitle();
+        this.price = postgoodsReq.getPrice();
+        this.rest = postgoodsReq.getRest();
+        this.shelf_life = postgoodsReq.getShelf_life();
+        this.created_at = new Timestamp(System.currentTimeMillis());
+        this.updated_at =  new Timestamp(System.currentTimeMillis());
     }
 
     public void deleteGoods(int rest) { this.rest = 0;}
@@ -71,7 +82,11 @@ public class Goods {
     public void setId(Long id) {
         this.id = id;
     }
-
+    public void setTitle(String title) {this.title = title;}
+    public void setPrice(String price) { this.price = price;}
+    public void setRest(Integer rest) { this.rest = rest;}
+    public void setShelf_life(String shelf_life){this.shelf_life = shelf_life;}
+    public void setCreated_at(){Timestamp created_at = new Timestamp(System.currentTimeMillis());}
     public void setUser(Users user) {
         this.users_id = user;
     }

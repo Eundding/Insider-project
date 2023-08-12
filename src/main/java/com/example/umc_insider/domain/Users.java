@@ -29,7 +29,6 @@ public class Users {
     @Column(nullable = false)
     private String pw;
 
-
     @Column(nullable = false)
     private Timestamp created_at;
 
@@ -46,6 +45,9 @@ public class Users {
         this.updated_at = new Timestamp(System.currentTimeMillis());
 
         return this;
+    }
+    public void setId(Long id) {
+        this.id = id;
     }
 
 

@@ -44,16 +44,19 @@ public class GoodsController {
     // 상품등록
     @PostMapping("/create")
     public BaseResponse<PostGoodsRes> createGoods(@RequestPart("postgoodsReq") PostGoodsReq postgoodsReq, @RequestPart("image") MultipartFile image) throws BaseException {
-//    public BaseResponse<PostGoodsRes> createGoods(@RequestBody PostGoodsReq postgoodsReq, @RequestParam("image") MultipartFile image) throws BaseException {
         try {
             Long userByJwt = jwtService.getId();
             if(postgoodsReq.getUserIdx() != userByJwt){
                 return new BaseResponse<>(BaseResponseStatus.INVALID_USER_JWT);
             }
-            this.s3Service.uploadFileToS3(image);
-            String url = this.s3Service.getURLFromS3();
 
-            PostGoodsRes response = goodsService.createGoods(postgoodsReq, url);
+            // Goods 객체 생성
+            Goods newGoods = goodsService.createNewGoodsInstance(postgoodsReq, image);
+
+            // Goods 객체를 uploadFileToS3 함수에 전달
+            String url = this.s3Service.uploadFileToS3(image, newGoods);
+
+            PostGoodsRes response = new PostGoodsRes(newGoods.getId(), newGoods.getTitle());
 
             return new BaseResponse<>(response);
         } catch (BaseException e) {
@@ -91,18 +94,5 @@ public class GoodsController {
         goodsService.modifyPrice(postModifyPriceReq);
         String result = "상품 가격이 변경되었습니다.";
         return new BaseResponse<>(result);
-    }
-
-    // 상품 이미지 등록
-//    @PostMapping({"/upload/{id}"})
-//    public void uploadImg(@PathVariable("id") Long id, @RequestPart("goods") Goods goods, @RequestPart("image") MultipartFile image) {
-//        goods.setId(id);
-//        this.s3Service.uploadFileToS3(image);
-//    }
-
-    @PostMapping("/img")
-    public String uploadGoodsImg(@RequestParam("image") MultipartFile image){
-        return s3Service.uploadFileToS3(image);
-        //return "success";
     }
 }

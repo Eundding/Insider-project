@@ -3,6 +3,8 @@ package com.example.umc_insider.service;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
+import com.example.umc_insider.domain.Goods;
+import com.example.umc_insider.repository.GoodsRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,14 +24,23 @@ public class S3Service {
     private final String bucketName = "umcinsider";
     private final AmazonS3 s3Client;
     private String url;
-    public S3Service(AmazonS3 s3Client) {
+    private final GoodsRepository goodsRepository;
+    public S3Service(AmazonS3 s3Client, GoodsRepository goodsRepository) {
         this.s3Client = s3Client;
+        this.goodsRepository = goodsRepository;
     }
 
-    public String uploadFileToS3(MultipartFile file) {
-        String keyName = "goods/" + file.getOriginalFilename();
+    public String uploadFileToS3(MultipartFile file, Goods goods) {
+        String keyName = "goods/" + goods.getId() + "_" + file.getOriginalFilename();
+
         try {
             byte[] bytes = file.getBytes();
+
+            // 메타데이터 객체를 생성하고 콘텐츠 타입을 설정
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentLength(bytes.length);
+            metadata.setContentType(file.getContentType());
+
             s3Client.putObject(new PutObjectRequest(bucketName, keyName, new ByteArrayInputStream(bytes), new ObjectMetadata()));
             url = s3Client.getUrl(bucketName, keyName).toString();
             return url;
@@ -38,15 +49,4 @@ public class S3Service {
         }
     }
 
-    public String getURLFromS3() {
-       // String keyName = "goods/" + imageName;
-        return url;
-//        return s3Client.getUrl(bucketName, keyName).toString();
-    }
-
-//    public String getURLFromS3(String imageName) {
-//        String keyName = "goods/" + imageName;
-//        return url;
-////        return s3Client.getUrl(bucketName, keyName).toString();
-//    }
 }

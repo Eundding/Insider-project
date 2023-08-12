@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,10 +29,12 @@ import java.util.stream.Collectors;
 public class GoodsService {
     private GoodsRepository goodsRepository;
     private UserRepository userRepository;
+    private final S3Service s3Service;
     @Autowired
-    public GoodsService(GoodsRepository goodsRepository, UserRepository userRepository){
+    public GoodsService(GoodsRepository goodsRepository, UserRepository userRepository, S3Service s3Service){
         this.goodsRepository = goodsRepository;
         this.userRepository = userRepository;
+        this.s3Service = s3Service;
     }
 
 
@@ -46,7 +49,7 @@ public class GoodsService {
             goods.createGoods(postGoodsReq.getTitle(), postGoodsReq.getPrice(), postGoodsReq.getRest(), postGoodsReq.getShelf_life(), postGoodsReq.getUserIdx());
             goods.setImageUrl(imageUrl);
             goodsRepository.save(goods);
-            return new PostGoodsRes(goods.getTitle());
+            return new PostGoodsRes(goods.getId(),goods.getTitle());
         } catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
             throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
         }
@@ -92,11 +95,29 @@ public class GoodsService {
         this.goodsRepository.delete(goods);
     }
 
-
     // 상품 가격 변경
     @Transactional
     public void modifyPrice(PostModifyPriceReq postModifyPriceReq) {
         Goods goods = goodsRepository.getReferenceById(postModifyPriceReq.getId());
         goods.modifyPrice(postModifyPriceReq.getPrice());
     }
+
+    public Goods createNewGoodsInstance(PostGoodsReq postgoodsReq, MultipartFile file) {
+        Users user = userRepository.findUsersById(postgoodsReq.getUserIdx());
+        Goods newGoods = new Goods(postgoodsReq, user);
+
+        // 먼저 Goods 객체 저장
+        goodsRepository.save(newGoods);
+
+        // S3에 이미지 업로드 및 URL 받기
+        String imageUrl = s3Service.uploadFileToS3(file, newGoods);
+
+        // 이미지 URL 설정 후, 객체 업데이트
+        newGoods.setImageUrl(imageUrl);
+        goodsRepository.save(newGoods);
+
+        return newGoods;
+    }
+
+
 }

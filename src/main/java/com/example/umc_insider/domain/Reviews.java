@@ -20,10 +20,6 @@ public class Reviews {
     @JoinColumn(name = "goods_id")
     private Goods goods_id; // PK, FK
 
-    @ManyToOne
-    @JoinColumn(name = "buyer_id")
-    private Users buyer_id; // PK, FK
-
     @Column(nullable = false)
     private String content;
 
@@ -33,7 +29,8 @@ public class Reviews {
     @Column(nullable = false)
     private Timestamp created_at;
 
-    public Reviews createReviews(String content, Integer point){
+    public Reviews createReviews(Goods goods_id, String content, Integer point){
+        this.goods_id = goods_id;
         this.content = content;
         this.point = point;
         this.created_at = new Timestamp(System.currentTimeMillis());

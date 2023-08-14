@@ -46,7 +46,7 @@ public class GoodsService {
             Users user = userRepository.findUsersById(postGoodsReq.getUserIdx());
             goods.setUser(user);
 
-            goods.createGoods(postGoodsReq.getTitle(), postGoodsReq.getPrice(), postGoodsReq.getRest(), postGoodsReq.getShelf_life(), postGoodsReq.getUserIdx());
+            goods.createGoods(postGoodsReq.getTitle(), postGoodsReq.getPrice(), postGoodsReq.getRest(), postGoodsReq.getShelf_life(), postGoodsReq.getUserIdx(), postGoodsReq.getName());
             goods.setImageUrl(imageUrl);
             goodsRepository.save(goods);
             return new PostGoodsRes(goods.getId(),goods.getTitle());

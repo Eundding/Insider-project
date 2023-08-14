@@ -13,6 +13,7 @@ public class PostGoodsReq {
     private Integer rest;
     private String shelf_life;
     private Long userIdx;
+    private String name;
     //private String image_url;
 //    Users users_id;
 //    Markets markets_id;

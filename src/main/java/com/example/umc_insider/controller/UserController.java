@@ -29,17 +29,7 @@ public class UserController {
     @PostMapping("/create")
     public BaseResponse<PostUserRes> createUser(@RequestBody PostUserReq postUserReq) throws BaseException{
         PostUserRes response = usersService.createUser(postUserReq);
-
         return new BaseResponse<>(response);
-//        if (!ValidationRegex.isRegexEmail(postUserReq.getEmail())) {
-//            return new BaseResponse(BaseResponseStatus.POST_USERS_INVALID_EMAIL);
-//        } else {
-//            try {
-//                return new BaseResponse<>(userService.createUser(postUserReq));
-//            } catch (BaseException exception) {
-//                return new BaseResponse<>((exception.getStatus()));
-//            }
-//        }
     }
 
 

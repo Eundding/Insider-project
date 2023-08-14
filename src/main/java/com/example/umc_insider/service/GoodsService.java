@@ -8,6 +8,7 @@ import com.example.umc_insider.dto.request.PostGoodsReq;
 import com.example.umc_insider.dto.request.PostModifyPriceReq;
 import com.example.umc_insider.dto.response.GetGoodsRes;
 import com.example.umc_insider.dto.response.PostGoodsRes;
+
 import com.example.umc_insider.repository.GoodsRepository;
 
 import com.example.umc_insider.repository.UserRepository;
@@ -29,12 +30,15 @@ import java.util.stream.Collectors;
 public class GoodsService {
     private GoodsRepository goodsRepository;
     private UserRepository userRepository;
+//    private CategoryRepository categoryRepository;
     private final S3Service s3Service;
+
     @Autowired
     public GoodsService(GoodsRepository goodsRepository, UserRepository userRepository, S3Service s3Service){
         this.goodsRepository = goodsRepository;
         this.userRepository = userRepository;
         this.s3Service = s3Service;
+        //this.categoryRepository = categoryRepository;
     }
 
 
@@ -44,7 +48,9 @@ public class GoodsService {
             Goods goods = new Goods();
 
             Users user = userRepository.findUsersById(postGoodsReq.getUserIdx());
+//            Category category =
             goods.setUser(user);
+//            goods.setCategory();
 
             goods.createGoods(postGoodsReq.getTitle(), postGoodsReq.getPrice(), postGoodsReq.getRest(), postGoodsReq.getShelf_life(), postGoodsReq.getUserIdx(), postGoodsReq.getName());
             goods.setImageUrl(imageUrl);

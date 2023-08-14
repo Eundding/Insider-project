@@ -8,6 +8,5 @@ import lombok.Getter;
 public class PostMessagesReq {
     private Long chatRoomId;
     private Long senderId;
-    private String Content;
-
+    private String content;
 }

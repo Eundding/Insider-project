@@ -1,6 +1,7 @@
 package com.example.umc_insider.domain;
 
 
+import com.example.umc_insider.dto.request.PostMessagesReq;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,7 @@ public class Messages {
 
     @ManyToOne
     @JoinColumn(name = "chat_room_id")
-    private ChatRooms chatRoomId; //FK
+    private ChatRooms chatRoom; //FK
 
     @ManyToOne
     @JoinColumn(name = "sender_id")
@@ -31,18 +32,30 @@ public class Messages {
     @Column(nullable = false)
     private boolean readOrNot;
 
-    @Column(nullable = false)
+    @Column(name = "created_at")
     private Timestamp created_at;
 
     public Messages createMessages(String content){
+//        this.sender = user;
+//        this.chatRoom = chatRoom;
         this.content = content;
         this.created_at = new Timestamp(System.currentTimeMillis());
         this.readOrNot = false; // 읽으면 true
         return this;
     }
 
+//    public Messages(PostMessagesReq postMessagesReq, Users user, ChatRooms chatRoom){
+//        super();
+//        this.sender = user;
+//        this.readOrNot = false;
+//        this.content = postMessagesReq.getContent();
+//        this.created_at = new Timestamp(System.currentTimeMillis());
+//        this.chatRoom = chatRoom;
+//    }
+
     public void setSender(Users user){this.sender = user;}
-    public void setChatRoomId(ChatRooms chatroom){this.chatRoomId = chatroom;}
+    public void setChatRoom(ChatRooms chatroom){this.chatRoom = chatroom;}
+
 
 
 

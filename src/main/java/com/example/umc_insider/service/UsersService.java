@@ -38,29 +38,6 @@ public class UsersService {
         users.createUser(postUserReq.getUserId(), postUserReq.getNickname(), postUserReq.getEmail(), postUserReq.getPw() );
         userRepository.save(users);
         return new PostUserRes(users.getId(), users.getNickname());
-//        try {
-//            User user = userRepository.findUserByEmail(postUserReq.getUserId());
-//            if (user != null) {
-//                throw new BaseException(BaseResponseStatus.USERS_EXISTS_USER_ID);
-//            }
-//
-//            user = userRepository.findUserByNickname(postUserReq.getNickname());
-//            if (user != null) {
-//                throw new BaseException(BaseResponseStatus.USERS_EXISTS_NICKNAME);
-//            }
-//
-//            user = new User();
-//            user.createUser(postUserReq.getUserId(), postUserReq.getNickname(), postUserReq.getEmail(), postUserReq.getPw());
-//            userRepository.save(user);
-//            return new PostUserRes(user.getId(), user.getNickname());
-//        } catch (BaseException ex) {
-//            throw ex;
-//        } catch (Exception ex) {
-//            throw new BaseException(BaseResponseStatus.FAILED_TO_SIGNUP);
-//        }
-
-
-
     }
 
     public List<GetUserRes> getAllUsers() {

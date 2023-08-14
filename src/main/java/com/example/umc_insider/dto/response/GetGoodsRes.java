@@ -11,6 +11,7 @@ import com.example.umc_insider.domain.Markets;
 @Setter
 @AllArgsConstructor
 public class GetGoodsRes {
+    private long id;
     private Users users_id;
     private Markets markets_id;
     private String title;

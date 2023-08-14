@@ -73,6 +73,11 @@ public class Goods {
 //        this.category = category;
         return this;
     }
+
+    public Goods(long goods_id) {
+        this.id = goods_id;
+    }
+    
     public Goods(PostGoodsReq postgoodsReq, Users user) {
         super();
         this.users_id = user;

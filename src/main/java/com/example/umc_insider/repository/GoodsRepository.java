@@ -23,20 +23,5 @@ public interface GoodsRepository extends JpaRepository<Goods, Long> {
     List<Goods> findGoodsByTitle(@Param("title") String title);
 
     List<Goods> findByTitleContaining(String title);
-//
-//    @Query("select g from Goods g where g.users_id = :users_id and g.rest is null")
-//    List<Goods> findGoodsByUser(@Param("users_id") Users users_id);
-//
-//    @Query("select g from Goods g where g.markets_id = :markets_id and g.rest is null")
-//    List<Goods> findGoodsByMarket(@Param("markets_id") Markets markets_id);
-//
-//    @Query("select count(g) from Goods g where g.id = :id")
-//    Integer findByGoodsIdCount(@Param("id") Users id);
-
-//    @Query("select count(g) from Goods g where g.users_id = :users_id")
-//    Integer findByGoodsUserCount(@Param("users_id") Users users_id);
-//
-//    @Query("select count(g) from Goods g where g.markets_id = :markets_id")
-//    Integer findByGoodsMarketCount(@Param("markets_id") Markets markets_id);
 
 }

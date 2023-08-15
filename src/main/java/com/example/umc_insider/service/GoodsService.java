@@ -70,7 +70,7 @@ public class GoodsService {
         try {
             List<Goods> goodsList = goodsRepository.findGoods();
             List<GetGoodsRes> getGoodsRes = goodsList.stream()
-                    .map(goods -> new GetGoodsRes(goods.getId(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl()))
+                    .map(goods -> new GetGoodsRes(goods.getId(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl(), goods.getName()))
                     .collect(Collectors.toList());
             return getGoodsRes;
         } catch (Exception e) {
@@ -84,7 +84,7 @@ public class GoodsService {
             //List<Goods> goodsList = goodsRepository.findGoodsByTitle(title);
             List<Goods> goodsList = goodsRepository.findByTitleContaining(title);
             List<GetGoodsRes> GetGoodsRes = goodsList.stream()
-                    .map(goods -> new GetGoodsRes(goods.getId(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl()))
+                    .map(goods -> new GetGoodsRes(goods.getId(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl(), goods.getName()))
                     .collect(Collectors.toList());
             return GetGoodsRes;
         } catch (Exception exception) {
@@ -127,7 +127,7 @@ public class GoodsService {
 
     public GetGoodsRes getGoodsById(Long id){
         Goods goods = goodsRepository.findGoodsById(id);
-        return new GetGoodsRes(goods.getId(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl());
+        return new GetGoodsRes(goods.getId(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl(), goods.getName());
     }
 
 

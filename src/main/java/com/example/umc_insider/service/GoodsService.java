@@ -125,5 +125,10 @@ public class GoodsService {
         return newGoods;
     }
 
+    public GetGoodsRes getGoodsById(Long id){
+        Goods goods = goodsRepository.findGoodsById(id);
+        return new GetGoodsRes(goods.getId(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl());
+    }
+
 
 }

@@ -24,4 +24,6 @@ public interface GoodsRepository extends JpaRepository<Goods, Long> {
 
     List<Goods> findByTitleContaining(String title);
 
+    @Query("select g from Goods g where g.id=:id")
+    Goods findGoodsById(@Param("id") Long id);
 }

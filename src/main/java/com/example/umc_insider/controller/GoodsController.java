@@ -95,4 +95,11 @@ public class GoodsController {
         String result = "상품 가격이 변경되었습니다.";
         return new BaseResponse<>(result);
     }
+
+    // id로 Goods 조회
+    @GetMapping("/{id}")
+    public GetGoodsRes getGoodsById(@PathVariable Long id){
+        GetGoodsRes getGoodsRes = goodsService.getGoodsById(id);
+        return getGoodsRes;
+    }
 }

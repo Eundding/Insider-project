@@ -2,9 +2,11 @@ package com.example.umc_insider.controller;
 
 import com.example.umc_insider.dto.request.PostLoginReq;
 import com.example.umc_insider.dto.request.PostUserReq;
+import com.example.umc_insider.dto.response.GetUserMypageRes;
 import com.example.umc_insider.dto.response.GetUserRes;
 import com.example.umc_insider.dto.response.PostLoginRes;
 import com.example.umc_insider.dto.response.PostUserRes;
+import com.example.umc_insider.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,15 +17,16 @@ import com.example.umc_insider.service.UsersService;
 import java.util.List;
 
 import static com.example.umc_insider.config.BaseResponseStatus.*;
-import static com.example.umc_insider.utils.ValidationRegex.isRegexEmail;
 
 //@RequiredArgsConstructor
 @RestController
 public class UserController {
     private final UsersService usersService;
+    private final GoodsService goodsService;
     @Autowired
-    public UserController(UsersService usersService) {
+    public UserController(UsersService usersService, GoodsService goodsService) {
         this.usersService = usersService;
+        this.goodsService = goodsService;
     }
     //회원가입
     @PostMapping("/create")
@@ -70,7 +73,12 @@ public class UserController {
         }
     }
 
-
+    // myPage
+    @GetMapping("/mypage/{id}")
+    public ResponseEntity<List<GetUserMypageRes>> getUserMypageResList(@PathVariable Long id) {
+        List<GetUserMypageRes> mypageResList = goodsService.getUserMypageResList(id);
+        return ResponseEntity.ok(mypageResList);
+    }
 
 
 }

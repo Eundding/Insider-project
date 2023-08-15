@@ -18,6 +18,7 @@ import com.example.umc_insider.utils.JwtService;
 import io.jsonwebtoken.Jwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.HttpStatus;
@@ -95,4 +96,5 @@ public class GoodsController {
         String result = "상품 가격이 변경되었습니다.";
         return new BaseResponse<>(result);
     }
+
 }

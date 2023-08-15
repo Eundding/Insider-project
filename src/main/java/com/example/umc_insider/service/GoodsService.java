@@ -7,6 +7,7 @@ import com.example.umc_insider.domain.Users;
 import com.example.umc_insider.dto.request.PostGoodsReq;
 import com.example.umc_insider.dto.request.PostModifyPriceReq;
 import com.example.umc_insider.dto.response.GetGoodsRes;
+import com.example.umc_insider.dto.response.GetUserMypageRes;
 import com.example.umc_insider.dto.response.PostGoodsRes;
 import com.example.umc_insider.repository.GoodsRepository;
 
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,7 +38,6 @@ public class GoodsService {
         this.userRepository = userRepository;
         this.s3Service = s3Service;
     }
-
 
     // 상품 등록
     public PostGoodsRes createGoods(PostGoodsReq postGoodsReq, String imageUrl) throws BaseException {
@@ -117,6 +118,27 @@ public class GoodsService {
         goodsRepository.save(newGoods);
 
         return newGoods;
+    }
+
+    // myPage 조회
+    public List<GetUserMypageRes> getUserMypageResList(Long id) {
+        List<Goods> goods = goodsRepository.findAllByUsers_id(id);
+        List<GetUserMypageRes> mypageResList = new ArrayList<>();
+
+        for (Goods goodsItem : goods) {
+            GetUserMypageRes mypageRes = new GetUserMypageRes(
+                    goodsItem.getUsers_id().getId(),
+                    goodsItem.getTitle(),
+                    goodsItem.getPrice(),
+                    goodsItem.getWeight(),
+                    goodsItem.getRest(),
+                    goodsItem.getShelf_life(),
+                    goodsItem.getSale(),
+                    goodsItem.getImageUrl()
+            );
+            mypageResList.add(mypageRes);
+        }
+        return mypageResList;
     }
 
 

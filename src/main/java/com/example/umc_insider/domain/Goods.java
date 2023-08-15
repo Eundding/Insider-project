@@ -78,10 +78,10 @@ public class Goods {
         this.id = goods_id;
     }
     
-    public Goods(PostGoodsReq postgoodsReq, Users user) {
+    public Goods(PostGoodsReq postgoodsReq, Users user, Category category) {
         super();
         this.users_id = user;
-//        this.category = category;
+        this.category = category;
         this.title = postgoodsReq.getTitle();
         this.price = postgoodsReq.getPrice();
         this.rest = postgoodsReq.getRest();

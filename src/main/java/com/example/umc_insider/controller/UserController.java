@@ -60,6 +60,19 @@ public class UserController {
         }
     }
 
+    // 주소
+//    @PutMapping("/{userId}/address")
+//    public ResponseEntity<String> updateAddress(@PathVariable("userId") Long userId, @RequestParam("zipCode") Integer zipCode, @RequestParam("detailAddress") String detailAddress) {
+//        userService.updateAddress(userId, zipCode, detailAddress);
+//        return new ResponseEntity<String>("Address updated successfully", HttpStatus.OK);
+//    }
+
+//    @GetMapping("/{userId}/address")
+//    public ResponseEntity<Address> getAddress(@PathVariable("userId") Long userId) {
+//        Address address = userService.getAddressForUser(userId);
+//        return new ResponseEntity<Address>(address, HttpStatus.OK);
+//    }
+
 
 
 

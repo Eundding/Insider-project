@@ -18,6 +18,7 @@ import com.example.umc_insider.utils.JwtService;
 import io.jsonwebtoken.Jwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.HttpStatus;
@@ -101,5 +102,11 @@ public class GoodsController {
     public GetGoodsRes getGoodsById(@PathVariable Long id){
         GetGoodsRes getGoodsRes = goodsService.getGoodsById(id);
         return getGoodsRes;
+    }
+
+    // category_id로 Goods 조회
+    @GetMapping("/category/{category_id}")
+    public ResponseEntity<List<GetGoodsRes>> getGoodsByCategoryId(@PathVariable Long category_id) {
+        return ResponseEntity.ok(goodsService.getGoodsByCategoryId(category_id));
     }
 }

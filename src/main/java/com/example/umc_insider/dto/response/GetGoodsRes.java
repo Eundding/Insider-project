@@ -1,5 +1,6 @@
 package com.example.umc_insider.dto.response;
 
+import com.example.umc_insider.repository.UserRepository;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.AllArgsConstructor;
@@ -11,7 +12,7 @@ import com.example.umc_insider.domain.Markets;
 @Setter
 @AllArgsConstructor
 public class GetGoodsRes {
-    private long id;
+    private Long id;
     private Users users_id;
     private Markets markets_id;
     private String title;

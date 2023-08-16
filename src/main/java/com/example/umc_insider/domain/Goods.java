@@ -62,6 +62,9 @@ public class Goods {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    public Goods(PostGoodsReq postgoodsReq, Users user) {
+    }
+
     public Goods createGoods(String title, String price, Integer rest, String shelf_life, Long userIdx, String name){
         this.title = title;
         this.price = price;

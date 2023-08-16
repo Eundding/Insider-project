@@ -38,13 +38,6 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    // 특정 유저정보 조회
-    @GetMapping("mypage/{id}")
-    public ResponseEntity<List<GetUserRes>> findById(@PathVariable("id") long id) throws BaseException {
-        List<GetUserRes> users = usersService.getReferenceById(id);
-        return ResponseEntity.ok(users);
-    }
-
 
     // 로그인
     @PostMapping("/logIn")

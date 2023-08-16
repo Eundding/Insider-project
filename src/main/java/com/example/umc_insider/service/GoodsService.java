@@ -56,8 +56,6 @@ public class GoodsService {
 
 
 
-
-
     // all 상품 조회
     public List<GetGoodsRes> getGoods() throws BaseException {
         try {
@@ -117,9 +115,5 @@ public class GoodsService {
 
         return newGoods;
     }
-
-//    public List<GetMyPageRes> getGoodsByUser(Users user) {
-//        return goodsRepository.findAllByUsers_id(user);
-//    }
 
 }

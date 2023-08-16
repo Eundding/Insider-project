@@ -56,19 +56,19 @@ public class UsersService {
         return mapToUserResponseList(users);
     }
 
-    public List<GetUserRes> getReferenceById(long id) throws BaseException {
-        List<Users> users = userRepository.findAllById(id);
-        return mapToUserResponseList(users);
-    }
-
-
 
     private List<GetUserRes> mapToUserResponseList(List<Users> users) {
         List<GetUserRes> userResponses = new ArrayList<>();
         for (Users user : users) {
-            userResponses.add(new GetUserRes(user.getId(), user.getUser_id(), user.getNickname(), user.getEmail(), user.getPw(), user.getAddress().getZipCode()));
+            userResponses.add(new GetUserRes(user.getId(), user.getUser_id(), user.getNickname(), user.getEmail(), user.getPw(), user.getAddress()));
         }
         return userResponses;
+    }
+
+    // 특정 유저조회
+    public List<GetUserRes> getReferenceById(long id) throws BaseException {
+        List<Users> users = userRepository.findAllById(id);
+        return mapToUserResponseList(users);
     }
 
 

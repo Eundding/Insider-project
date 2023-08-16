@@ -3,8 +3,11 @@ package com.example.umc_insider.service;
 import com.amazonaws.services.kms.model.NotFoundException;
 import com.example.umc_insider.config.BaseException;
 import com.example.umc_insider.domain.ChatRooms;
+import com.example.umc_insider.domain.Messages;
 import com.example.umc_insider.domain.Users;
 import com.example.umc_insider.dto.request.PostChatRoomsReq;
+import com.example.umc_insider.dto.response.GetChatRoomByUserRes;
+import com.example.umc_insider.dto.response.GetMessagesRes;
 import com.example.umc_insider.dto.response.PostChatRoomsRes;
 import com.example.umc_insider.repository.ChatRoomsRepository;
 import com.example.umc_insider.repository.MessagesRepository;
@@ -16,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,14 +28,15 @@ public class ChatRoomsService {
     private ChatRoomsRepository chatRoomsRepository;
     private MessagesRepository messagesRepository;
     private UserRepository userRepository;
-    private final JwtService jwtService;
+    private MessagesService messagesService;
 
     @Autowired
-    public ChatRoomsService(UserRepository userRepository, JwtService jwtService, ChatRoomsRepository chatRoomsRepository, MessagesRepository messagesRepository) {
+    public ChatRoomsService(UserRepository userRepository, ChatRoomsRepository chatRoomsRepository, MessagesRepository messagesRepository, MessagesService messagesService) {
         this.userRepository = userRepository;
-        this.jwtService = jwtService;
         this.chatRoomsRepository = chatRoomsRepository;
         this.messagesRepository = messagesRepository;
+        this.messagesService = messagesService;
+
     }
 
 
@@ -60,12 +66,27 @@ public class ChatRoomsService {
         users.add(chatRooms.getBuyer());
         return users;
     }
-//
-//    // 채팅방 대화 내용 조회하기
-//    public List<Messages> getMessagesInChatRoom(Long chatRoomId) {
-//        chatRoomsRepository.findById(chatRoomId)
-//                .orElseThrow(() -> new NotFoundException("존재하지 않는 채팅방입니다."));
-//
-//        return messagesRepository.findByChatRoomIdOrderByCreatedAtAsc(chatRoomId);
-//    }
+
+    // 유저의 채팅방 목록 조회
+    public List<GetChatRoomByUserRes> findChatRoomByUserId(Long id) {
+        List<ChatRooms> chatRoomsList = chatRoomsRepository.findBySellerIdOrBuyerId(id);
+        Users user = userRepository.findUsersById(id);
+
+        return chatRoomsList.stream().map(chatRoom -> {
+            Long chatRoomId = chatRoom.getId();
+            Long otherUserId = (chatRoom.getSeller().getId().equals(id)) ? chatRoom.getBuyer().getId() : chatRoom.getSeller().getId();
+
+            Users otherUser = userRepository.findUsersById(otherUserId);
+            String otherNickName = otherUser.getNickname(); // 상대방 닉네임
+
+            Messages lastMessageObj = messagesService.getLastMessage(chatRoomId);
+            String lastMessage = lastMessageObj != null ? lastMessageObj.getContent() : "";
+
+            return new GetChatRoomByUserRes(chatRoomId, otherNickName, lastMessage);
+        }).collect(Collectors.toList());
+
+    }
 }
+
+
+

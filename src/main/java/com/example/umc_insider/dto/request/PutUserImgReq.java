@@ -1,12 +1,12 @@
 package com.example.umc_insider.dto.request;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @AllArgsConstructor
-public class PostMessagesReq {
-    private Long chatRoomId;
-    private Long senderId;
-    private String content;
+public class PutUserImgReq {
+    private long userId;
+    private String img_url;
 }

@@ -2,20 +2,18 @@ package com.example.umc_insider.service;
 
 import com.example.umc_insider.config.BaseException;
 import com.example.umc_insider.domain.Users;
-import com.example.umc_insider.domain.Goods;
 import com.example.umc_insider.dto.request.PostLoginReq;
 import com.example.umc_insider.dto.request.PostUserReq;
-import com.example.umc_insider.dto.response.GetUserMypageRes;
 import com.example.umc_insider.dto.response.GetUserRes;
 import com.example.umc_insider.dto.response.PostLoginRes;
 import com.example.umc_insider.dto.response.PostUserRes;
-import com.example.umc_insider.repository.UserRepository;
-import com.example.umc_insider.repository.GoodsRepository;
 import com.example.umc_insider.utils.JwtService;
 import com.example.umc_insider.utils.SHA256;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.example.umc_insider.repository.UserRepository;
 
 
 import java.util.ArrayList;
@@ -27,13 +25,11 @@ import static com.example.umc_insider.config.BaseResponseStatus.*;
 @Service
 public class UsersService {
     private UserRepository userRepository;
-    private GoodsRepository goodsRepository;
     private final JwtService jwtService;
 
     @Autowired
-    public UsersService(UserRepository userRepository, GoodsRepository goodsRepository, JwtService jwtService) {
+    public UsersService(UserRepository userRepository, JwtService jwtService) {
         this.userRepository = userRepository;
-        this.goodsRepository = goodsRepository;
         this.jwtService = jwtService;
     }
 

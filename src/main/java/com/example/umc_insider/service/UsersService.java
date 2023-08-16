@@ -15,7 +15,6 @@ import com.example.umc_insider.utils.SHA256;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import com.example.umc_insider.repository.UserRepository;
@@ -29,7 +28,7 @@ import static com.example.umc_insider.config.BaseResponseStatus.*;
 @RequiredArgsConstructor
 @Service
 public class UsersService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     private final JwtService jwtService;
     private final UserImageRepository userImageRepository;
 
@@ -75,6 +74,17 @@ public class UsersService {
         return mapToUserResponseList(users);
     }
 
+    // 특정 유저조회
+    public List<GetUserRes> getAllById(long id) throws BaseException {
+        try {
+            List<Users> users = userRepository.findAllById(jwtService.getId());
+            return mapToUserResponseList(users);
+        } catch (BaseException e) {
+            throw new BaseException("Error while getting user references", e);
+        }
+    }
+
+
     private List<GetUserRes> mapToUserResponseList(List<Users> users) {
         List<GetUserRes> userResponses = new ArrayList<>();
         for (Users user : users) {
@@ -103,11 +113,6 @@ public class UsersService {
         } else{
             throw new BaseException(FAILED_TO_LOGIN);
         }
-    }
-
-    public List<GetUserRes> getAllById() throws BaseException {
-        List<Users> users = userRepository.findAllById(jwtService.getId());
-        return mapToUserResponseList(users);
     }
 
 

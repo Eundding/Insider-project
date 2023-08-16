@@ -56,6 +56,13 @@ public class UsersService {
         return mapToUserResponseList(users);
     }
 
+    public List<GetUserRes> getReferenceById(long id) throws BaseException {
+        List<Users> users = userRepository.findAllById(id);
+        return mapToUserResponseList(users);
+    }
+
+
+
     private List<GetUserRes> mapToUserResponseList(List<Users> users) {
         List<GetUserRes> userResponses = new ArrayList<>();
         for (Users user : users) {
@@ -63,6 +70,7 @@ public class UsersService {
         }
         return userResponses;
     }
+
 
     /**
      * 유저 로그인

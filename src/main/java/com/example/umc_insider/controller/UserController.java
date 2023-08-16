@@ -15,7 +15,6 @@ import com.example.umc_insider.service.UsersService;
 import java.util.List;
 
 import static com.example.umc_insider.config.BaseResponseStatus.*;
-import static com.example.umc_insider.utils.ValidationRegex.isRegexEmail;
 
 //@RequiredArgsConstructor
 @RestController
@@ -36,6 +35,13 @@ public class UserController {
     @GetMapping("/users")
     public ResponseEntity<List<GetUserRes>> getAllUsers() {
         List<GetUserRes> users = usersService.getAllUsers();
+        return ResponseEntity.ok(users);
+    }
+
+    // 특정 유저정보 조회
+    @GetMapping("mypage/{id}")
+    public ResponseEntity<List<GetUserRes>> findById(@PathVariable("id") long id) throws BaseException {
+        List<GetUserRes> users = usersService.getReferenceById(id);
         return ResponseEntity.ok(users);
     }
 

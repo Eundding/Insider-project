@@ -76,12 +76,8 @@ public class UsersService {
 
     // 특정 유저조회
     public List<GetUserRes> getAllById(long id) throws BaseException {
-        try {
-            List<Users> users = userRepository.findAllById(jwtService.getId());
-            return mapToUserResponseList(users);
-        } catch (BaseException e) {
-            throw new BaseException("Error while getting user references", e);
-        }
+        List<Users> users = userRepository.findAllById(id);
+        return mapToUserResponseList(users);
     }
 
 

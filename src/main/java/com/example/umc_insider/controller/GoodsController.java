@@ -18,7 +18,6 @@ import com.example.umc_insider.utils.JwtService;
 import io.jsonwebtoken.Jwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.HttpStatus;
@@ -96,12 +95,4 @@ public class GoodsController {
         String result = "상품 가격이 변경되었습니다.";
         return new BaseResponse<>(result);
     }
-
-//    // MyPage 조회
-//    @GetMapping("/{users_id}")
-//    public ResponseEntity<List<Goods>> getGoodsByUserId(@PathVariable Long users_id) {
-//        Users user = new Users(); // 사용자의 상품 목록을 가져옴
-//        List<Goods> goodsList = goodsService.getGoodsByUser(user);
-//        return ResponseEntity.ok(goodsList);
-//    }
 }

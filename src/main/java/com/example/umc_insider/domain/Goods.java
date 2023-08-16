@@ -2,6 +2,7 @@ package com.example.umc_insider.domain;
 
 import com.example.umc_insider.dto.request.PostGoodsReq;
 import jakarta.persistence.*;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.catalina.User;
@@ -57,6 +58,10 @@ public class Goods {
     @Column(nullable = true)
     private String name; // name 추가
 
+    @OneToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     public Goods createGoods(String title, String price, Integer rest, String shelf_life, Long userIdx, String name){
         this.title = title;
         this.price = price;
@@ -65,6 +70,7 @@ public class Goods {
         this.created_at = new Timestamp(System.currentTimeMillis());
         this.updated_at = new Timestamp(System.currentTimeMillis());
         this.name = name;
+//        this.category = category;
         return this;
     }
 
@@ -72,9 +78,10 @@ public class Goods {
         this.id = goods_id;
     }
     
-    public Goods(PostGoodsReq postgoodsReq, Users user) {
+    public Goods(PostGoodsReq postgoodsReq, Users user, Category category) {
         super();
         this.users_id = user;
+        this.category = category;
         this.title = postgoodsReq.getTitle();
         this.price = postgoodsReq.getPrice();
         this.rest = postgoodsReq.getRest();
@@ -99,9 +106,14 @@ public class Goods {
     public void setUser(Users user) {
         this.users_id = user;
     }
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 
     public void setImageUrl(String url){
         this.imageUrl = url;
     }
+
+
 
 }

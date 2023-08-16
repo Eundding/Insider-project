@@ -24,7 +24,4 @@ public interface GoodsRepository extends JpaRepository<Goods, Long> {
 
     List<Goods> findByTitleContaining(String title);
 
-    List<Goods> findAllByUsers_id(Users user);
-
-
 }

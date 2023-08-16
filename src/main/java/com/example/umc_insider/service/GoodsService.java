@@ -7,15 +7,16 @@ import com.example.umc_insider.domain.Users;
 import com.example.umc_insider.dto.request.PostGoodsReq;
 import com.example.umc_insider.dto.request.PostModifyPriceReq;
 import com.example.umc_insider.dto.response.GetGoodsRes;
-import com.example.umc_insider.dto.response.GetMyPageRes;
 import com.example.umc_insider.dto.response.PostGoodsRes;
 import com.example.umc_insider.repository.GoodsRepository;
 
 import com.example.umc_insider.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -118,8 +119,5 @@ public class GoodsService {
         return newGoods;
     }
 
-//    public List<GetMyPageRes> getGoodsByUser(Users user) {
-//        return goodsRepository.findAllByUsers_id(user);
-//    }
 
 }

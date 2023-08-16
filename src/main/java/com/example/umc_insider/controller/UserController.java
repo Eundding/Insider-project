@@ -29,17 +29,7 @@ public class UserController {
     @PostMapping("/create")
     public BaseResponse<PostUserRes> createUser(@RequestBody PostUserReq postUserReq) throws BaseException{
         PostUserRes response = usersService.createUser(postUserReq);
-
         return new BaseResponse<>(response);
-//        if (!ValidationRegex.isRegexEmail(postUserReq.getEmail())) {
-//            return new BaseResponse(BaseResponseStatus.POST_USERS_INVALID_EMAIL);
-//        } else {
-//            try {
-//                return new BaseResponse<>(userService.createUser(postUserReq));
-//            } catch (BaseException exception) {
-//                return new BaseResponse<>((exception.getStatus()));
-//            }
-//        }
     }
 
 
@@ -69,6 +59,19 @@ public class UserController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
+
+    // 주소
+//    @PutMapping("/{userId}/address")
+//    public ResponseEntity<String> updateAddress(@PathVariable("userId") Long userId, @RequestParam("zipCode") Integer zipCode, @RequestParam("detailAddress") String detailAddress) {
+//        userService.updateAddress(userId, zipCode, detailAddress);
+//        return new ResponseEntity<String>("Address updated successfully", HttpStatus.OK);
+//    }
+
+//    @GetMapping("/{userId}/address")
+//    public ResponseEntity<Address> getAddress(@PathVariable("userId") Long userId) {
+//        Address address = userService.getAddressForUser(userId);
+//        return new ResponseEntity<Address>(address, HttpStatus.OK);
+//    }
 
 
 }

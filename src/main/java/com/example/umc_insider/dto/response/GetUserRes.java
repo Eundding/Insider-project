@@ -13,4 +13,5 @@ public class GetUserRes {
     private String nickname;
     private String password;
     private String email;
+    private Integer zipCode;
 }

@@ -24,6 +24,7 @@ public class UserController {
     public UserController(UsersService usersService) {
         this.usersService = usersService;
     }
+
     //회원가입
     @PostMapping("/create")
     public BaseResponse<PostUserRes> createUser(@RequestBody PostUserReq postUserReq) throws BaseException{

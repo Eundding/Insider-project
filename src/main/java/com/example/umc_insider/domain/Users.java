@@ -42,7 +42,7 @@ public class Users {
     private Timestamp updated_at;
 
 
-    public Users createUser(String userId, String nickName, String email, String password, Address address) {
+    public Users createUser(String userId, String nickName, String email, String password) {
         this.user_id = userId;
         this.email = email;
         this.nickname = nickName;

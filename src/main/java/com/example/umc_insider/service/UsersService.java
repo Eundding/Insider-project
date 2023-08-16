@@ -2,15 +2,20 @@ package com.example.umc_insider.service;
 
 import com.example.umc_insider.config.BaseException;
 import com.example.umc_insider.domain.Users;
+import com.example.umc_insider.domain.UsersImages;
 import com.example.umc_insider.dto.request.PostLoginReq;
 import com.example.umc_insider.dto.request.PostUserReq;
+import com.example.umc_insider.dto.request.PutUserImgReq;
 import com.example.umc_insider.dto.response.GetUserRes;
 import com.example.umc_insider.dto.response.PostLoginRes;
 import com.example.umc_insider.dto.response.PostUserRes;
+import com.example.umc_insider.repository.UserImageRepository;
 import com.example.umc_insider.utils.JwtService;
 import com.example.umc_insider.utils.SHA256;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import com.example.umc_insider.repository.UserRepository;
@@ -26,10 +31,12 @@ import static com.example.umc_insider.config.BaseResponseStatus.*;
 public class UsersService {
     private UserRepository userRepository;
     private final JwtService jwtService;
+    private final UserImageRepository userImageRepository;
 
     @Autowired
-    public UsersService(UserRepository userRepository, JwtService jwtService) {
+    public UsersService(UserRepository userRepository, UserImageRepository userImageRepository, JwtService jwtService) {
         this.userRepository = userRepository;
+        this.userImageRepository = userImageRepository;
         this.jwtService = jwtService;
     }
 
@@ -71,7 +78,7 @@ public class UsersService {
     private List<GetUserRes> mapToUserResponseList(List<Users> users) {
         List<GetUserRes> userResponses = new ArrayList<>();
         for (Users user : users) {
-            userResponses.add(new GetUserRes(user.getId(), user.getUser_id(), user.getNickname(), user.getEmail(), user.getPw()));
+            userResponses.add(new GetUserRes(user.getId(), user.getUser_id(), user.getNickname(), user.getEmail(), user.getPw(), user.getAddress()));
         }
         return userResponses;
     }
@@ -98,5 +105,17 @@ public class UsersService {
         }
     }
 
+    public List<GetUserRes> getAllById() throws BaseException {
+        List<Users> users = userRepository.findAllById(jwtService.getId());
+        return mapToUserResponseList(users);
+    }
+
+
+    // 이미지 수정/등록
+    @Transactional
+    public void putUserImg(PutUserImgReq putUserImgReq) {
+        UsersImages usersImage = userImageRepository.getReferenceById(putUserImgReq.getUserId());
+        usersImage.putImg(putUserImgReq.getImg_url());
+    }
 
 }

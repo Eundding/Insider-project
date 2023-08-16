@@ -33,7 +33,7 @@ public class MyPageController {
     // 특정 유저정보 조회
     @GetMapping("/{id}")
     public ResponseEntity<List<GetUserRes>> findById(@PathVariable("id") long id) throws BaseException {
-        List<GetUserRes> users = usersService.getReferenceById(id);
+        List<GetUserRes> users = usersService.getAllById();
         return ResponseEntity.ok(users);
     }
 

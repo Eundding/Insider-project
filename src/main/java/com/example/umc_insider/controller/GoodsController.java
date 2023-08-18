@@ -109,4 +109,5 @@ public class GoodsController {
     public ResponseEntity<List<GetGoodsRes>> getGoodsByCategoryId(@PathVariable Long category_id) {
         return ResponseEntity.ok(goodsService.getGoodsByCategoryId(category_id));
     }
+
 }

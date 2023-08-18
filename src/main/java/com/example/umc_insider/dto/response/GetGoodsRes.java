@@ -1,6 +1,5 @@
 package com.example.umc_insider.dto.response;
 
-import com.example.umc_insider.repository.UserRepository;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.AllArgsConstructor;
@@ -24,13 +23,26 @@ public class GetGoodsRes {
     private String img_url;
     private String name;
 
-    public GetGoodsRes(String title, String price, String weight, int rest, String shelf_life, String img_url, String name){
+//    public GetGoodsRes(String title, String price, String weight, int rest, String shelf_life, String img_url, String name){
+//        this.title = title;
+//        this.price = price;
+//        this.weight = weight;
+//        this.rest = rest;
+//        this.shelf_life = shelf_life;
+//        this.img_url = img_url;
+//        this.name = name;
+//    }
+
+    public GetGoodsRes(Long id, Users usersId, Markets marketsId, String title, String price, String weight, Integer rest, String shelfLife, Integer sale, String imageUrl) {
+        this.id = id;
+        this.users_id = usersId;
+        this.markets_id = marketsId;
         this.title = title;
         this.price = price;
         this.weight = weight;
         this.rest = rest;
-        this.shelf_life = shelf_life;
-        this.img_url = img_url;
-        this.name = name;
+        this.shelf_life = shelfLife;
+        this.sale = sale;
+        this.img_url = imageUrl;
     }
 }

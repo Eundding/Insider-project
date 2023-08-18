@@ -7,6 +7,9 @@ import lombok.Setter;
 public class BaseException extends Exception {
     private BaseResponseStatus status;
 
+    public BaseException(String errorWhileGettingUserReferences, BaseException e) {
+    }
+
     public BaseResponseStatus getStatus() {
         return this.status;
     }

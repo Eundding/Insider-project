@@ -3,12 +3,14 @@ package com.example.umc_insider.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.sql.Timestamp;
 
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "users")
 public class Users {
@@ -40,7 +42,7 @@ public class Users {
     private Timestamp updated_at;
 
 
-    public Users createUser(String userId, String nickName, String email, String password, Address address) {
+    public Users createUser(String userId, String nickName, String email, String password) {
         this.user_id = userId;
         this.email = email;
         this.nickname = nickName;
@@ -61,7 +63,5 @@ public class Users {
     public void setCreated_at(){this.created_at =  new Timestamp(System.currentTimeMillis());}
     public void setUpdated_at(){this.updated_at =  new Timestamp(System.currentTimeMillis());}
     public void setAddress(Address address) {this.address = address; }
-
-
 
 }

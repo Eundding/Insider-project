@@ -38,6 +38,6 @@ public class MessagesController {
         List<GetMessagesRes> messages = messagesService.findMessagesInChatRoom(chatRoomId);
         return ResponseEntity.ok(messages);
     }
-    
+
 
 }

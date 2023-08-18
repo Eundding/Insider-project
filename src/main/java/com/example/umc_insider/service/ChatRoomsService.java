@@ -96,7 +96,10 @@ public class ChatRoomsService {
             String lastMessage = lastMessageObj != null ? lastMessageObj.getContent() : "";
             Timestamp createdAt = (lastMessageObj != null) ? lastMessageObj.getCreated_at() : null;
 
-            return new GetChatRoomByUserRes(chatRoomId, otherNickName, lastMessage, createdAt);
+            Goods goods = chatRoom.getGoods();
+            Long goodsId = (goods != null) ? goods.getId() : null;
+
+            return new GetChatRoomByUserRes(chatRoomId, otherNickName, lastMessage, createdAt, goodsId);
         }).collect(Collectors.toList());
 
     }

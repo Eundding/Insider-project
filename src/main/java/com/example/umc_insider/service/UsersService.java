@@ -1,6 +1,7 @@
 package com.example.umc_insider.service;
 
 import com.example.umc_insider.config.BaseException;
+import com.example.umc_insider.domain.Address;
 import com.example.umc_insider.domain.Users;
 import com.example.umc_insider.domain.UsersImages;
 import com.example.umc_insider.dto.request.PostLoginReq;
@@ -9,6 +10,7 @@ import com.example.umc_insider.dto.request.PutUserImgReq;
 import com.example.umc_insider.dto.response.GetUserRes;
 import com.example.umc_insider.dto.response.PostLoginRes;
 import com.example.umc_insider.dto.response.PostUserRes;
+import com.example.umc_insider.repository.AddressRepository;
 import com.example.umc_insider.repository.UserImageRepository;
 import com.example.umc_insider.utils.JwtService;
 import com.example.umc_insider.utils.SHA256;
@@ -28,55 +30,34 @@ import static com.example.umc_insider.config.BaseResponseStatus.*;
 @RequiredArgsConstructor
 @Service
 public class UsersService {
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
+    private AddressRepository addressRepository;
+    private UserImageRepository userImageRepository;
     private final JwtService jwtService;
-    private final UserImageRepository userImageRepository;
 
     @Autowired
-    public UsersService(UserRepository userRepository, UserImageRepository userImageRepository, JwtService jwtService) {
+    public UsersService(UserRepository userRepository, UserImageRepository userImageRepository, JwtService jwtService, AddressRepository addressRepository) {
         this.userRepository = userRepository;
         this.userImageRepository = userImageRepository;
         this.jwtService = jwtService;
+        this.addressRepository = addressRepository;
     }
 
     public PostUserRes createUser(PostUserReq postUserReq) throws BaseException{
-        Users users = new Users();
-        users.createUser(postUserReq.getUserId(), postUserReq.getNickname(), postUserReq.getEmail(), postUserReq.getPw() );
-        userRepository.save(users);
-        return new PostUserRes(users.getId(), users.getNickname());
-//        try {
-//            User user = userRepository.findUserByEmail(postUserReq.getUserId());
-//            if (user != null) {
-//                throw new BaseException(BaseResponseStatus.USERS_EXISTS_USER_ID);
-//            }
+//        Users users = new Users();
+//        Address newAddress = new Address();
+        Users newUser = postUserReq.createUserWithAddress();
+        Address newAddress = newUser.getAddress();
+
+        Users savedUser = saveUserWithAddress(newUser, newAddress);
+//        users.createUser(postUserReq.getUserId(), postUserReq.getNickname(), postUserReq.getEmail(), postUserReq.getPw(), postUserReq.getZipCode() );
 //
-//            user = userRepository.findUserByNickname(postUserReq.getNickname());
-//            if (user != null) {
-//                throw new BaseException(BaseResponseStatus.USERS_EXISTS_NICKNAME);
-//            }
-//
-//            user = new User();
-//            user.createUser(postUserReq.getUserId(), postUserReq.getNickname(), postUserReq.getEmail(), postUserReq.getPw());
-//            userRepository.save(user);
-//            return new PostUserRes(user.getId(), user.getNickname());
-//        } catch (BaseException ex) {
-//            throw ex;
-//        } catch (Exception ex) {
-//            throw new BaseException(BaseResponseStatus.FAILED_TO_SIGNUP);
-//        }
-
-
-
+//        userRepository.save(users);
+        return new PostUserRes(savedUser.getId(), savedUser.getNickname());
     }
 
     public List<GetUserRes> getAllUsers() {
         List<Users> users = userRepository.findAll();
-        return mapToUserResponseList(users);
-    }
-
-    // 특정 유저조회
-    public List<GetUserRes> getAllById(long id) throws BaseException {
-        List<Users> users = userRepository.findAllById(id);
         return mapToUserResponseList(users);
     }
 
@@ -88,6 +69,13 @@ public class UsersService {
         }
         return userResponses;
     }
+
+    // 특정 유저조회
+    public List<GetUserRes> getReferenceById(long id) throws BaseException {
+        List<Users> users = userRepository.findAllById(id);
+        return mapToUserResponseList(users);
+    }
+
 
     /**
      * 유저 로그인
@@ -111,6 +99,20 @@ public class UsersService {
         }
     }
 
+    // 사용자 주소를 가져오는 메소드
+    public Address getAddressForUser(Long userId) {
+        Users user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        return user.getAddress();
+    }
+
+    @Transactional
+    public Users saveUserWithAddress(Users user, Address address) {
+        address.setUser(user);
+        user.setAddress(address);
+        addressRepository.save(address);
+        return userRepository.save(user);
+    }
+
 
     // 이미지 수정/등록
     @Transactional
@@ -118,5 +120,4 @@ public class UsersService {
         UsersImages usersImage = userImageRepository.getReferenceById(putUserImgReq.getUserId());
         usersImage.putImg(putUserImgReq.getImg_url());
     }
-
 }

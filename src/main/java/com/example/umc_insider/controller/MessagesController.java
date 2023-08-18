@@ -35,28 +35,9 @@ public class MessagesController {
 
     @GetMapping("/{chatRoomId}")
     public ResponseEntity<List<GetMessagesRes>> getMessagesInChatRoom(@PathVariable Long chatRoomId) {
-//        List<GetMessagesRes> messages = chatRoomsService.findMessagesInChatRoom(chatRoomId);
         List<GetMessagesRes> messages = messagesService.findMessagesInChatRoom(chatRoomId);
         return ResponseEntity.ok(messages);
     }
-
-//    @GetMapping("/{id}")
-//    public ResponseEntity<Messages> getMessageById(@PathVariable("id") Long id) {
-//        Messages message = messagesService.getMessageById(id);
-//        return ResponseEntity.ok(message);
-//    }
-//
-//    @GetMapping("/inbox")
-//    public ResponseEntity<List<Messages>> getInboxForUser(@RequestParam("userId") Long userId) {
-//        List<Messages> inbox = messagesService.getInboxForUser(userId);
-//        return ResponseEntity.ok(inbox);
-//    }
-//
-//    @GetMapping("/sent")
-//    public ResponseEntity<List<Messages>> getSentMessagesForUser(@RequestParam("userId") Long userId) {
-//        List<Messages> sentMessages = messagesService.getSentMessagesForUser(userId);
-//        return ResponseEntity.ok(sentMessages);
-//    }
-
+    
 
 }

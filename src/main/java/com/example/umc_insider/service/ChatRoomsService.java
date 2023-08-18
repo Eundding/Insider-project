@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -91,9 +92,11 @@ public class ChatRoomsService {
             String otherNickName = otherUser.getNickname(); // 상대방 닉네임
 
             Messages lastMessageObj = messagesService.getLastMessage(chatRoomId);
-            String lastMessage = lastMessageObj != null ? lastMessageObj.getContent() : "";
 
-            return new GetChatRoomByUserRes(chatRoomId, otherNickName, lastMessage);
+            String lastMessage = lastMessageObj != null ? lastMessageObj.getContent() : "";
+            Timestamp createdAt = (lastMessageObj != null) ? lastMessageObj.getCreated_at() : null;
+
+            return new GetChatRoomByUserRes(chatRoomId, otherNickName, lastMessage, createdAt);
         }).collect(Collectors.toList());
 
     }

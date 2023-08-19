@@ -2,6 +2,7 @@ package com.example.umc_insider.controller;
 
 import com.example.umc_insider.dto.request.PostLoginReq;
 import com.example.umc_insider.dto.request.PostUserReq;
+import com.example.umc_insider.dto.request.PutUserReq;
 import com.example.umc_insider.dto.response.GetUserRes;
 import com.example.umc_insider.dto.response.PostLoginRes;
 import com.example.umc_insider.dto.response.PostUserRes;
@@ -60,6 +61,12 @@ public class UserController {
         }
     }
 
+    @PutMapping("/user/modify")
+    public BaseResponse<PostUserRes> modifyUser(@RequestBody PutUserReq putUserReq) throws BaseException{
+        PostUserRes response = usersService.modifyUser(putUserReq);
+        return new BaseResponse<>(response);
+    }
+
     // 주소
 //    @PutMapping("/{userId}/address")
 //    public ResponseEntity<String> updateAddress(@PathVariable("userId") Long userId, @RequestParam("zipCode") Integer zipCode, @RequestParam("detailAddress") String detailAddress) {
@@ -72,6 +79,7 @@ public class UserController {
 //        Address address = userService.getAddressForUser(userId);
 //        return new ResponseEntity<Address>(address, HttpStatus.OK);
 //    }
+
 
 
 

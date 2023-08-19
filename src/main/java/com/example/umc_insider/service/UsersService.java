@@ -1,12 +1,14 @@
 package com.example.umc_insider.service;
 
 import com.example.umc_insider.config.BaseException;
+import com.example.umc_insider.config.BaseResponseStatus;
 import com.example.umc_insider.domain.Address;
 import com.example.umc_insider.domain.Users;
 import com.example.umc_insider.domain.UsersImages;
 import com.example.umc_insider.dto.request.PostLoginReq;
 import com.example.umc_insider.dto.request.PostUserReq;
 import com.example.umc_insider.dto.request.PutUserImgReq;
+import com.example.umc_insider.dto.request.PutUserReq;
 import com.example.umc_insider.dto.response.GetUserRes;
 import com.example.umc_insider.dto.response.PostLoginRes;
 import com.example.umc_insider.dto.response.PostUserRes;
@@ -24,6 +26,7 @@ import com.example.umc_insider.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.example.umc_insider.config.BaseResponseStatus.*;
 
@@ -43,7 +46,7 @@ public class UsersService {
         this.addressRepository = addressRepository;
     }
 
-    public PostUserRes createUser(PostUserReq postUserReq) throws BaseException{
+    public PostUserRes createUser(PostUserReq postUserReq) throws BaseException {
         Users newUser = postUserReq.createUserWithAddress();
         Address newAddress = newUser.getAddress();
 
@@ -78,7 +81,7 @@ public class UsersService {
     public PostLoginRes logIn(PostLoginReq postLoginReq) throws BaseException {
         Users users = userRepository.findUserByUserId(postLoginReq.getUserId());
         String encryptPw;
-        try{
+        try {
             encryptPw = new SHA256().encrypt(postLoginReq.getPw());
         } catch (Exception ignored) {
             throw new BaseException(PASSWORD_ENCRYPTION_ERROR);
@@ -86,10 +89,10 @@ public class UsersService {
 
 
         String originalEncryptPw = new SHA256().encrypt(users.getPw());
-        if(originalEncryptPw.equals(encryptPw)){
+        if (originalEncryptPw.equals(encryptPw)) {
             String jwt = jwtService.createJwt(users.getId());
             return new PostLoginRes(users.getId(), jwt);
-        } else{
+        } else {
             throw new BaseException(FAILED_TO_LOGIN);
         }
     }
@@ -115,4 +118,53 @@ public class UsersService {
         UsersImages usersImage = userImageRepository.getReferenceById(putUserImgReq.getUserId());
         usersImage.putImg(putUserImgReq.getImg_url());
     }
+
+    // 유저 정보 수정
+    public PostUserRes modifyUser(PutUserReq putUserReq) throws BaseException {
+        // 요청 객체에서 유저 ID 값 가져오기
+        Long id = putUserReq.getId();
+        // 유저 ID를 기반으로 유저 정보 가져오기
+        Optional<Users> optionalUser = userRepository.findById(id);
+        Users userToModify;
+
+        if (optionalUser.isPresent()) {
+            userToModify = optionalUser.get();
+        } else {
+            throw new BaseException(BaseResponseStatus.REQUEST_ERROR);
+        }
+
+        // 요청 본문에서 수정할 필드 값들 가져오기
+        String nickname = putUserReq.getNickname();
+        String password = putUserReq.getPw();
+        String userId = putUserReq.getUserId();
+        String email = putUserReq.getEmail();
+        Integer zipCode = putUserReq.getZipCode();
+        String detailAddress = putUserReq.getDetailAddress();
+
+        // 업데이트할 필드만 적용하기
+        if (nickname != null) {
+            userToModify.setNickname(nickname);
+        }
+        if (password != null) {
+            userToModify.setPw(password);
+        }
+        if (email != null) {
+            userToModify.setEmail(email);
+        }
+        if (userId != null) {
+            userToModify.setUser_id(userId);
+        }
+        Address newAddress = new Address();
+        if (zipCode != null && detailAddress != null) {
+            newAddress.setZipCode(zipCode);
+            newAddress.setDetailAddress(detailAddress);
+            userToModify.setAddress(newAddress);
+        }
+        userRepository.save(userToModify);
+        return new PostUserRes(userToModify.getId(), userToModify.getNickname());
+    }
 }
+
+
+
+

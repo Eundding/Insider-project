@@ -7,7 +7,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class PostUserReq {
+public class PutUserReq {
+    private Long id;
     private String userId;
     private String nickname;
     private String pw;
@@ -15,9 +16,8 @@ public class PostUserReq {
     private Integer zipCode;
     private String detailAddress;
 
-    public Users createUserWithAddress() {
+    public Users modifyUserWithAddress() {
         Users newUser = new Users();
-        // 사용자 관련 필드 설정 (예: newUser.setName(this.getName());)
         newUser.setUser_id(this.userId);
         newUser.setCreated_at();
         newUser.setUpdated_at();
@@ -32,5 +32,4 @@ public class PostUserReq {
 
         return newUser;
     }
-
 }

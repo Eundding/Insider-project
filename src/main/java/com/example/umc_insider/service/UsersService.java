@@ -5,10 +5,7 @@ import com.example.umc_insider.config.BaseResponseStatus;
 import com.example.umc_insider.domain.Address;
 import com.example.umc_insider.domain.Users;
 import com.example.umc_insider.domain.UsersImages;
-import com.example.umc_insider.dto.request.PostLoginReq;
-import com.example.umc_insider.dto.request.PostUserReq;
-import com.example.umc_insider.dto.request.PutUserImgReq;
-import com.example.umc_insider.dto.request.PutUserReq;
+import com.example.umc_insider.dto.request.*;
 import com.example.umc_insider.dto.response.GetUserRes;
 import com.example.umc_insider.dto.response.PostLoginRes;
 import com.example.umc_insider.dto.response.PostUserRes;
@@ -22,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.umc_insider.repository.UserRepository;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import java.util.ArrayList;
@@ -37,13 +35,15 @@ public class UsersService {
     private AddressRepository addressRepository;
     private UserImageRepository userImageRepository;
     private final JwtService jwtService;
+    private final S3Service s3Service;
 
     @Autowired
-    public UsersService(UserRepository userRepository, UserImageRepository userImageRepository, JwtService jwtService, AddressRepository addressRepository) {
+    public UsersService(UserRepository userRepository, UserImageRepository userImageRepository, JwtService jwtService, AddressRepository addressRepository, S3Service s3Service) {
         this.userRepository = userRepository;
         this.userImageRepository = userImageRepository;
         this.jwtService = jwtService;
         this.addressRepository = addressRepository;
+        this.s3Service = s3Service;
     }
 
     public PostUserRes createUser(PostUserReq postUserReq) throws BaseException {
@@ -114,9 +114,24 @@ public class UsersService {
 
     // 이미지 수정/등록
     @Transactional
-    public void putUserImg(PutUserImgReq putUserImgReq) {
+    public void putUserImg(PutUserImgReq putUserImgReq,  MultipartFile file) {
+
         UsersImages usersImage = userImageRepository.getReferenceById(putUserImgReq.getUserId());
         usersImage.putImg(putUserImgReq.getImg_url());
+    }
+
+    // 유저 프로필 이미지 등록
+    public Users registerProfile(PostUserProfile postUserProfile,  MultipartFile file){
+        Users user = userRepository.findUsersById(postUserProfile.getId());
+        // S3에 이미지 업로드 및 URL 받기
+        String imageUrl = s3Service.uploadProfileS3(file, user);
+
+        // 이미지 URL 설정 후, 객체 업데이트
+        user.setImageUrl(imageUrl);
+
+        userRepository.save(user);
+        return user;
+
     }
 
     // 유저 정보 수정

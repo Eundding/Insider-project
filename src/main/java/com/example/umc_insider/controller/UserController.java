@@ -1,6 +1,8 @@
 package com.example.umc_insider.controller;
 
+import com.example.umc_insider.domain.Users;
 import com.example.umc_insider.dto.request.PostLoginReq;
+import com.example.umc_insider.dto.request.PostUserProfile;
 import com.example.umc_insider.dto.request.PostUserReq;
 import com.example.umc_insider.dto.request.PutUserReq;
 import com.example.umc_insider.dto.response.GetUserRes;
@@ -61,24 +63,22 @@ public class UserController {
         }
     }
 
+    // 회원정보 수정
     @PutMapping("/user/modify")
     public BaseResponse<PostUserRes> modifyUser(@RequestBody PutUserReq putUserReq) throws BaseException{
         PostUserRes response = usersService.modifyUser(putUserReq);
         return new BaseResponse<>(response);
     }
 
-    // 주소
-//    @PutMapping("/{userId}/address")
-//    public ResponseEntity<String> updateAddress(@PathVariable("userId") Long userId, @RequestParam("zipCode") Integer zipCode, @RequestParam("detailAddress") String detailAddress) {
-//        userService.updateAddress(userId, zipCode, detailAddress);
-//        return new ResponseEntity<String>("Address updated successfully", HttpStatus.OK);
+    // 유저 프로필 등록
+//    @PostMapping("/userProfile/register")
+//    public BaseResponse<PostUserRes> registerProfile(@RequestBody PostUserProfile postUserProfile, String imageUrl) throws BaseException{
+//        Users user = user
+//        PostUserRes response = usersService.registerProfile(postUserProfile, imageUrl);
+//
+//        return new PostUserRes(user)
 //    }
 
-//    @GetMapping("/{userId}/address")
-//    public ResponseEntity<Address> getAddress(@PathVariable("userId") Long userId) {
-//        Address address = userService.getAddressForUser(userId);
-//        return new ResponseEntity<Address>(address, HttpStatus.OK);
-//    }
 
 
 

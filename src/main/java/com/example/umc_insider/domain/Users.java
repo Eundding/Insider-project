@@ -1,5 +1,6 @@
 package com.example.umc_insider.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,7 +33,8 @@ public class Users {
     private String pw;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "zip_code", referencedColumnName = "zip_code")
+    @JoinColumn(name = "address", referencedColumnName = "id")
+    @JsonIgnore // 무한 재귀를 방지하기 위한 설정
     private Address address;
 
     @Column(nullable = false)
@@ -40,6 +42,9 @@ public class Users {
 
     @Column(nullable = false)
     private Timestamp updated_at;
+
+    @Column(nullable = true)
+    private String image_url;
 
 
     public Users createUser(String userId, String nickName, String email, String password) {
@@ -63,5 +68,7 @@ public class Users {
     public void setCreated_at(){this.created_at =  new Timestamp(System.currentTimeMillis());}
     public void setUpdated_at(){this.updated_at =  new Timestamp(System.currentTimeMillis());}
     public void setAddress(Address address) {this.address = address; }
-
+    public void setImageUrl(String url){
+        this.image_url = url;
+    }
 }

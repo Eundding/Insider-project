@@ -37,16 +37,7 @@ public class ReviewsController {
         }
     }
 
-
-//    @GetMapping("/read")
-//    public BaseResponse<GetReviewsRes> readReview() {
-//        try{
-//            return new BaseResponse<>(reviewsService.getAllReviews());
-//        } catch (BaseException exception) {
-//            return new BaseResponse<>(exception.getStatus());
-//        }
-//    }
-
+    // 포인트 높은 순으로 후기 조회
     @GetMapping("/read")
     public BaseResponse<List<GetReviewsRes>> getReview() {
         try {

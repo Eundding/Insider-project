@@ -36,4 +36,5 @@ public class MyPageController {
         List<GetUserRes> users = usersService.getReferenceById(id);
         return ResponseEntity.ok(users);
     }
+
 }

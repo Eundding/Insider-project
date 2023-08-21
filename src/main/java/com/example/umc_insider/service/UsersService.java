@@ -6,6 +6,7 @@ import com.example.umc_insider.domain.Address;
 import com.example.umc_insider.domain.Users;
 import com.example.umc_insider.domain.UsersImages;
 import com.example.umc_insider.dto.request.*;
+import com.example.umc_insider.dto.response.GetUserByIdRes;
 import com.example.umc_insider.dto.response.GetUserRes;
 import com.example.umc_insider.dto.response.PostLoginRes;
 import com.example.umc_insider.dto.response.PostUserRes;
@@ -121,8 +122,8 @@ public class UsersService {
     }
 
     // 유저 프로필 이미지 등록
-    public Users registerProfile(PostUserProfileReq postUserProfileReq, MultipartFile file){
-        Users user = userRepository.findUsersById(postUserProfileReq.getId());
+    public Users registerProfile(PutUserProfileReq putUserProfileReq, MultipartFile file){
+        Users user = userRepository.findUsersById(putUserProfileReq.getId());
         userRepository.save(user);
         // S3에 이미지 업로드 및 URL 받기
         String imageUrl = s3Service.uploadProfileS3(file, user);
@@ -178,6 +179,12 @@ public class UsersService {
         }
         userRepository.save(userToModify);
         return new PostUserRes(userToModify.getId(), userToModify.getNickname());
+    }
+
+    // id로 유저 조회
+    public GetUserByIdRes getUserById(Long id){
+        Users user = userRepository.findUsersById(id);
+        return new GetUserByIdRes(user.getNickname(), user.getUser_id(), user.getPw(), user.getEmail(), user.getAddress().getZipCode(), user.getAddress().getDetailAddress());
     }
 }
 

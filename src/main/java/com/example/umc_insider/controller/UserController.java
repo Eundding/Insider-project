@@ -2,12 +2,10 @@ package com.example.umc_insider.controller;
 
 import com.example.umc_insider.domain.Users;
 import com.example.umc_insider.dto.request.PostLoginReq;
-import com.example.umc_insider.dto.request.PostUserProfileReq;
+import com.example.umc_insider.dto.request.PutUserProfileReq;
 import com.example.umc_insider.dto.request.PostUserReq;
 import com.example.umc_insider.dto.request.PutUserReq;
-import com.example.umc_insider.dto.response.GetUserRes;
-import com.example.umc_insider.dto.response.PostLoginRes;
-import com.example.umc_insider.dto.response.PostUserRes;
+import com.example.umc_insider.dto.response.*;
 import com.example.umc_insider.service.S3Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -74,15 +72,23 @@ public class UserController {
     }
 
      // 유저 프로필 등록
-    @PostMapping("/userProfile/register")
-    public BaseResponse<PostUserRes> registerProfile(@RequestPart("PostUserProfileReq")PostUserProfileReq postUserProfileReq, @RequestPart("image") MultipartFile image) throws BaseException{
-        Users user = usersService.registerProfile(postUserProfileReq, image);
+    @PutMapping("/userProfile/register")
+    public BaseResponse<PostUserRes> registerProfile(@RequestPart("PutUserProfileReq") PutUserProfileReq putUserProfileReq, @RequestPart("image") MultipartFile image) throws BaseException{
+        Users user = usersService.registerProfile(putUserProfileReq, image);
 
         String url = this.s3Service.uploadProfileS3(image, user);
 
         PostUserRes response = new PostUserRes(user.getId(), user.getNickname());
 
         return new BaseResponse<>(response);
+    }
+
+    // id로 유저 정보 조회
+    @GetMapping("/user/{id}")
+    public GetUserByIdRes getUserById(@PathVariable Long id){
+        GetUserByIdRes getUserByIdRes = usersService.getUserById(id);
+        return getUserByIdRes;
+
     }
 
 

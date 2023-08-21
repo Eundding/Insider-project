@@ -18,8 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 import static com.example.umc_insider.config.BaseResponseStatus.*;
-
-//@RequiredArgsConstructor
 @RestController
 public class UserController {
     private final UsersService usersService;
@@ -33,7 +31,17 @@ public class UserController {
     @PostMapping("/create")
     public BaseResponse<PostUserRes> createUser(@RequestBody PostUserReq postUserReq) throws BaseException{
         PostUserRes response = usersService.createUser(postUserReq);
+
         return new BaseResponse<>(response);
+//        if (!ValidationRegex.isRegexEmail(postUserReq.getEmail())) {
+//            return new BaseResponse(BaseResponseStatus.POST_USERS_INVALID_EMAIL);
+//        } else {
+//            try {
+//                return new BaseResponse<>(userService.createUser(postUserReq));
+//            } catch (BaseException exception) {
+//                return new BaseResponse<>((exception.getStatus()));
+//            }
+//        }
     }
 
 
@@ -63,7 +71,6 @@ public class UserController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
-
     // 회원정보 수정
     @PutMapping("/user/modify")
     public BaseResponse<PostUserRes> modifyUser(@RequestBody PutUserReq putUserReq) throws BaseException{
@@ -90,9 +97,6 @@ public class UserController {
         return getUserByIdRes;
 
     }
-
-
-
 
 
 

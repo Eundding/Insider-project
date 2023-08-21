@@ -68,7 +68,9 @@ public class Users {
     public void setCreated_at(){this.created_at =  new Timestamp(System.currentTimeMillis());}
     public void setUpdated_at(){this.updated_at =  new Timestamp(System.currentTimeMillis());}
     public void setAddress(Address address) {this.address = address; }
+
     public void setImageUrl(String url){
         this.image_url = url;
     }
+
 }

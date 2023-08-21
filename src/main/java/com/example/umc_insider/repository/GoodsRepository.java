@@ -29,4 +29,5 @@ public interface GoodsRepository extends JpaRepository<Goods, Long> {
 
     List<Goods> findByCategory_Id(Long category_id);
 
+
 }

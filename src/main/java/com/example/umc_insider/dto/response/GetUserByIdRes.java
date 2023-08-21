@@ -14,4 +14,5 @@ public class GetUserByIdRes {
     private String email;
     private Integer zipCode;
     private String detailAddress;
+    private String img;
 }

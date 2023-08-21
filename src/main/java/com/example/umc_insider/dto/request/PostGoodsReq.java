@@ -15,4 +15,18 @@ public class PostGoodsReq {
     private Long userIdx;
     private String name;
     private Long categoryId;
+    private String weight;
+    //private String image_url;
+//    Users users_id;
+//    Markets markets_id;
+//    private Integer sale;
+//    private String imageUrl;
+
+//    public Users getUsersId() {
+//        return users_id;
+//    }
+//
+//    public Markets getMarketsId() {
+//        return markets_id;
+//    }
 }

@@ -11,9 +11,7 @@ import com.example.umc_insider.dto.response.GetGoodsRes;
 import com.example.umc_insider.dto.response.PostGoodsRes;
 import com.example.umc_insider.repository.CategoryRepository;
 import com.example.umc_insider.repository.GoodsRepository;
-
 import com.example.umc_insider.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
 import lombok.RequiredArgsConstructor;
@@ -32,11 +30,13 @@ public class GoodsService {
     private GoodsRepository goodsRepository;
     private CategoryRepository categoryRepository;
     private UserRepository userRepository;
-    private final S3Service s3Service;
+    private S3Service s3Service;
+    private ChatRoomsService chatRoomsService;
     @Autowired
-    public GoodsService(GoodsRepository goodsRepository, UserRepository userRepository, S3Service s3Service, CategoryRepository categoryRepository){
+    public GoodsService(GoodsRepository goodsRepository, UserRepository userRepository, ChatRoomsService chatRoomsService, S3Service s3Service, CategoryRepository categoryRepository) {
         this.goodsRepository = goodsRepository;
         this.userRepository = userRepository;
+        this.chatRoomsService = chatRoomsService;
         this.s3Service = s3Service;
         this.categoryRepository = categoryRepository;
     }
@@ -55,7 +55,7 @@ public class GoodsService {
             goods.createGoods(postGoodsReq.getTitle(), postGoodsReq.getPrice(), postGoodsReq.getRest(), postGoodsReq.getShelf_life(), postGoodsReq.getUserIdx(), postGoodsReq.getName());
             goods.setImageUrl(imageUrl);
             goodsRepository.save(goods);
-            return new PostGoodsRes(goods.getId(),goods.getTitle());
+            return new PostGoodsRes(goods.getId(), goods.getTitle());
         } catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
             throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
         }
@@ -127,6 +127,7 @@ public class GoodsService {
         return newGoods;
     }
 
+
     // id로 goods 조회
     public GetGoodsRes getGoodsById(Long id){
         Goods goods = goodsRepository.findGoodsById(id);
@@ -142,6 +143,22 @@ public class GoodsService {
                 .collect(Collectors.toList());
         return GetGoodsRes;
 
+    }
+
+    // put 상품 모든 항목 수정
+    public Goods update(Long id, Goods goods) {
+        Goods existingGoods = goodsRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다. id=" + id));
+
+        existingGoods.setTitle(goods.getTitle());
+        existingGoods.setPrice(goods.getPrice());
+        existingGoods.setShelf_life(goods.getShelf_life());
+        existingGoods.setImageUrl(goods.getImageUrl());
+        existingGoods.setCategory(goods.getCategory());
+        existingGoods.setRest(goods.getRest());
+        existingGoods.setWeight(goods.getWeight());
+
+        return goodsRepository.save(existingGoods);
     }
 
 

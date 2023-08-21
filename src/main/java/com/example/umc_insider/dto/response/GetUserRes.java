@@ -11,9 +11,8 @@ import lombok.Setter;
 public class GetUserRes {
     private Long id;
     private String userId;
+    private String pw;
     private String nickname;
-    private String pw;//add
-   // private String password;
     private String email;
     private Integer zipCode;
     private Address address; // fk
@@ -22,7 +21,7 @@ public class GetUserRes {
     public GetUserRes(Long id, String userId, String nickname, String email, String pw, Address address) {
         this.id = id;
         this.userId = userId;
-        this.pw= pw;
+        this.pw = pw;
         this.nickname = nickname;
         this.email = email;
         this.address = address;

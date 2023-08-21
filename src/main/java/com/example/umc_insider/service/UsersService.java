@@ -7,6 +7,9 @@ import com.example.umc_insider.domain.Users;
 import com.example.umc_insider.domain.UsersImages;
 import com.example.umc_insider.dto.request.*;
 import com.example.umc_insider.dto.response.GetUserByIdRes;
+import com.example.umc_insider.dto.request.PostLoginReq;
+import com.example.umc_insider.dto.request.PostUserReq;
+import com.example.umc_insider.dto.request.PutUserImgReq;
 import com.example.umc_insider.dto.response.GetUserRes;
 import com.example.umc_insider.dto.response.PostLoginRes;
 import com.example.umc_insider.dto.response.PostUserRes;
@@ -116,7 +119,6 @@ public class UsersService {
     // 이미지 수정/등록
     @Transactional
     public void putUserImg(PutUserImgReq putUserImgReq,  MultipartFile file) {
-
         UsersImages usersImage = userImageRepository.getReferenceById(putUserImgReq.getUserId());
         usersImage.putImg(putUserImgReq.getImg_url());
     }
@@ -184,8 +186,14 @@ public class UsersService {
     // id로 유저 조회
     public GetUserByIdRes getUserById(Long id){
         Users user = userRepository.findUsersById(id);
-        return new GetUserByIdRes(user.getNickname(), user.getUser_id(), user.getPw(), user.getEmail(), user.getAddress().getZipCode(), user.getAddress().getDetailAddress());
+        return new GetUserByIdRes(user.getNickname(), user.getUser_id(), user.getPw(), user.getEmail(), user.getAddress().getZipCode(), user.getAddress().getDetailAddress(), user.getImage_url());
     }
+
+    public void putUserImg(PutUserImgReq putUserImgReq) {
+        UsersImages usersImage = userImageRepository.getReferenceById(putUserImgReq.getUserId());
+        usersImage.putImg(putUserImgReq.getImg_url());
+    }
+
 }
 
 

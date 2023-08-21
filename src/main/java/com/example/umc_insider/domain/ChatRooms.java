@@ -28,12 +28,17 @@ public class ChatRooms {
     @JoinColumn(name = "buyer_id")
     private Users buyer; //  FK
 
+    @ManyToOne
+    @JoinColumn(name = "goods_id")
+    private Goods goods;
 
-    public ChatRooms createChatRooms(Long sellerIdx, Long buyerIdx){
+    public ChatRooms createChatRooms(Long sellerIdx, Long buyerIdx, Long goodsIdx){
         this.seller = new Users();
         this.seller.setId(sellerIdx);
         this.buyer = new Users();
         this.buyer.setId(buyerIdx);
+        this.goods = new Goods();
+        this.goods.setId(goodsIdx);
         this.created_at = new Timestamp(System.currentTimeMillis());
         return this;
     }
@@ -42,4 +47,5 @@ public class ChatRooms {
         this.seller = user;
     }
     public void setBuyer(Users user){this.buyer = user;}
+    public void setGoods(Goods goods){this.goods = goods;}
 }

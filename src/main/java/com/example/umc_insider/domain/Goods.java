@@ -54,27 +54,36 @@ public class Goods {
     @Column(nullable = false)
     private Timestamp updated_at;
 
-    public Goods createGoods(String title, String price, Integer rest, String shelf_life, Long userIdx){
+    @Column(nullable = true)
+    private String name; // name 추가
+
+    @OneToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    public Goods createGoods(String title, String price, Integer rest, String shelf_life, Long userIdx, String name){
         this.title = title;
         this.price = price;
         this.rest = rest;
         this.shelf_life = shelf_life;
         this.created_at = new Timestamp(System.currentTimeMillis());
         this.updated_at = new Timestamp(System.currentTimeMillis());
-//        this.users_id = user.getId();
+        this.name = name;
         return this;
     }
 
     public Goods(long goods_id) {
         this.id = goods_id;
     }
-    
-    public Goods(PostGoodsReq postgoodsReq, Users user) {
+
+    public Goods(PostGoodsReq postgoodsReq, Users user, Category category) {
         super();
         this.users_id = user;
+        this.category = category;
         this.title = postgoodsReq.getTitle();
         this.price = postgoodsReq.getPrice();
         this.rest = postgoodsReq.getRest();
+        this.name = postgoodsReq.getName();
         this.shelf_life = postgoodsReq.getShelf_life();
         this.created_at = new Timestamp(System.currentTimeMillis());
         this.updated_at =  new Timestamp(System.currentTimeMillis());
@@ -95,7 +104,9 @@ public class Goods {
     public void setUser(Users user) {
         this.users_id = user;
     }
-
+    public void setCategory(Category category) {
+        this.category = category;
+    }
     public void setImageUrl(String url){
         this.imageUrl = url;
     }

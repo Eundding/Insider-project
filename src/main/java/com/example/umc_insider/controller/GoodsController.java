@@ -97,4 +97,17 @@ public class GoodsController {
         return new BaseResponse<>(result);
     }
 
+    // id로 Goods 조회
+    @GetMapping("/{id}")
+    public GetGoodsRes getGoodsById(@PathVariable Long id){
+        GetGoodsRes getGoodsRes = goodsService.getGoodsById(id);
+        return getGoodsRes;
+    }
+
+    // category_id로 Goods 조회
+    @GetMapping("/category/{category_id}")
+    public ResponseEntity<List<GetGoodsRes>> getGoodsByCategoryId(@PathVariable Long category_id) {
+        return ResponseEntity.ok(goodsService.getGoodsByCategoryId(category_id));
+    }
+
 }

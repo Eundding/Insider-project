@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Timestamp;
+
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -11,5 +14,6 @@ public class GetChatRoomByUserRes {
     private Long chatRoomId;
     private String otherNickName;
     private String lastMessage;
-    // 상대방 프로필?
+    private Timestamp createdAt;
+    private Long goodsId;
 }

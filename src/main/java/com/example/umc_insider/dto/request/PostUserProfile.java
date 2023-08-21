@@ -5,8 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class PostChatRoomsReq {
-    private Long sellerId;
-    private Long buyerId;
-    private Long goodsId;
+public class PostUserProfile {
+    private Long id;
+    private String imageUrl;
 }

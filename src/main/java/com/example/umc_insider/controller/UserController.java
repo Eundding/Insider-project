@@ -1,7 +1,10 @@
 package com.example.umc_insider.controller;
 
+import com.example.umc_insider.domain.Users;
 import com.example.umc_insider.dto.request.PostLoginReq;
+import com.example.umc_insider.dto.request.PostUserProfile;
 import com.example.umc_insider.dto.request.PostUserReq;
+import com.example.umc_insider.dto.request.PutUserReq;
 import com.example.umc_insider.dto.response.GetUserRes;
 import com.example.umc_insider.dto.response.PostLoginRes;
 import com.example.umc_insider.dto.response.PostUserRes;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.umc_insider.config.BaseException;
 import com.example.umc_insider.config.BaseResponse;
 import com.example.umc_insider.service.UsersService;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -29,17 +33,7 @@ public class UserController {
     @PostMapping("/create")
     public BaseResponse<PostUserRes> createUser(@RequestBody PostUserReq postUserReq) throws BaseException{
         PostUserRes response = usersService.createUser(postUserReq);
-
         return new BaseResponse<>(response);
-//        if (!ValidationRegex.isRegexEmail(postUserReq.getEmail())) {
-//            return new BaseResponse(BaseResponseStatus.POST_USERS_INVALID_EMAIL);
-//        } else {
-//            try {
-//                return new BaseResponse<>(userService.createUser(postUserReq));
-//            } catch (BaseException exception) {
-//                return new BaseResponse<>((exception.getStatus()));
-//            }
-//        }
     }
 
 
@@ -69,6 +63,24 @@ public class UserController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
+
+    // 회원정보 수정
+    @PutMapping("/user/modify")
+    public BaseResponse<PostUserRes> modifyUser(@RequestBody PutUserReq putUserReq) throws BaseException{
+        PostUserRes response = usersService.modifyUser(putUserReq);
+        return new BaseResponse<>(response);
+    }
+
+     //유저 프로필 등록
+//    @PostMapping("/userProfile/register")
+//    public BaseResponse<PostUserRes> registerProfile(@RequestBody PostUserProfile postUserProfile, @RequestPart("image") MultipartFile image) throws BaseException{
+//        Users user = user
+//        PostUserRes response = usersService.registerProfile(postUserProfile, imageUrl);
+//
+//        return new PostUserRes(user);
+//    }
+
+
 
 
 

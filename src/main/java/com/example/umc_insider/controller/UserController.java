@@ -27,10 +27,11 @@ public class UserController {
     private final UsersService usersService;
     private final S3Service s3Service;
     @Autowired
-    public UserController(UsersService usersService) {
+    public UserController(UsersService usersService, S3Service s3Service) {
         this.usersService = usersService;
         this.s3Service = s3Service;
     }
+
     //회원가입
     @PostMapping("/create")
     public BaseResponse<PostUserRes> createUser(@RequestBody PostUserReq postUserReq) throws BaseException{

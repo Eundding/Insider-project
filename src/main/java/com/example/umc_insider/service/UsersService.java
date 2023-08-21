@@ -121,8 +121,9 @@ public class UsersService {
     }
 
     // 유저 프로필 이미지 등록
-    public Users registerProfile(PostUserProfile postUserProfile,  MultipartFile file){
-        Users user = userRepository.findUsersById(postUserProfile.getId());
+    public Users registerProfile(PostUserProfileReq postUserProfileReq, MultipartFile file){
+        Users user = userRepository.findUsersById(postUserProfileReq.getId());
+        userRepository.save(user);
         // S3에 이미지 업로드 및 URL 받기
         String imageUrl = s3Service.uploadProfileS3(file, user);
 

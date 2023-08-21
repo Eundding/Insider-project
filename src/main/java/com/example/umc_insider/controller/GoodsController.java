@@ -97,17 +97,6 @@ public class GoodsController {
         return new BaseResponse<>(result);
     }
 
-    // 상품수정 - PUT
-//    @PutMapping("update/{id}")
-//    public ResponseEntity<String> update(@PathVariable Long id, @RequestBody Goods goods) {
-//        Goods updatedGoods = goodsService.update(id, goods);
-//        if (updatedGoods != null) {
-//            return ResponseEntity.ok("수정되었습니다.");
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
-
     // id로 Goods 조회
     @GetMapping("/{id}")
     public GetGoodsRes getGoodsById(@PathVariable Long id){
@@ -119,6 +108,17 @@ public class GoodsController {
     @GetMapping("/category/{category_id}")
     public ResponseEntity<List<GetGoodsRes>> getGoodsByCategoryId(@PathVariable Long category_id) {
         return ResponseEntity.ok(goodsService.getGoodsByCategoryId(category_id));
+    }
+
+    // 상품수정 - PUT
+    @PutMapping("update/{id}")
+    public ResponseEntity<Goods> update(@PathVariable Long id, @RequestBody Goods goods) {
+        Goods updatedGoods = goodsService.update(id, goods);
+        if (updatedGoods != null) {
+            return ResponseEntity.ok(updatedGoods);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }

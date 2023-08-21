@@ -149,18 +149,19 @@ public class GoodsService {
     }
 
     // put 상품 모든 항목 수정
-//    public Goods update(Long id, Goods goods) {
-//        Goods newGoods = goodsRepository.findGoodsById(id)
-//                .orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다. id=" + id));
-//        newGoods.setTitle(goods.getTitle());
-//        newGoods.setPrice(goods.getPrice());
-//        newGoods.setShelf_life(goods.getShelf_life());
-//        newGoods.setImageUrl(goods.getImageUrl());
-//        newGoods.setCategory(goods.getCategory());
-//        newGoods.setRest(goods.getRest());
-//        newGoods.setWeight(goods.getWeight());
-//
-//        return goodsRepository.save(newGoods);
-//    }
+    public Goods update(Long id, Goods goods) {
+        Goods existingGoods = goodsRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다. id=" + id));
+
+        existingGoods.setTitle(goods.getTitle());
+        existingGoods.setPrice(goods.getPrice());
+        existingGoods.setShelf_life(goods.getShelf_life());
+        existingGoods.setImageUrl(goods.getImageUrl());
+        existingGoods.setCategory(goods.getCategory());
+        existingGoods.setRest(goods.getRest());
+        existingGoods.setWeight(goods.getWeight());
+
+        return goodsRepository.save(existingGoods);
+    }
 }
 

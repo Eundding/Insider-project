@@ -16,4 +16,8 @@ public class Category {
     @Column(nullable = false)
     private String name; // name 추가
     public void setId(Long id) {this.id = id;}
+
+    public Category(Long id) {
+        this.id = id;
+    }
 }

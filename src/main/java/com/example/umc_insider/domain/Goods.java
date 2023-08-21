@@ -61,7 +61,7 @@ public class Goods {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    public Goods createGoods(String title, String price, Integer rest, String shelf_life, Long userIdx, String name){
+    public Goods createGoods(String title, String price, Integer rest, String shelf_life, Long userIdx, String name) {
         this.title = title;
         this.price = price;
         this.rest = rest;
@@ -87,30 +87,55 @@ public class Goods {
         this.weight = postgoodsReq.getWeight();
         this.shelf_life = postgoodsReq.getShelf_life();
         this.created_at = new Timestamp(System.currentTimeMillis());
-        this.updated_at =  new Timestamp(System.currentTimeMillis());
+        this.updated_at = new Timestamp(System.currentTimeMillis());
     }
 
-    public void deleteGoods(int rest) { this.rest = 0;}
+    public void deleteGoods(int rest) {
+        this.rest = 0;
+    }
 
-    public void modifyPrice(String price) { this.price = price; }
+    public void modifyPrice(String price) {
+        this.price = price;
+    }
 
     public void setId(Long id) {
         this.id = id;
     }
-    public void setTitle(String title) {this.title = title;}
-    public void setPrice(String price) { this.price = price;}
-    public void setRest(Integer rest) { this.rest = rest;}
-    public void setShelf_life(String shelf_life){this.shelf_life = shelf_life;}
-    public void setCreated_at(){Timestamp created_at = new Timestamp(System.currentTimeMillis());}
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public void setRest(Integer rest) {
+        this.rest = rest;
+    }
+
+    public void setShelf_life(String shelf_life) {
+        this.shelf_life = shelf_life;
+    }
+
+    public void setCreated_at() {
+        Timestamp created_at = new Timestamp(System.currentTimeMillis());
+    }
+
     public void setUser(Users user) {
         this.users_id = user;
     }
+
     public void setCategory(Category category) {
         this.category = category;
     }
-    public void setImageUrl(String url){
+
+    public void setImageUrl(String url) {
         this.imageUrl = url;
     }
-    public void setWeight(String weight) { this.weight = weight; }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
 
 }

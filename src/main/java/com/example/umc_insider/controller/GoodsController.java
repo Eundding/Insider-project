@@ -97,6 +97,7 @@ public class GoodsController {
         return new BaseResponse<>(result);
     }
 
+
     // id로 Goods 조회
     @GetMapping("/{id}")
     public GetGoodsRes getGoodsById(@PathVariable Long id){

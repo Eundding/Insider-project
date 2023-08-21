@@ -36,26 +36,4 @@ public class MyPageController {
         List<GetUserRes> users = usersService.getReferenceById(id);
         return ResponseEntity.ok(users);
     }
-//
-//    // 이미지 업데이트
-////    @PutMapping("/imageupdate")
-////    public BaseResponse<String> modifyUserImg(@RequestParam String email, @RequestParam String img_url) {
-////        try {
-////            Users user = userRepository.findUserByEmail(email);
-////            //jwt에서 idx 추출.
-////            Long userIdxByJwt = jwtService.getId();
-////            //userIdx와 접근한 유저가 같은지 확인
-////            if(user.getId() != userIdxByJwt){
-////                return new BaseResponse<>(BaseResponseStatus.INVALID_USER_JWT);
-////            }
-////            //같다면 유저이미지 변경
-////            PutUserImgReq putUserImgReq = new PutUserImgReq(user.getId(), img_url);
-////            usersService.putUserImg(putUserImgReq);
-////            String result = "이미지가 등록(변경)되었습니다";
-////            return new BaseResponse<>(result);
-////        }  catch (BaseException exception) {
-////            return new BaseResponse<>((exception.getStatus()));
-////        }
-////
-////    }
 }

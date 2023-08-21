@@ -1,18 +1,17 @@
 package com.example.umc_insider.dto.request;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-public class PostUserProfileReq {
+public class PutUserProfileReq {
     private Long id;
 
 
-    public PostUserProfileReq() {
+    public PutUserProfileReq() {
         // 디폴트 생성자
     }
 
-    public PostUserProfileReq(Long id) {
+    public PutUserProfileReq(Long id) {
         this.id = id;
     }
 }

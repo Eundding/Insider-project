@@ -11,8 +11,8 @@ import com.example.umc_insider.dto.response.GetGoodsRes;
 import com.example.umc_insider.dto.response.PostGoodsRes;
 import com.example.umc_insider.repository.CategoryRepository;
 import com.example.umc_insider.repository.GoodsRepository;
-
 import com.example.umc_insider.repository.UserRepository;
+import com.example.umc_insider.service.ChatRoomsService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
@@ -32,11 +32,14 @@ public class GoodsService {
     private GoodsRepository goodsRepository;
     private CategoryRepository categoryRepository;
     private UserRepository userRepository;
-    private final S3Service s3Service;
+    private S3Service s3Service;
+    private ChatRoomsService chatRoomsService;
+
     @Autowired
-    public GoodsService(GoodsRepository goodsRepository, UserRepository userRepository, S3Service s3Service, CategoryRepository categoryRepository){
+    public GoodsService(GoodsRepository goodsRepository, UserRepository userRepository, ChatRoomsService chatRoomsService, S3Service s3Service, CategoryRepository categoryRepository){
         this.goodsRepository = goodsRepository;
         this.userRepository = userRepository;
+        this.chatRoomsService = chatRoomsService;
         this.s3Service = s3Service;
         this.categoryRepository = categoryRepository;
     }
@@ -60,8 +63,6 @@ public class GoodsService {
             throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
         }
     }
-
-
 
 
 
@@ -95,10 +96,13 @@ public class GoodsService {
     // 상품 삭제
     @Transactional
     public void deleteGoods(long id) {
-        Goods goods = (Goods)this.goodsRepository.findById(id).orElseThrow(()->{
-            return new IllegalArgumentException("해당 게시글이 없습니다. id=" + id);
-        });
-        this.goodsRepository.delete(goods);
+        Goods goods = goodsRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
+
+        // 해당 상품을 참조하는 채팅방 레코드의 상품 ID를 NULL로 업데이트
+        chatRoomsService.updateGoodsIdToNullForChatRooms(id);
+
+        goodsRepository.delete(goods);
     }
 
     // 상품 가격 변경

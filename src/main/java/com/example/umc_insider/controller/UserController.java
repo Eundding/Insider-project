@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.umc_insider.config.BaseException;
 import com.example.umc_insider.config.BaseResponse;
 import com.example.umc_insider.service.UsersService;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -70,13 +71,13 @@ public class UserController {
         return new BaseResponse<>(response);
     }
 
-    // 유저 프로필 등록
+     //유저 프로필 등록
 //    @PostMapping("/userProfile/register")
-//    public BaseResponse<PostUserRes> registerProfile(@RequestBody PostUserProfile postUserProfile, String imageUrl) throws BaseException{
+//    public BaseResponse<PostUserRes> registerProfile(@RequestBody PostUserProfile postUserProfile, @RequestPart("image") MultipartFile image) throws BaseException{
 //        Users user = user
 //        PostUserRes response = usersService.registerProfile(postUserProfile, imageUrl);
 //
-//        return new PostUserRes(user)
+//        return new PostUserRes(user);
 //    }
 
 

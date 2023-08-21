@@ -14,6 +14,7 @@ public interface ReviewsRepository extends JpaRepository<Reviews, Long>{
 //    List<Reviews> findAllByBuyer_id(long buyer_id);
 //
 //    List<Reviews> findAllByPoint(int point);
+    List<Reviews> findByOrderByPointDesc();
 
 }
 

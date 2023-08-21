@@ -36,7 +36,7 @@ public class GoodsService {
     private ChatRoomsService chatRoomsService;
 
     @Autowired
-    public GoodsService(GoodsRepository goodsRepository, UserRepository userRepository, ChatRoomsService chatRoomsService, S3Service s3Service, CategoryRepository categoryRepository){
+    public GoodsService(GoodsRepository goodsRepository, UserRepository userRepository, ChatRoomsService chatRoomsService, S3Service s3Service, CategoryRepository categoryRepository) {
         this.goodsRepository = goodsRepository;
         this.userRepository = userRepository;
         this.chatRoomsService = chatRoomsService;
@@ -58,12 +58,11 @@ public class GoodsService {
             goods.createGoods(postGoodsReq.getTitle(), postGoodsReq.getPrice(), postGoodsReq.getRest(), postGoodsReq.getShelf_life(), postGoodsReq.getUserIdx(), postGoodsReq.getName());
             goods.setImageUrl(imageUrl);
             goodsRepository.save(goods);
-            return new PostGoodsRes(goods.getId(),goods.getTitle());
+            return new PostGoodsRes(goods.getId(), goods.getTitle());
         } catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
             throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
         }
     }
-
 
 
     // all 상품 조회
@@ -71,7 +70,7 @@ public class GoodsService {
         try {
             List<Goods> goodsList = goodsRepository.findGoods();
             List<GetGoodsRes> getGoodsRes = goodsList.stream()
-                    .map(goods -> new GetGoodsRes(goods.getId(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl()))
+                    .map(goods -> new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl()))
                     .collect(Collectors.toList());
             return getGoodsRes;
         } catch (Exception e) {
@@ -85,7 +84,7 @@ public class GoodsService {
             //List<Goods> goodsList = goodsRepository.findGoodsByTitle(title);
             List<Goods> goodsList = goodsRepository.findByTitleContaining(title);
             List<GetGoodsRes> GetGoodsRes = goodsList.stream()
-                    .map(goods -> new GetGoodsRes(goods.getId(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl()))
+                    .map(goods -> new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl()))
                     .collect(Collectors.toList());
             return GetGoodsRes;
         } catch (Exception exception) {
@@ -112,6 +111,7 @@ public class GoodsService {
         goods.modifyPrice(postModifyPriceReq.getPrice());
     }
 
+
     public Goods createNewGoodsInstance(PostGoodsReq postgoodsReq, MultipartFile file) {
         Users user = userRepository.findUsersById(postgoodsReq.getUserIdx());
         Category category = categoryRepository.findCategoryByCategoryId(postgoodsReq.getCategoryId());
@@ -132,9 +132,9 @@ public class GoodsService {
     }
 
     // id로 goods 조회
-    public GetGoodsRes getGoodsById(Long id){
+    public GetGoodsRes getGoodsById(Long id) {
         Goods goods = goodsRepository.findGoodsById(id);
-        return new GetGoodsRes(goods.getId(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl(), goods.getName());
+        return new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl(), goods.getName());
     }
 
     // category_id로 goods 조회
@@ -142,11 +142,25 @@ public class GoodsService {
         List<Goods> goodsList = goodsRepository.findByCategory_Id(category_id);
         //return goodsList.stream().map(goods -> new GetGoodsRes(goods.getId(), goods.getUsers_id(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getImageUrl(), goods.getName())).collect(Collectors.toList());
         List<GetGoodsRes> GetGoodsRes = goodsList.stream()
-                .map(goods -> new GetGoodsRes(goods.getId(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl(), goods.getName()))
+                .map(goods -> new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl(), goods.getName()))
                 .collect(Collectors.toList());
         return GetGoodsRes;
 
     }
 
-
+    // put 상품 모든 항목 수정
+//    public Goods update(Long id, Goods goods) {
+//        Goods newGoods = goodsRepository.findGoodsById(id)
+//                .orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다. id=" + id));
+//        newGoods.setTitle(goods.getTitle());
+//        newGoods.setPrice(goods.getPrice());
+//        newGoods.setShelf_life(goods.getShelf_life());
+//        newGoods.setImageUrl(goods.getImageUrl());
+//        newGoods.setCategory(goods.getCategory());
+//        newGoods.setRest(goods.getRest());
+//        newGoods.setWeight(goods.getWeight());
+//
+//        return goodsRepository.save(newGoods);
+//    }
 }
+

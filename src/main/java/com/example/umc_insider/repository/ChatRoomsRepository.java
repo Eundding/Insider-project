@@ -29,8 +29,4 @@ public interface ChatRoomsRepository extends JpaRepository<ChatRooms, Long> {
     @Modifying
     @Query("UPDATE ChatRooms c SET c.goods.id = NULL WHERE c.goods.id = :goodsId")
     void updateGoodsIdToNull(@Param("goodsId") Long goodsId);
-
-
-
-
 }

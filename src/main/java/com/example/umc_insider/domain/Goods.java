@@ -84,6 +84,7 @@ public class Goods {
         this.price = postgoodsReq.getPrice();
         this.rest = postgoodsReq.getRest();
         this.name = postgoodsReq.getName();
+        this.weight = postgoodsReq.getWeight();
         this.shelf_life = postgoodsReq.getShelf_life();
         this.created_at = new Timestamp(System.currentTimeMillis());
         this.updated_at =  new Timestamp(System.currentTimeMillis());
@@ -110,5 +111,6 @@ public class Goods {
     public void setImageUrl(String url){
         this.imageUrl = url;
     }
+    public void setWeight(String weight) { this.weight = weight; }
 
 }

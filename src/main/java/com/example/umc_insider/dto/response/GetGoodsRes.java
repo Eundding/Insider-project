@@ -6,12 +6,14 @@ import lombok.AllArgsConstructor;
 
 import com.example.umc_insider.domain.Users;
 import com.example.umc_insider.domain.Markets;
+import com.example.umc_insider.domain.Category;
 
 @Getter
 @Setter
 @AllArgsConstructor
 public class GetGoodsRes {
     private Long id;
+    private Category category_id;
     private Users users_id;
     private Markets markets_id;
     private String title;
@@ -33,8 +35,9 @@ public class GetGoodsRes {
 //        this.name = name;
 //    }
 
-    public GetGoodsRes(Long id, Users usersId, Markets marketsId, String title, String price, String weight, Integer rest, String shelfLife, Integer sale, String imageUrl) {
+    public GetGoodsRes(Long id, Category categoryId, Users usersId, Markets marketsId, String title, String price, String weight, Integer rest, String shelfLife, Integer sale, String imageUrl) {
         this.id = id;
+        this.category_id = categoryId;
         this.users_id = usersId;
         this.markets_id = marketsId;
         this.title = title;

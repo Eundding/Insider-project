@@ -2,12 +2,13 @@ package com.example.umc_insider.controller;
 
 import com.example.umc_insider.domain.Users;
 import com.example.umc_insider.dto.request.PostLoginReq;
-import com.example.umc_insider.dto.request.PostUserProfile;
+import com.example.umc_insider.dto.request.PostUserProfileReq;
 import com.example.umc_insider.dto.request.PostUserReq;
 import com.example.umc_insider.dto.request.PutUserReq;
 import com.example.umc_insider.dto.response.GetUserRes;
 import com.example.umc_insider.dto.response.PostLoginRes;
 import com.example.umc_insider.dto.response.PostUserRes;
+import com.example.umc_insider.service.S3Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,15 +20,16 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 import static com.example.umc_insider.config.BaseResponseStatus.*;
-import static com.example.umc_insider.utils.ValidationRegex.isRegexEmail;
 
 //@RequiredArgsConstructor
 @RestController
 public class UserController {
     private final UsersService usersService;
+    private final S3Service s3Service;
     @Autowired
     public UserController(UsersService usersService) {
         this.usersService = usersService;
+        this.s3Service = s3Service;
     }
     //회원가입
     @PostMapping("/create")
@@ -71,14 +73,17 @@ public class UserController {
         return new BaseResponse<>(response);
     }
 
-     //유저 프로필 등록
-//    @PostMapping("/userProfile/register")
-//    public BaseResponse<PostUserRes> registerProfile(@RequestBody PostUserProfile postUserProfile, @RequestPart("image") MultipartFile image) throws BaseException{
-//        Users user = user
-//        PostUserRes response = usersService.registerProfile(postUserProfile, imageUrl);
-//
-//        return new PostUserRes(user);
-//    }
+     // 유저 프로필 등록
+    @PostMapping("/userProfile/register")
+    public BaseResponse<PostUserRes> registerProfile(@RequestPart("PostUserProfileReq")PostUserProfileReq postUserProfileReq, @RequestPart("image") MultipartFile image) throws BaseException{
+        Users user = usersService.registerProfile(postUserProfileReq, image);
+
+        String url = this.s3Service.uploadProfileS3(image, user);
+
+        PostUserRes response = new PostUserRes(user.getId(), user.getNickname());
+
+        return new BaseResponse<>(response);
+    }
 
 
 

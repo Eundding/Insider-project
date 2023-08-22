@@ -14,6 +14,5 @@ public class GetMyPageRes {
     private String nickname;
     private String password;
     private String email;
-    private Integer zipCode;
     private Address address; // fk
 }

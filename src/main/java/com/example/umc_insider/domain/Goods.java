@@ -16,7 +16,7 @@ import java.sql.Timestamp;
 public class Goods {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name="id")
     private Long id; // PK
 
     @ManyToOne

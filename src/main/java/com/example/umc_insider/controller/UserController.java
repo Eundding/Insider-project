@@ -27,7 +27,8 @@ public class UserController {
         this.usersService = usersService;
         this.s3Service = s3Service;
     }
-    //회원가입
+
+    // 회원가입
     @PostMapping("/create")
     public BaseResponse<PostUserRes> createUser(@RequestBody PostUserReq postUserReq) throws BaseException{
         PostUserRes response = usersService.createUser(postUserReq);
@@ -71,6 +72,7 @@ public class UserController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
+
     // 회원정보 수정
     @PutMapping("/user/modify")
     public BaseResponse<PostUserRes> modifyUser(@RequestBody PutUserReq putUserReq) throws BaseException{
@@ -95,9 +97,6 @@ public class UserController {
     public GetUserByIdRes getUserById(@PathVariable Long id){
         GetUserByIdRes getUserByIdRes = usersService.getUserById(id);
         return getUserByIdRes;
-
     }
-
-
 
 }

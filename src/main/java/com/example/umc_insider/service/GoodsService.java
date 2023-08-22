@@ -12,6 +12,8 @@ import com.example.umc_insider.dto.response.PostGoodsRes;
 import com.example.umc_insider.repository.CategoryRepository;
 import com.example.umc_insider.repository.GoodsRepository;
 import com.example.umc_insider.repository.UserRepository;
+import com.example.umc_insider.service.ChatRoomsService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
 import lombok.RequiredArgsConstructor;
@@ -32,6 +34,7 @@ public class GoodsService {
     private UserRepository userRepository;
     private S3Service s3Service;
     private ChatRoomsService chatRoomsService;
+
     @Autowired
     public GoodsService(GoodsRepository goodsRepository, UserRepository userRepository, ChatRoomsService chatRoomsService, S3Service s3Service, CategoryRepository categoryRepository) {
         this.goodsRepository = goodsRepository;
@@ -62,15 +65,12 @@ public class GoodsService {
     }
 
 
-
-
-
     // all 상품 조회
     public List<GetGoodsRes> getGoods() throws BaseException {
         try {
             List<Goods> goodsList = goodsRepository.findGoods();
             List<GetGoodsRes> getGoodsRes = goodsList.stream()
-                    .map(goods -> new GetGoodsRes(goods.getId(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl()))
+                    .map(goods -> new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl()))
                     .collect(Collectors.toList());
             return getGoodsRes;
         } catch (Exception e) {
@@ -84,7 +84,7 @@ public class GoodsService {
             //List<Goods> goodsList = goodsRepository.findGoodsByTitle(title);
             List<Goods> goodsList = goodsRepository.findByTitleContaining(title);
             List<GetGoodsRes> GetGoodsRes = goodsList.stream()
-                    .map(goods -> new GetGoodsRes(goods.getId(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl()))
+                    .map(goods -> new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl()))
                     .collect(Collectors.toList());
             return GetGoodsRes;
         } catch (Exception exception) {
@@ -95,10 +95,13 @@ public class GoodsService {
     // 상품 삭제
     @Transactional
     public void deleteGoods(long id) {
-        Goods goods = (Goods)this.goodsRepository.findById(id).orElseThrow(()->{
-            return new IllegalArgumentException("해당 게시글이 없습니다. id=" + id);
-        });
-        this.goodsRepository.delete(goods);
+        Goods goods = goodsRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
+
+        // 해당 상품을 참조하는 채팅방 레코드의 상품 ID를 NULL로 업데이트
+        chatRoomsService.updateGoodsIdToNullForChatRooms(id);
+
+        goodsRepository.delete(goods);
     }
 
     // 상품 가격 변경
@@ -107,6 +110,7 @@ public class GoodsService {
         Goods goods = goodsRepository.getReferenceById(postModifyPriceReq.getId());
         goods.modifyPrice(postModifyPriceReq.getPrice());
     }
+
 
     public Goods createNewGoodsInstance(PostGoodsReq postgoodsReq, MultipartFile file) {
         Users user = userRepository.findUsersById(postgoodsReq.getUserIdx());
@@ -127,11 +131,10 @@ public class GoodsService {
         return newGoods;
     }
 
-
     // id로 goods 조회
-    public GetGoodsRes getGoodsById(Long id){
+    public GetGoodsRes getGoodsById(Long id) {
         Goods goods = goodsRepository.findGoodsById(id);
-        return new GetGoodsRes(goods.getId(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl(), goods.getName());
+        return new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl(), goods.getName());
     }
 
     // category_id로 goods 조회
@@ -139,7 +142,7 @@ public class GoodsService {
         List<Goods> goodsList = goodsRepository.findByCategory_Id(category_id);
         //return goodsList.stream().map(goods -> new GetGoodsRes(goods.getId(), goods.getUsers_id(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getImageUrl(), goods.getName())).collect(Collectors.toList());
         List<GetGoodsRes> GetGoodsRes = goodsList.stream()
-                .map(goods -> new GetGoodsRes(goods.getId(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl(), goods.getName()))
+                .map(goods -> new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl(), goods.getName()))
                 .collect(Collectors.toList());
         return GetGoodsRes;
 
@@ -160,6 +163,5 @@ public class GoodsService {
 
         return goodsRepository.save(existingGoods);
     }
-
-
 }
+

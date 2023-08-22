@@ -15,6 +15,7 @@ import com.example.umc_insider.repository.GoodsRepository;
 import com.example.umc_insider.repository.MessagesRepository;
 import com.example.umc_insider.repository.UserRepository;
 import com.example.umc_insider.utils.JwtService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -102,6 +103,14 @@ public class ChatRoomsService {
             return new GetChatRoomByUserRes(chatRoomId, otherNickName, lastMessage, createdAt, goodsId);
         }).collect(Collectors.toList());
 
+    }
+
+    @Transactional
+    public void updateGoodsIdToNullForChatRooms(Long goodsId) {
+        List<ChatRooms> chatRooms = chatRoomsRepository.findByGoodsId(goodsId);
+        for (ChatRooms chatRoom : chatRooms) {
+            chatRoom.setGoods(null);
+        }
     }
 }
 

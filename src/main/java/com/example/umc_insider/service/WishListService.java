@@ -104,10 +104,11 @@ public class WishListService {
             WishListHasGoods wishList = wishListHasGoodsRepository.findByUserIdToWishList(userId, goodsId);
             if (wishList != null) {
                 wishListHasGoodsRepository.delete(wishList);
+
                 wishListsRepository.delete(wishList.getWishList());
                 return true;
-            }.
-            
+            }
+
         }
         return false;
     }

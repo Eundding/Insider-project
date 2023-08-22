@@ -47,6 +47,16 @@ public class WishListsController {
         } else {
             return new ResponseEntity<>("위시 리스트에서 상품을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
         }
+    }
 
+    // userId, goodsId로 위시리스트에 있는지 true false 반환
+    @GetMapping("/check/{userId}/{goodsId}")
+    public boolean checkWishList(@PathVariable Long userId, @PathVariable Long goodsId){
+        boolean checked = wishListService.checkWishList(userId, goodsId);
+        if(checked){
+            return true;
+        } else{
+            return false;
+        }
     }
 }

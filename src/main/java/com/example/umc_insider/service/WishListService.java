@@ -123,5 +123,33 @@ public class WishListService {
         return false;
     }
 
+    // 위시리스트 체크
+    public boolean checkWishList(Long userId,Long goodsId){
+        Users user = userRepository.findUsersById(userId);
+        Goods goods = goodsRepository.findGoodsById(goodsId);
+
+        if (user != null && goods != null) {
+            List<WishListHasGoods> wlhg = wishListHasGoodsRepository.findByUserIdToWishList(userId, goodsId);
+            if (wlhg.isEmpty()) {
+                return false;
+            }
+            WishLists wishList = wlhg.get(0).getWishList();
+
+            if(wishList == null){
+                throw new RuntimeException("WishList is null");
+            }
+
+            Users users = wishList.getUser();
+            if (users == null) {
+                throw new RuntimeException("User is null");
+            }
+
+            WishListHasGoods temp = wishListHasGoodsRepository.findByWishListId(wishList.getId());
+            if(temp != null && wishList != null) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

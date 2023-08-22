@@ -3,6 +3,7 @@ package com.example.umc_insider.controller;
 import com.example.umc_insider.config.BaseException;
 import com.example.umc_insider.config.BaseResponse;
 import com.example.umc_insider.dto.request.PostWishListsReq;
+import com.example.umc_insider.dto.response.GetGoodsRes;
 import com.example.umc_insider.dto.response.GetWishListsRes;
 import com.example.umc_insider.dto.response.PostWishListsRes;
 import com.example.umc_insider.service.WishListService;
@@ -33,8 +34,8 @@ public class WishListsController {
 
     // 유저별 위시리스트 조회
     @GetMapping("/{userId}")
-    public ResponseEntity<List<GetWishListsRes>>getGoodsInWishList(@PathVariable Long userId) {
-        List<GetWishListsRes> goodsList = wishListService.getGoodsInWishList(userId);
+    public ResponseEntity<List<GetGoodsRes>>getGoodsInWishList(@PathVariable Long userId) {
+        List<GetGoodsRes> goodsList = wishListService.getGoodsInWishList(userId);
         return new ResponseEntity<>(goodsList, HttpStatus.OK);
     }
 

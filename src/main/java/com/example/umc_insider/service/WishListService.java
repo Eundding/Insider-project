@@ -100,15 +100,25 @@ public class WishListService {
         Goods goods = goodsRepository.findGoodsById(goodsId);
 
         if (user != null && goods != null) {
-            List<WishLists> wishLists = wishListsRepository.findByUserId(userId);
-            WishListHasGoods wishList = wishListHasGoodsRepository.findByUserIdToWishList(userId, goodsId);
-            if (wishList != null) {
-                wishListHasGoodsRepository.delete(wishList);
+            List<WishListHasGoods> wlhg = wishListHasGoodsRepository.findByUserIdToWishList(userId, goodsId);
+            if (wlhg.isEmpty()) {
+                return false;
+            }
+            WishLists wishList = wlhg.get(0).getWishList();
 
-                wishListsRepository.delete(wishList.getWishList());
-                return true;
+            if(wishList == null){
+                throw new RuntimeException("WishList is null");
             }
 
+            Users users = wishList.getUser();
+            if (users == null) {
+                throw new RuntimeException("User is null");
+            }
+
+            WishListHasGoods temp = wishListHasGoodsRepository.findByWishListId(wishList.getId());
+            wishListHasGoodsRepository.delete(temp);
+            wishListsRepository.delete(wishList);
+            return true;
         }
         return false;
     }

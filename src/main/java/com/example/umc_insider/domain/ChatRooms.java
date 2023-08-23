@@ -56,11 +56,15 @@ public class ChatRooms {
         this.goods = new Goods();
         this.goods.setId(goodsIdx);
 
+        this.created_at = new Timestamp(System.currentTimeMillis());
+        return this;
+    }
+
+    public ChatRooms sellOrNot(){
         // Check both seller and buyer
         sellerCheck(true);
         buyerCheck(true);
 
-        this.created_at = new Timestamp(System.currentTimeMillis());
         return this;
     }
 

@@ -67,24 +67,20 @@ public class GoodsService {
 
     // all 상품 조회
     public List<GetGoodsRes> getGoods() throws BaseException {
-        try {
-            List<Goods> goodsList = goodsRepository.findGoods();
-            List<GetGoodsRes> getGoodsRes = goodsList.stream()
-                    .map(goods -> new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl()))
-                    .collect(Collectors.toList());
-            return getGoodsRes;
-        } catch (Exception e) {
-            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
-        }
+        List<Goods> goodsList = goodsRepository.findAllWithUsers();
+        List<GetGoodsRes> getGoodsRes = goodsList.stream()
+                .map(goods -> new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl(), goods.getName(), goods.getUsers_id().getAddress().getZipCode(), goods.getUsers_id().getAddress().getDetailAddress()))
+                .collect(Collectors.toList());
+        return getGoodsRes;
     }
 
     // 특정 상품 조회
     public List<GetGoodsRes> getGoodsByTitle(String title) throws BaseException {
         try {
             //List<Goods> goodsList = goodsRepository.findGoodsByTitle(title);
-            List<Goods> goodsList = goodsRepository.findByTitleContaining(title);
+            List<Goods> goodsList = goodsRepository.findByTitleContainingWithUsers(title);
             List<GetGoodsRes> GetGoodsRes = goodsList.stream()
-                    .map(goods -> new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl()))
+                    .map(goods -> new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl(), goods.getName(), goods.getUsers_id().getAddress().getZipCode(), goods.getUsers_id().getAddress().getDetailAddress()))
                     .collect(Collectors.toList());
             return GetGoodsRes;
         } catch (Exception exception) {
@@ -134,7 +130,6 @@ public class GoodsService {
     // id로 goods 조회
     public GetGoodsRes getGoodsById(Long id) {
         Goods goods = goodsRepository.findGoodsById(id);
-
         return new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl(), goods.getName(), goods.getUsers_id().getAddress().getZipCode(), goods.getUsers_id().getAddress().getDetailAddress());
     }
 

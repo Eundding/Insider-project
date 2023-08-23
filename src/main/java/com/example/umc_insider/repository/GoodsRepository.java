@@ -29,5 +29,11 @@ public interface GoodsRepository extends JpaRepository<Goods, Long> {
 
     List<Goods> findByCategory_Id(Long category_id);
 
+    @Query("SELECT g FROM Goods g LEFT JOIN FETCH g.users_id WHERE g.title LIKE %:title%")
+    List<Goods> findByTitleContainingWithUsers(@Param("title") String title);
+
+    @Query("SELECT g FROM Goods g LEFT JOIN FETCH g.users_id")
+    List<Goods> findAllWithUsers();
+
 
 }

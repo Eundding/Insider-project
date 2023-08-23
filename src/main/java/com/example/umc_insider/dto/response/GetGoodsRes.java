@@ -10,7 +10,6 @@ import com.example.umc_insider.domain.Category;
 
 @Getter
 @Setter
-@AllArgsConstructor
 public class GetGoodsRes {
     private Long id;
     private Category category_id;
@@ -27,7 +26,7 @@ public class GetGoodsRes {
     private Integer userZipCode;
     private String detailAddress;
 
-    public GetGoodsRes(Long id, Category categoryId, Users usersId, Markets marketsId, String title, String price, String weight, Integer rest, String shelfLife, Integer sale, String imageUrl) {
+    public GetGoodsRes(Long id, Category categoryId, Users usersId, Markets marketsId, String title, String price, String weight, Integer rest, String shelfLife, Integer sale, String imageUrl, String name, Integer zipCode, String detailAddress) {
         this.id = id;
         this.category_id = categoryId;
         this.users_id = usersId;
@@ -39,5 +38,8 @@ public class GetGoodsRes {
         this.shelf_life = shelfLife;
         this.sale = sale;
         this.img_url = imageUrl;
+        this.name = name;
+        this.userZipCode = zipCode;
+        this.detailAddress = detailAddress;
     }
 }

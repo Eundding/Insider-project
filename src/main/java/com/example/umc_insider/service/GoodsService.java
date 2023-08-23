@@ -155,7 +155,7 @@ public class GoodsService {
         existingGoods.setTitle(goods.getTitle());
         existingGoods.setPrice(goods.getPrice());
         existingGoods.setShelf_life(goods.getShelf_life());
-        existingGoods.setImageUrl(goods.getImageUrl());
+//        existingGoods.setImageUrl(goods.getImageUrl());
         existingGoods.setCategory(goods.getCategory());
         existingGoods.setRest(goods.getRest());
         existingGoods.setWeight(goods.getWeight());

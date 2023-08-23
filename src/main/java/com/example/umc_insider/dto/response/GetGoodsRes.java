@@ -24,6 +24,7 @@ public class GetGoodsRes {
     private Integer sale;
     private String img_url;
     private String name;
+    private Integer userZipCode; // 추가
 
 //    public GetGoodsRes(String title, String price, String weight, int rest, String shelf_life, String img_url, String name){
 //        this.title = title;

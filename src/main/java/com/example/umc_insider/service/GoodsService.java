@@ -134,7 +134,8 @@ public class GoodsService {
     // id로 goods 조회
     public GetGoodsRes getGoodsById(Long id) {
         Goods goods = goodsRepository.findGoodsById(id);
-        return new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl(), goods.getName());
+
+        return new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl(), goods.getName(), goods.getUsers_id().getAddress().getZipCode());
     }
 
     // category_id로 goods 조회
@@ -142,7 +143,7 @@ public class GoodsService {
         List<Goods> goodsList = goodsRepository.findByCategory_Id(category_id);
         //return goodsList.stream().map(goods -> new GetGoodsRes(goods.getId(), goods.getUsers_id(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getImageUrl(), goods.getName())).collect(Collectors.toList());
         List<GetGoodsRes> GetGoodsRes = goodsList.stream()
-                .map(goods -> new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl(), goods.getName()))
+                .map(goods -> new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl(), goods.getName(), goods.getUsers_id().getAddress().getZipCode()))
                 .collect(Collectors.toList());
         return GetGoodsRes;
 

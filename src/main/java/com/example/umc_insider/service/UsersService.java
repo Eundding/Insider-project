@@ -5,30 +5,40 @@ import com.example.umc_insider.config.BaseResponseStatus;
 import com.example.umc_insider.domain.Address;
 import com.example.umc_insider.domain.Users;
 import com.example.umc_insider.dto.request.*;
-import com.example.umc_insider.dto.response.GetUserByIdRes;
+import com.example.umc_insider.dto.response.*;
 import com.example.umc_insider.dto.request.PostLoginReq;
 import com.example.umc_insider.dto.request.PostUserReq;
-import com.example.umc_insider.dto.response.GetUserRes;
-import com.example.umc_insider.dto.response.PostLoginRes;
-import com.example.umc_insider.dto.response.PostUserRes;
 import com.example.umc_insider.repository.AddressRepository;
 import com.example.umc_insider.utils.JwtService;
 import com.example.umc_insider.utils.SHA256;
+import com.google.maps.GeoApiContext;
+import com.google.maps.GeocodingApi;
+import com.google.maps.model.GeocodingResult;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.example.umc_insider.repository.UserRepository;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.stereotype.Component;
 
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.*;
 
 import static com.example.umc_insider.config.BaseResponseStatus.*;
-
+import com.google.maps.GeoApiContext;
+@Component
+@Configuration
 @RequiredArgsConstructor
 @Service
 public class UsersService {
@@ -175,9 +185,6 @@ public class UsersService {
         Users user = userRepository.findUsersById(id);
         return new GetUserByIdRes(user.getNickname(), user.getUser_id(), user.getPw(), user.getEmail(), user.getAddress().getZipCode(), user.getAddress().getDetailAddress(), user.getImage_url());
     }
-
-
-
 }
 
 

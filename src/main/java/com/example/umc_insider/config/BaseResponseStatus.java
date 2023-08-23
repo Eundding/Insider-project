@@ -25,6 +25,7 @@ public enum BaseResponseStatus {
     FAILED_TO_SIGNUP(false, 3015, "회원가입에 실패하였습니다."),
 
     DATABASE_ERROR(false, 4000, "데이터베이스 연결에 실패하였습니다."),
+    DATABASE_EXIST(false, 4000, "이미 존재하는 데이터입니다."),
     SERVER_ERROR(false, 4001, "서버와의 연결에 실패하였습니다."),
     MODIFY_FAIL_USERNAME(false, 4014, "유저네임 수정 실패"),
     MODIFY_FAIL_BOARDTITLE(false, 4015, "게시글 제목 수정 실패"),

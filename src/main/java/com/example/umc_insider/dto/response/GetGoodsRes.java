@@ -26,8 +26,10 @@ public class GetGoodsRes {
     private String name;
     private Integer userZipCode;
     private String detailAddress;
+    private Integer sale_price;
+    private Integer sale_percent;
 
-    public GetGoodsRes(Long id, Category categoryId, Users usersId, Markets marketsId, String title, String price, String weight, Integer rest, String shelfLife, Integer sale, String imageUrl) {
+    public GetGoodsRes(Long id, Category categoryId, Users usersId, Markets marketsId, String title, String price, String weight, Integer rest, String shelfLife, String imageUrl, Integer salePrice, Integer salePercent, String name, Integer zipCode, String detailAddress) {
         this.id = id;
         this.category_id = categoryId;
         this.users_id = usersId;
@@ -37,7 +39,11 @@ public class GetGoodsRes {
         this.weight = weight;
         this.rest = rest;
         this.shelf_life = shelfLife;
-        this.sale = sale;
         this.img_url = imageUrl;
+        this.sale_price = salePrice;
+        this.sale_percent = salePercent;
+        this.name = name;
+        this.userZipCode = zipCode;
+        this.detailAddress = detailAddress;
     }
 }

@@ -26,4 +26,31 @@ public class GetWishListsRes {
     private String img_url;
     private String name;
     private Timestamp createdAt;
+    private Integer sale_price;
+    private Integer sale_percent;
+
+    public GetWishListsRes(Long id, Category category, Users usersId, Markets marketsId, String title, String price, String weight, Integer rest, String shelfLife, String imageUrl, Integer salePrice, Integer salePercent, String name, Timestamp createdAt) {
+        this.id = id;
+        this.category_id = category;
+        this.users_id = usersId;
+        this.markets_id = marketsId;
+        this.title = title;
+        this.price = price;
+        this.weight = weight;
+        this.rest = rest;
+        this.shelf_life = shelfLife;
+        this.img_url = imageUrl;
+        this.sale_price = salePrice;
+        this.sale_percent = salePercent;
+        this.name = name;
+        this.createdAt = createdAt;
+    }
+
+    public void setSale_price(Integer salePrice) {
+        this.sale_price = salePrice;
+    }
+
+    public Integer getSale_price() {
+        return sale_price;
+    }
 }

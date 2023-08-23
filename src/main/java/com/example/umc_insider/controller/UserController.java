@@ -6,6 +6,7 @@ import com.example.umc_insider.dto.request.PutUserProfileReq;
 import com.example.umc_insider.dto.request.PostUserReq;
 import com.example.umc_insider.dto.request.PutUserReq;
 import com.example.umc_insider.dto.response.*;
+import com.example.umc_insider.service.GeoCodingService;
 import com.example.umc_insider.service.S3Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,27 +23,19 @@ import static com.example.umc_insider.config.BaseResponseStatus.*;
 public class UserController {
     private final UsersService usersService;
     private final S3Service s3Service;
+    private final GeoCodingService geoCodingService;
     @Autowired
-    public UserController(UsersService usersService, S3Service s3Service) {
+    public UserController(UsersService usersService, S3Service s3Service, GeoCodingService geoCodingService) {
         this.usersService = usersService;
         this.s3Service = s3Service;
+        this.geoCodingService = geoCodingService;
     }
 
     // 회원가입
     @PostMapping("/create")
     public BaseResponse<PostUserRes> createUser(@RequestBody PostUserReq postUserReq) throws BaseException{
         PostUserRes response = usersService.createUser(postUserReq);
-
         return new BaseResponse<>(response);
-//        if (!ValidationRegex.isRegexEmail(postUserReq.getEmail())) {
-//            return new BaseResponse(BaseResponseStatus.POST_USERS_INVALID_EMAIL);
-//        } else {
-//            try {
-//                return new BaseResponse<>(userService.createUser(postUserReq));
-//            } catch (BaseException exception) {
-//                return new BaseResponse<>((exception.getStatus()));
-//            }
-//        }
     }
 
 
@@ -97,6 +90,12 @@ public class UserController {
     public GetUserByIdRes getUserById(@PathVariable Long id){
         GetUserByIdRes getUserByIdRes = usersService.getUserById(id);
         return getUserByIdRes;
+    }
+
+    @GetMapping("/address/{zipCode}")
+    public GetLatLngRes getLatLng(@PathVariable String zipCode){
+        GetLatLngRes getLatLngRes = geoCodingService.getLatLngByAddress(zipCode);
+        return getLatLngRes;
     }
 
 }

@@ -23,6 +23,8 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'com.mastfrog.builder:builder-builder-parent:1.0.9'
+	implementation 'com.mastfrog.builder:builder-builder-parent:1.0.9'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'
@@ -49,6 +51,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 //	compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
     implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+	// https://mvnrepository.com/artifact/com.google.maps/google-maps-services
+	implementation group: 'com.google.maps', name: 'google-maps-services', version: '2.2.0'
+
+
 
 
 

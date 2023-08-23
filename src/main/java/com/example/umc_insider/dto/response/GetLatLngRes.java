@@ -1,5 +1,11 @@
 package com.example.umc_insider.dto.response;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class GetLatLngRes {
     private double latitude;
     private double longitude;

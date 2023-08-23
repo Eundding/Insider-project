@@ -11,6 +11,9 @@ import com.example.umc_insider.dto.request.PostUserReq;
 import com.example.umc_insider.repository.AddressRepository;
 import com.example.umc_insider.utils.JwtService;
 import com.example.umc_insider.utils.SHA256;
+import com.google.maps.GeoApiContext;
+import com.google.maps.GeocodingApi;
+import com.google.maps.model.GeocodingResult;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
@@ -33,6 +36,7 @@ import java.net.URLEncoder;
 import java.util.*;
 
 import static com.example.umc_insider.config.BaseResponseStatus.*;
+import com.google.maps.GeoApiContext;
 @Component
 @Configuration
 @RequiredArgsConstructor
@@ -181,39 +185,6 @@ public class UsersService {
         Users user = userRepository.findUsersById(id);
         return new GetUserByIdRes(user.getNickname(), user.getUser_id(), user.getPw(), user.getEmail(), user.getAddress().getZipCode(), user.getAddress().getDetailAddress(), user.getImage_url());
     }
-
-    // 우편주소로 위도 경도
-//    public class GeoCodingService {
-//
-//        private String googleMapsApiKey;
-//
-//        @Value("${google.maps.api.key}")
-//        public void setGoogleMapsApiKey(String googleMapsApiKey) {
-//            this.googleMapsApiKey = googleMapsApiKey;
-//        }
-//
-//        public GetLatLngRes getLatLngByAddress(String address) {
-//            try {
-//                GeoApiContext context = new GeoApiContext.Builder()
-//                        .apiKey(apiKey)
-//                        .build();
-//
-//                GeocodingResult[] results = GeocodingApi.geocode(context, address).await();
-//
-//                if (results.length > 0) {
-//                    GeocodingResult result = results[0];
-//                    double latitude = result.geometry.location.lat;
-//                    double longitude = result.geometry.location.lng;
-//                    return new LatLngResponse(latitude, longitude);
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            return null;
-//        }
-
-
-
 }
 
 

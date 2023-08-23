@@ -77,6 +77,38 @@ public class WishListService {
     // 유저의 위시리스트 조회
     @Transactional
     public List<GetGoodsRes> getGoodsInWishList(Long userId) {
+//        List<GetGoodsRes> goodsList = new ArrayList<>();
+//        // userId를 기반으로 해당 사용자의 WishLists를 찾습니다.
+//        List<WishLists> wishLists = wishListsRepository.findByUserId(userId);
+//
+//        // 사용자의 WishLists에 연결된 goodsId를 모읍니다.
+//        List<Long> goodsIds = wishLists.stream()
+//                .map(wishList -> wishListHasGoodsRepository.findGoodsIdsByWishListId(wishList.getId()))
+//                .flatMap(List::stream)
+//                .collect(Collectors.toList());
+//        for (Long goodsId : goodsIds) {
+//            Goods goods = goodsRepository.findGoodsById(goodsId);
+//
+//            if (goods != null) {
+//                GetGoodsRes goodsDTO = new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl(), goods.getName());
+//                goodsDTO.setId(goods.getId());
+//                goodsDTO.setTitle(goods.getTitle());
+//                goodsDTO.setName(goods.getName());
+//                goodsDTO.setPrice(goods.getPrice());
+//                goodsDTO.setRest(goods.getRest());
+//                goodsDTO.setSale(goods.getSale());
+//                goodsDTO.setCategory_id(goods.getCategory());
+//                goodsDTO.setImg_url(goods.getImageUrl());
+//                goodsDTO.setMarkets_id(goods.getMarkets_id());
+//                goodsDTO.setShelf_life(goods.getShelf_life());
+//                goodsDTO.setUsers_id(goods.getUsers_id());
+//                goodsDTO.setWeight(goods.getWeight());
+//
+//                goodsList.add(goodsDTO);
+//            }
+//        }
+//
+//        return goodsList;
         List<GetGoodsRes> goodsList = new ArrayList<>();
         // userId를 기반으로 해당 사용자의 WishLists를 찾습니다.
         List<WishLists> wishLists = wishListsRepository.findByUserId(userId);
@@ -90,7 +122,11 @@ public class WishListService {
             Goods goods = goodsRepository.findGoodsById(goodsId);
 
             if (goods != null) {
-                GetGoodsRes goodsDTO = new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getSale(), goods.getImageUrl(), goods.getName());
+                // GetGoodsRes 객체를 생성합니다.
+                GetGoodsRes goodsDTO = new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(),
+                        goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(),
+                        goods.getSale(), goods.getImageUrl(), goods.getName());
+
                 goodsDTO.setId(goods.getId());
                 goodsDTO.setTitle(goods.getTitle());
                 goodsDTO.setName(goods.getName());
@@ -103,6 +139,16 @@ public class WishListService {
                 goodsDTO.setShelf_life(goods.getShelf_life());
                 goodsDTO.setUsers_id(goods.getUsers_id());
                 goodsDTO.setWeight(goods.getWeight());
+
+                // WishList의 createdAt 값을 설정합니다.
+                WishLists wishList = wishLists.stream()
+                        .filter(wl -> wishListHasGoodsRepository.findGoodsIdsByWishListId(wl.getId()).contains(goodsId))
+                        .findFirst()
+                        .orElse(null);
+
+//                if (wishList != null) {
+//                    goodsDTO.setCreatedAt(wishList.getCreatedAt());
+//                }
 
                 goodsList.add(goodsDTO);
             }

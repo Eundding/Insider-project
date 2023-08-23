@@ -38,4 +38,5 @@ public interface GoodsRepository extends JpaRepository<Goods, Long> {
     public abstract List<Goods> findAllBySale_priceIsNotNull();
 
 
+
 }

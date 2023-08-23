@@ -21,7 +21,6 @@ public class GetGoodsRes {
     private String weight;
     private Integer rest;
     private String shelf_life;
-    private Integer sale;
     private String img_url;
     private String name;
     private Integer userZipCode;

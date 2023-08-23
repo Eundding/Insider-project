@@ -84,6 +84,16 @@ public class GoodsService {
         }
     }
 
+    // sale 상품 조회
+    public List<GetGoodsRes> getGoodsWithSalePrice() throws BaseException{
+        List<Goods> goodsList = goodsRepository.findAllBySale_priceIsNotNull();
+        List<GetGoodsRes> getGoodsRes = goodsList.stream()
+                .map(goods -> new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getImageUrl(), goods.getSale_price(), goods.getSale_percent(), goods.getName(), goods.getUsers_id().getAddress().getZipCode(), goods.getUsers_id().getAddress().getDetailAddress()))
+                .collect(Collectors.toList());
+        return getGoodsRes;
+    }
+
+
     // 상품 삭제
     @Transactional
     public void deleteGoods(long id) {

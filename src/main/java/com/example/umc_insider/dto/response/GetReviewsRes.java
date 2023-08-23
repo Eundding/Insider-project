@@ -16,3 +16,4 @@ public class GetReviewsRes {
     private Integer point;
     private Timestamp created_at;
 }
+

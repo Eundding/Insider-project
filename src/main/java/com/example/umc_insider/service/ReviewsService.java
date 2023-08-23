@@ -31,50 +31,12 @@ public class ReviewsService {
     }
 
     // 후기 등록
-    public PostReviewsRes createReviews(PostReviewsReq postReviewsReq) throws BaseException {
-        try {
-            Reviews reviews = new Reviews();
-            reviews.createReviews(postReviewsReq.getGoods_id(), postReviewsReq.getChatRoomsId(), postReviewsReq.getContent(), postReviewsReq.getPoint());
-
-            // Set Chat Room ID to the review
-            reviews.setChatRoomsId(postReviewsReq.getChatRoomsId().getId());
-
-            reviewsRepository.save(reviews);
-
-            return new PostReviewsRes(reviews.getContent(), reviews.getPoint());
-        } catch (Exception exception) {
-            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
-        }
-    }
-
-    public Reviews createReview(PostReviewsReq postReviewsReq) throws BaseException {
-        // Get the chat room from the repository by id.
-        Optional<ChatRooms> optionalChatRoom = chatRoomsRepository.findById(postReviewsReq.getChatRoomsId().getId());
-
-        if (!optionalChatRoom.isPresent()) {
-            throw new BaseException(BaseResponseStatus.CHATROOM_NOT_FOUND);
-        }
-
-        ChatRooms chatRoom = optionalChatRoom.get();
-
-        // Check if the chat room has been sold or not.
-        if (!chatRoom.getSellOrNot()) {
-            throw new BaseException(BaseResponseStatus.CHATROOM_NOT_SOLD);
-        }
-
-        // Create a review with the provided request and the found ChatRooms entity.
-        Reviews review = new Reviews().createReviews(postReviewsReq.getGoods_id(), chatRoom, postReviewsReq.getContent(), postReviewsReq.getPoint());
-
-        // Save and return the created review.
-        return reviewsRepository.save(review);
-    }
-
     public PostReviewsRes createReview(Goods goodsId, ChatRooms chatRoomId, String content, Integer point) {
         Reviews review = new Reviews().createReviews(goodsId, chatRoomId,content ,point);
         reviewsRepository.save(review);
 
         // You might need to adjust the following line based on how you have implemented PostReviewsRes.
-        return new PostReviewsRes(review.getId(), review.getContent(), review.getPoint());
+        return new PostReviewsRes(review.getContent(), review.getPoint());
     }
     
 
@@ -102,5 +64,6 @@ public class ReviewsService {
             throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
         }
     }
+
 
 }

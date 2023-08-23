@@ -12,9 +12,7 @@ import com.example.umc_insider.domain.ChatRooms;
 import com.example.umc_insider.repository.ChatRoomsRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -49,7 +47,7 @@ public class ReviewsController {
 
             ChatRooms foundChatRooms = optionalChatRoom.get();
 
-            if (!foundChatRooms.getSellOrNot()) {
+            if (!foundChatRooms.getSeller_or_not() && foundChatRooms.getBuyer_or_not()) {
                 throw new BaseException(BaseResponseStatus.CHATROOM_NOT_SOLD);
             }
 
@@ -69,6 +67,44 @@ public class ReviewsController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
+//    @PostMapping("/create/{chatRoomId}")
+//    public PostReviewsRes createReviews(@PathVariable Long chatRoomId, @RequestBody PostReviewsReq postReviewsReq) {
+//        try {
+//            if (chatRoomId == null) {
+//                throw new BaseException(BaseResponseStatus.CHATROOM_ID_NOT_PROVIDED);
+//            }
+//
+//            Optional<ChatRooms> optionalChatRoom = chatRoomsRepository.findById(chatRoomId);
+//
+//            if (!optionalChatRoom.isPresent()) {
+//                throw new BaseException(BaseResponseStatus.CHATROOM_NOT_FOUND);
+//            }
+//            ChatRooms foundChatRooms = optionalChatRoom.get();
+//            // Get the goods from the chat room.
+//            Goods goodsFromChatroom = foundChatRooms.getGoods();
+//
+//            if (goodsFromChatroom == null) {
+//                throw new BaseException(BaseResponseStatus.GOODS_NOT_FOUND_IN_CHATROOM);
+//            }
+//
+//            String content = postReviewsReq.getContent();
+//            Integer point = postReviewsReq.getPoint();
+//
+//
+//            if (foundChatRooms.getSeller_or_not() && foundChatRooms.getBuyer_or_not()) {
+//                Reviews reviews = reviewsService.createReviews(postReviewsReq);
+//                return new PostReviewsRes(postReviewsReq.getContent(), postReviewsReq.getPoint());
+//            }
+//
+//            else {
+//                throw new BaseException(BaseResponseStatus.CHATROOM_NOT_SOLD);
+//            }
+//
+//
+//        } catch (BaseException exception) {
+//            return new BaseResponse<>(exception.getStatus());
+//        }
+//    }
 
     // 판매완료 추가 전 코드
 //    @PostMapping("/create")

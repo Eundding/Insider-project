@@ -55,13 +55,15 @@ public class ChatRoomsController {
         return ResponseEntity.ok(chatRoomByUserResList);
     }
 
-    // 채팅방에서 구매완료
+    // seller, buyer 둘 다 채팅방에서 구매완료 가능
     @PutMapping("/{id}/purchase")
     public ResponseEntity<ChatRooms> purchase(@PathVariable Long id) {
         return chatRoomsRepository.findById(id)
                 .map(chatRoom -> {
-                    chatRoom.sellCheck(true);
-                    return new ResponseEntity<>(chatRoom, HttpStatus.OK);
+                    chatRoom.sellerCheck(true);
+                    chatRoom.buyerCheck(true);
+                    ChatRooms updatedChatRoom = chatRoomsRepository.save(chatRoom);  // Save the updated state
+                    return new ResponseEntity<>(updatedChatRoom, HttpStatus.OK);
                 })
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

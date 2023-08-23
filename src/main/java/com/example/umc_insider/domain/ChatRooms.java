@@ -33,7 +33,20 @@ public class ChatRooms {
     private Goods goods;
 
     @Column(nullable=true)
-    private Boolean sell_or_not;
+    private Boolean seller_or_not;
+
+    @Column(nullable = true)
+    private Boolean buyer_or_not;
+
+    public ChatRooms sellerCheck(Boolean seller_or_not) {
+        this.seller_or_not = true;
+        return this;
+    }
+
+    public ChatRooms buyerCheck(Boolean buyer_or_not) {
+        this.buyer_or_not = true;
+        return this;
+    }
 
     public ChatRooms createChatRooms(Long sellerIdx, Long buyerIdx, Long goodsIdx){
         this.seller = new Users();
@@ -42,14 +55,15 @@ public class ChatRooms {
         this.buyer.setId(buyerIdx);
         this.goods = new Goods();
         this.goods.setId(goodsIdx);
+
+        // Check both seller and buyer
+        sellerCheck(true);
+        buyerCheck(true);
+
         this.created_at = new Timestamp(System.currentTimeMillis());
         return this;
     }
 
-    public ChatRooms sellCheck(boolean sell_or_not) {
-        this.sell_or_not = true;
-        return this;
-    }
 
     public void setSeller(Users user) {
         this.seller = user;
@@ -57,15 +71,9 @@ public class ChatRooms {
     public void setBuyer(Users user){this.buyer = user;}
     public void setGoods(Goods goods){this.goods = goods;}
 
-    public boolean getSellOrNot() {
-        return sell_or_not;
-    }
 
     public Goods getGoods() {
         return this.goods;
     }
 
-    public void setSellOrNot(boolean sell_or_not) {
-        this.sell_or_not = sell_or_not;
-    }
 }

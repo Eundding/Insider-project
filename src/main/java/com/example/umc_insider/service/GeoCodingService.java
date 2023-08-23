@@ -11,12 +11,8 @@ import org.springframework.stereotype.Service;
 //     우편주소로 위도 경도
 public class GeoCodingService {
 
-    private String googleMapsApiKey;
+    private String googleMapsApiKey = "AIzaSyDtK9y9J5gABl5yI4JF76m8oDBKVZqIWn4";
 
-    @Value("${google.maps.api.key}")
-    public void setGoogleMapsApiKey(String googleMapsApiKey) {
-        this.googleMapsApiKey = googleMapsApiKey;
-    }
 
     public GetLatLngRes getLatLngByAddress(String address) {
         try {

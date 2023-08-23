@@ -6,10 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class PostReviewsRes {
-    private Long id;
     private String content;
     private Integer point;
 
-    public PostReviewsRes(String content, Integer point) {
-    }
 }

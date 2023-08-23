@@ -56,4 +56,16 @@ public class ChatRooms {
     }
     public void setBuyer(Users user){this.buyer = user;}
     public void setGoods(Goods goods){this.goods = goods;}
+
+    public boolean getSellOrNot() {
+        return sell_or_not;
+    }
+
+    public Goods getGoods() {
+        return this.goods;
+    }
+
+    public void setSellOrNot(boolean sell_or_not) {
+        this.sell_or_not = sell_or_not;
+    }
 }

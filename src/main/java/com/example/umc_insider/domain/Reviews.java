@@ -33,13 +33,30 @@ public class Reviews {
     @Column(nullable = false)
     private Timestamp created_at;
 
-    public Reviews createReviews(Goods goods_id, String content, Integer point){
-        this.goods_id = goods_id;
-//        this.chat_room_id = chat_room_id;
+//    public Reviews createReviews(Goods goods_id, String content, Integer point){
+//        this.goods_id = goods_id;
+//        this.content = content;
+//        this.point = point;
+//        this.created_at = new Timestamp(System.currentTimeMillis());
+//
+//        return this;
+//    }
+
+    public Reviews createReviews(Goods goodsId, ChatRooms chatRoomId, String content, Integer point){
+        this.goods_id = goodsId;
+        this.chat_room_id = chatRoomId; // Just set the ChatRooms object.
         this.content = content;
         this.point = point;
         this.created_at = new Timestamp(System.currentTimeMillis());
 
         return this;
+    }
+
+
+
+
+
+    public void setChatRoomsId(Long chatRoomsId) {
+        this.chat_room_id=chat_room_id;
     }
 }

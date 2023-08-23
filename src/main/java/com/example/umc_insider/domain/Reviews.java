@@ -18,7 +18,11 @@ public class Reviews {
 
     @ManyToOne
     @JoinColumn(name = "goods_id")
-    private Goods goods_id; // PK, FK
+    private Goods goods_id; // FK
+
+    @OneToOne
+    @JoinColumn(name = "chat_room_id")
+    private ChatRooms chat_room_id; // FK
 
     @Column(nullable = false)
     private String content;
@@ -31,6 +35,7 @@ public class Reviews {
 
     public Reviews createReviews(Goods goods_id, String content, Integer point){
         this.goods_id = goods_id;
+//        this.chat_room_id = chat_room_id;
         this.content = content;
         this.point = point;
         this.created_at = new Timestamp(System.currentTimeMillis());

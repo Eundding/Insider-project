@@ -5,6 +5,7 @@ import com.example.umc_insider.config.BaseException;
 import com.example.umc_insider.config.BaseResponse;
 import com.example.umc_insider.domain.Messages;
 import com.example.umc_insider.domain.Users;
+import com.example.umc_insider.domain.ChatRooms;
 import com.example.umc_insider.dto.request.PostChatRoomsReq;
 import com.example.umc_insider.dto.response.GetChatRoomByUserRes;
 import com.example.umc_insider.dto.response.GetMessagesRes;
@@ -13,6 +14,7 @@ import com.example.umc_insider.repository.ChatRoomsRepository;
 import com.example.umc_insider.repository.MessagesRepository;
 import com.example.umc_insider.service.ChatRoomsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,6 +55,16 @@ public class ChatRoomsController {
         return ResponseEntity.ok(chatRoomByUserResList);
     }
 
+    // 채팅방에서 구매완료
+    @PutMapping("/{id}/purchase")
+    public ResponseEntity<ChatRooms> purchase(@PathVariable Long id) {
+        return chatRoomsRepository.findById(id)
+                .map(chatRoom -> {
+                    chatRoom.sellCheck(true);
+                    return new ResponseEntity<>(chatRoom, HttpStatus.OK);
+                })
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
 
 }
 

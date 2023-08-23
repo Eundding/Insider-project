@@ -32,6 +32,9 @@ public class ChatRooms {
     @JoinColumn(name = "goods_id")
     private Goods goods;
 
+    @Column(nullable=true)
+    private Boolean sell_or_not;
+
     public ChatRooms createChatRooms(Long sellerIdx, Long buyerIdx, Long goodsIdx){
         this.seller = new Users();
         this.seller.setId(sellerIdx);
@@ -40,6 +43,11 @@ public class ChatRooms {
         this.goods = new Goods();
         this.goods.setId(goodsIdx);
         this.created_at = new Timestamp(System.currentTimeMillis());
+        return this;
+    }
+
+    public ChatRooms sellCheck(boolean sell_or_not) {
+        this.sell_or_not = true;
         return this;
     }
 

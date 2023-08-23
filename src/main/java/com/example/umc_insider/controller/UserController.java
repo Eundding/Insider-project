@@ -66,6 +66,7 @@ public class UserController {
         }
     }
 
+
     // 회원정보 수정
     @PutMapping("/user/modify")
     public BaseResponse<PostUserRes> modifyUser(@RequestBody PutUserReq putUserReq) throws BaseException{

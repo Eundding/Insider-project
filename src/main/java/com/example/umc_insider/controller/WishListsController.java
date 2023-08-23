@@ -40,13 +40,10 @@ public class WishListsController {
 
     // 위시리스트 삭제
     @DeleteMapping("/delete/{userId}/{goodsId}")
-    public ResponseEntity<String> deleteWishList(@PathVariable Long userId, @PathVariable Long goodsId){
-        boolean deleted = wishListService.deleteWishList(userId, goodsId);
-        if (deleted) {
-            return new ResponseEntity<>("상품이 위시 리스트에서 삭제되었습니다.", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("위시 리스트에서 상품을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
-        }
+    public BaseResponse<PostWishListsRes>  deleteWishList(@PathVariable Long userId, @PathVariable Long goodsId) throws BaseException{
+
+        PostWishListsRes response = wishListService.deleteWishList(userId, goodsId);
+        return new BaseResponse<>(response);
     }
 
     // userId, goodsId로 위시리스트에 있는지 true false 반환

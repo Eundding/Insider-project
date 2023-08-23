@@ -112,14 +112,14 @@ public class WishListService {
     }
 
     // 위시리스트 삭제
-    public boolean deleteWishList(Long userId, Long goodsId) {
+    public PostWishListsRes deleteWishList(Long userId, Long goodsId) throws BaseException  {
         Users user = userRepository.findUsersById(userId);
         Goods goods = goodsRepository.findGoodsById(goodsId);
 
         if (user != null && goods != null) {
             List<WishListHasGoods> wlhg = wishListHasGoodsRepository.findByUserIdToWishList(userId, goodsId);
             if (wlhg.isEmpty()) {
-                return false;
+                throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
             }
             WishLists wishList = wlhg.get(0).getWishList();
 
@@ -135,9 +135,9 @@ public class WishListService {
             WishListHasGoods temp = wishListHasGoodsRepository.findByWishListId(wishList.getId());
             wishListHasGoodsRepository.delete(temp);
             wishListsRepository.delete(wishList);
-            return true;
+            return new PostWishListsRes(wishList.getId(), wishList.getUser().getId(), temp.getGoods().getId(), wishList.getCreatedAt());
         }
-        return false;
+        throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
     }
 
     // 위시리스트 체크

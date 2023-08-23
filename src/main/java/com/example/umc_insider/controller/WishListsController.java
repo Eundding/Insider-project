@@ -33,8 +33,8 @@ public class WishListsController {
 
     // 유저별 위시리스트 조회
     @GetMapping("/{userId}")
-    public ResponseEntity<List<GetGoodsRes>>getGoodsInWishList(@PathVariable Long userId) {
-        List<GetGoodsRes> goodsList = wishListService.getGoodsInWishList(userId);
+    public ResponseEntity<List<GetWishListsRes>>getGoodsInWishList(@PathVariable Long userId) {
+        List<GetWishListsRes> goodsList = wishListService.getGoodsInWishList(userId);
         return new ResponseEntity<>(goodsList, HttpStatus.OK);
     }
 

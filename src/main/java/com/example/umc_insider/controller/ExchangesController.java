@@ -19,12 +19,17 @@ public class ExchangesController {
         this.exchangesService = exchangesService;
     }
 
+    // 교환등록
     @PostMapping("/register")
     public ResponseEntity<String> registerExchange(@RequestBody PostExchangesReq request) {
+        if (request.getMineGoodsId() == null) {
+            return ResponseEntity.badRequest().body("mineGoodsId cannot be null");
+        }
         Exchanges exchange = exchangesService.registerExchange(request.getMineGoodsId(), request.getExchangeItem());
         return ResponseEntity.ok("Exchange registered with ID: " + exchange.getId());
     }
 
+    // 교환완료
     @PostMapping("/complete/{exchangeId}")
     public ResponseEntity<String> completeExchange(@PathVariable Long exchangeId) {
         Exchanges exchange = exchangesService.completeExchange(exchangeId);

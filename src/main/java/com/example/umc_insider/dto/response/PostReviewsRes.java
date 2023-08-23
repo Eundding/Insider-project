@@ -5,8 +5,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-
 public class PostReviewsRes {
     private String content;
     private Integer point;
+
 }

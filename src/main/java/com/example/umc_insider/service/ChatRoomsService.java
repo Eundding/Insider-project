@@ -112,6 +112,8 @@ public class ChatRoomsService {
             chatRoom.setGoods(null);
         }
     }
+
+
 }
 
 

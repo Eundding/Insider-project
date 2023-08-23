@@ -92,14 +92,15 @@ public class WishListService {
                 // GetGoodsRes 객체를 생성합니다.
                 GetWishListsRes goodsDTO = new GetWishListsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(),
                         goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(),
-                        goods.getSale(), goods.getImageUrl(), goods.getName(), wishLists.get(i).getCreatedAt());
+                        goods.getImageUrl(), goods.getSale_price(), goods.getSale_percent(), goods.getName(), wishLists.get(i).getCreatedAt());
 
                 goodsDTO.setId(goods.getId());
                 goodsDTO.setTitle(goods.getTitle());
                 goodsDTO.setName(goods.getName());
                 goodsDTO.setPrice(goods.getPrice());
                 goodsDTO.setRest(goods.getRest());
-                goodsDTO.setSale(goods.getSale());
+                goodsDTO.setSale_price(goods.getSale_price());
+                goodsDTO.setSale_percent(goods.getSale_percent());
                 goodsDTO.setCategory_id(goods.getCategory());
                 goodsDTO.setImg_url(goods.getImageUrl());
                 goodsDTO.setMarkets_id(goods.getMarkets_id());

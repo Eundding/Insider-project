@@ -30,7 +30,11 @@ public enum BaseResponseStatus {
     MODIFY_FAIL_USERNAME(false, 4014, "유저네임 수정 실패"),
     MODIFY_FAIL_BOARDTITLE(false, 4015, "게시글 제목 수정 실패"),
     PASSWORD_ENCRYPTION_ERROR(false, 4011, "비밀번호 암호화에 실패하였습니다."),
-    PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다.");
+    PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다."),
+    CHATROOM_NOT_FOUND(false, 5001, "채팅방을 찾을 수 없습니다."),
+    CHATROOM_NOT_SOLD(false, 5002, "상품이 판매되지 않았습니다."),
+    CHATROOM_ID_NOT_PROVIDED(false, 5003, "채팅방 ID가 제공되지 않았습니다."),
+    GOODS_NOT_FOUND_IN_CHATROOM(false, 5004, "채팅방에서 상품을 찾을 수 없습니다.");
 
 
     private final boolean isSuccess;

@@ -1,6 +1,7 @@
 package com.example.umc_insider.service;
 
 import com.example.umc_insider.config.BaseException;
+import com.example.umc_insider.config.BaseResponseStatus;
 import com.example.umc_insider.domain.Goods;
 import com.example.umc_insider.domain.Users;
 import com.example.umc_insider.domain.WishListHasGoods;
@@ -26,6 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.example.umc_insider.config.BaseResponseStatus.FAILED_TO_LOGIN;
+
 @Service
 @RequiredArgsConstructor
 public class WishListService {
@@ -46,6 +49,12 @@ public class WishListService {
         if(postWishListsReq.getUserId() != null && postWishListsReq.getGoodsId() != null){
             Users user = userRepository.findUsersById(postWishListsReq.getUserId());
             Goods goods = goodsRepository.findGoodsById(postWishListsReq.getGoodsId());
+
+            // 중복 체크
+            WishListHasGoods existingEntry = wishListHasGoodsRepository.findByUserIdToWishListObject(user.getId(), goods.getId());
+            if (existingEntry != null) {
+                throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+            }
 
             WishLists wishList = new WishLists();
             wishList.setUser(user);

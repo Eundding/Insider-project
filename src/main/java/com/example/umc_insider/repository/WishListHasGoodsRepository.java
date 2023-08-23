@@ -20,4 +20,8 @@ public interface WishListHasGoodsRepository extends JpaRepository<WishListHasGoo
 
     @Query("select wh from WishLists w, WishListHasGoods wh where wh.wishList.id = :wishListId")
     WishListHasGoods findByWishListId(@Param("wishListId") Long wishListId);
+
+    @Query("select wh from WishLists w, WishListHasGoods wh where w.user.id= :userId and wh.goods.id = :goodsId")
+    WishListHasGoods findByUserIdToWishListObject(@Param("userId") Long userId, @Param("goodsId") Long goodsId);
+
 }

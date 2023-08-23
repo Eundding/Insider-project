@@ -28,7 +28,6 @@ public class WishListsController {
     @PostMapping("/create")
     public BaseResponse<PostWishListsRes> addGoodsToWishList(@RequestBody PostWishListsReq postWishListsReq) throws BaseException {
         PostWishListsRes response = wishListService.addGoodsToWishList(postWishListsReq);
-       // PostWishListsRes response = new PostWishListsRes(wishLists.getId(), wishLists.getUser().getId(), postWishListsReq.getGoodsId(), wishLists.getCreatedAt());
         return new BaseResponse<>(response);
     }
 

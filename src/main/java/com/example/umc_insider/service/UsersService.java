@@ -4,17 +4,14 @@ import com.example.umc_insider.config.BaseException;
 import com.example.umc_insider.config.BaseResponseStatus;
 import com.example.umc_insider.domain.Address;
 import com.example.umc_insider.domain.Users;
-import com.example.umc_insider.domain.UsersImages;
 import com.example.umc_insider.dto.request.*;
 import com.example.umc_insider.dto.response.GetUserByIdRes;
 import com.example.umc_insider.dto.request.PostLoginReq;
 import com.example.umc_insider.dto.request.PostUserReq;
-import com.example.umc_insider.dto.request.PutUserImgReq;
 import com.example.umc_insider.dto.response.GetUserRes;
 import com.example.umc_insider.dto.response.PostLoginRes;
 import com.example.umc_insider.dto.response.PostUserRes;
 import com.example.umc_insider.repository.AddressRepository;
-import com.example.umc_insider.repository.UserImageRepository;
 import com.example.umc_insider.utils.JwtService;
 import com.example.umc_insider.utils.SHA256;
 import jakarta.transaction.Transactional;
@@ -37,14 +34,12 @@ import static com.example.umc_insider.config.BaseResponseStatus.*;
 public class UsersService {
     private UserRepository userRepository;
     private AddressRepository addressRepository;
-    private UserImageRepository userImageRepository;
     private final JwtService jwtService;
     private final S3Service s3Service;
 
     @Autowired
-    public UsersService(UserRepository userRepository, UserImageRepository userImageRepository, JwtService jwtService, AddressRepository addressRepository, S3Service s3Service) {
+    public UsersService(UserRepository userRepository, JwtService jwtService, AddressRepository addressRepository, S3Service s3Service) {
         this.userRepository = userRepository;
-        this.userImageRepository = userImageRepository;
         this.jwtService = jwtService;
         this.addressRepository = addressRepository;
         this.s3Service = s3Service;
@@ -115,14 +110,6 @@ public class UsersService {
         return userRepository.save(user);
     }
 
-
-    // 이미지 수정/등록
-    @Transactional
-    public void putUserImg(PutUserImgReq putUserImgReq,  MultipartFile file) {
-        UsersImages usersImage = userImageRepository.getReferenceById(putUserImgReq.getUserId());
-        usersImage.putImg(putUserImgReq.getImg_url());
-    }
-
     // 유저 프로필 이미지 등록
     public Users registerProfile(PutUserProfileReq putUserProfileReq, MultipartFile file){
         Users user = userRepository.findUsersById(putUserProfileReq.getId());
@@ -189,10 +176,7 @@ public class UsersService {
         return new GetUserByIdRes(user.getNickname(), user.getUser_id(), user.getPw(), user.getEmail(), user.getAddress().getZipCode(), user.getAddress().getDetailAddress(), user.getImage_url());
     }
 
-    public void putUserImg(PutUserImgReq putUserImgReq) {
-        UsersImages usersImage = userImageRepository.getReferenceById(putUserImgReq.getUserId());
-        usersImage.putImg(putUserImgReq.getImg_url());
-    }
+
 
 }
 

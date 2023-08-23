@@ -112,7 +112,7 @@ public class GoodsController {
     }
 
     // 상품수정 - PUT
-    @PutMapping("update/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<Goods> update(@PathVariable Long id, @RequestBody Goods goods) {
         Goods updatedGoods = goodsService.update(id, goods);
         if (updatedGoods != null) {

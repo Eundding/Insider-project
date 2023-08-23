@@ -21,11 +21,15 @@ public class Goods {
 
     @ManyToOne
     @JoinColumn(name = "users_id")
-    private Users users_id; // PK, FK
+    private Users users_id; // FK
 
     @ManyToOne
     @JoinColumn(name = "markets_id")
-    private Markets markets_id; // PK, FK
+    private Markets markets_id; // FK
+
+    @OneToOne
+    @JoinColumn(name = "category_id")
+    private Category category; // FK
 
     @Column(nullable = false)
     private String title;
@@ -43,9 +47,6 @@ public class Goods {
     private String shelf_life;
 
     @Column(nullable = true)
-    private Integer sale;
-
-    @Column(nullable = true)
     private String imageUrl;
 
     @Column(nullable = false)
@@ -57,9 +58,11 @@ public class Goods {
     @Column(nullable = true)
     private String name; // name 추가
 
-    @OneToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @Column(nullable = true)
+    private Integer sale_price;
+
+    @Column(nullable = true)
+    private Integer sale_percent;
 
     public Goods createGoods(String title, String price, Integer rest, String shelf_life, Long userIdx, String name) {
         this.title = title;
@@ -137,5 +140,8 @@ public class Goods {
     public void setWeight(String weight) {
         this.weight = weight;
     }
+
+    public void setSale_price(Integer sale_price) {this.sale_price = sale_price;}
+    public void setSale_percent(Integer sale_percent) {this.sale_percent = sale_percent;}
 
 }

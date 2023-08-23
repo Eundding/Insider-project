@@ -3,8 +3,7 @@ package com.example.umc_insider.repository;
 import java.util.List;
 
 import com.example.umc_insider.domain.Goods;
-import com.example.umc_insider.domain.Markets;
-import com.example.umc_insider.domain.Users;
+import com.example.umc_insider.dto.response.GetGoodsRes;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -34,6 +33,9 @@ public interface GoodsRepository extends JpaRepository<Goods, Long> {
 
     @Query("SELECT g FROM Goods g LEFT JOIN FETCH g.users_id")
     List<Goods> findAllWithUsers();
+
+    @Query("select g from Goods g where g.sale_price != null")
+    public abstract List<Goods> findAllBySale_priceIsNotNull();
 
 
 }

@@ -10,6 +10,7 @@ import com.example.umc_insider.domain.Category;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class GetGoodsRes {
     private Long id;
     private Category category_id;
@@ -20,7 +21,6 @@ public class GetGoodsRes {
     private String weight;
     private Integer rest;
     private String shelf_life;
-    private Integer sale;
     private String img_url;
     private String name;
     private Integer userZipCode;

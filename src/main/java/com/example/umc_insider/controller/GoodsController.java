@@ -3,27 +3,18 @@ package com.example.umc_insider.controller;
 import com.example.umc_insider.config.BaseException;
 import com.example.umc_insider.config.BaseResponse;
 import com.example.umc_insider.config.BaseResponseStatus;
-import com.example.umc_insider.domain.Users;
 import com.example.umc_insider.domain.Goods;
 import com.example.umc_insider.dto.request.*;
 import com.example.umc_insider.dto.response.*;
-import com.example.umc_insider.repository.UserRepository;
-import com.example.umc_insider.repository.GoodsRepository;
 import com.example.umc_insider.service.GoodsService;
 //import com.example.umc_insider.service.S3Service;
 import com.example.umc_insider.service.S3Service;
-import com.example.umc_insider.service.UsersService;
 import com.example.umc_insider.utils.JwtService;
 
-import io.jsonwebtoken.Jwt;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.http.HttpStatus;
-
-import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
@@ -34,6 +25,7 @@ public class GoodsController {
     private final GoodsService goodsService;
     private final JwtService jwtService;
     private final S3Service s3Service;
+//    private final GoodsRepository goodsRepository;
 
     @Autowired
     public GoodsController(GoodsService goodsService, S3Service s3Service, JwtService jwtService){
@@ -97,7 +89,6 @@ public class GoodsController {
         return new BaseResponse<>(result);
     }
 
-
     // id로 Goods 조회
     @GetMapping("/{id}")
     public GetGoodsRes getGoodsById(@PathVariable Long id){
@@ -120,6 +111,11 @@ public class GoodsController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/sale")
+    public BaseResponse<List<GetGoodsRes>> getGoodsWithSalePrice() throws BaseException {
+        return new BaseResponse<>(goodsService.getGoodsWithSalePrice());
     }
 
 }

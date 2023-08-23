@@ -24,17 +24,8 @@ public class GetGoodsRes {
     private Integer sale;
     private String img_url;
     private String name;
-    private Integer userZipCode; // 추가
-
-//    public GetGoodsRes(String title, String price, String weight, int rest, String shelf_life, String img_url, String name){
-//        this.title = title;
-//        this.price = price;
-//        this.weight = weight;
-//        this.rest = rest;
-//        this.shelf_life = shelf_life;
-//        this.img_url = img_url;
-//        this.name = name;
-//    }
+    private Integer userZipCode;
+    private String detailAddress;
 
     public GetGoodsRes(Long id, Category categoryId, Users usersId, Markets marketsId, String title, String price, String weight, Integer rest, String shelfLife, Integer sale, String imageUrl) {
         this.id = id;

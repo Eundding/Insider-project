@@ -15,4 +15,5 @@ public class GetUserByIdRes {
     private Integer zipCode;
     private String detailAddress;
     private String img;
+    private Integer sellerOrBuyer;
 }

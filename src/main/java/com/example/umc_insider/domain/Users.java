@@ -46,17 +46,20 @@ public class Users {
     @Column(nullable = true)
     private String image_url;
 
+    @Column(nullable = true)
+    private Integer seller_or_buyer; // 1: 판매자, 0: 구매자
 
-    public Users createUser(String userId, String nickName, String email, String password) {
-        this.user_id = userId;
-        this.email = email;
-        this.nickname = nickName;
-        this.pw = password;
-        this.created_at = new Timestamp(System.currentTimeMillis());
-        this.updated_at = new Timestamp(System.currentTimeMillis());
-        this.address = address;
-        return this;
-    }
+
+//    public Users createUser(String userId, String nickName, String email, String password) {
+//        this.user_id = userId;
+//        this.email = email;
+//        this.nickname = nickName;
+//        this.pw = password;
+//        this.created_at = new Timestamp(System.currentTimeMillis());
+//        this.updated_at = new Timestamp(System.currentTimeMillis());
+//        this.address = address;
+//        return this;
+//    }
 
     public void setId(Long id) {
         this.id = id;
@@ -68,7 +71,6 @@ public class Users {
     public void setCreated_at(){this.created_at =  new Timestamp(System.currentTimeMillis());}
     public void setUpdated_at(){this.updated_at =  new Timestamp(System.currentTimeMillis());}
     public void setAddress(Address address) {this.address = address; }
-
     public void setImageUrl(String url){
         this.image_url = url;
     }

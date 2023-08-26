@@ -6,10 +6,8 @@ import com.example.umc_insider.domain.Goods;
 @Getter
 @AllArgsConstructor
 public class PostExchangesReq {
+    private Long yoursGoodsId;
     private Long mineGoodsId;
     private String exchangeItem;
-//    private Goods yoursGoods;
     private String status;
-//    private Long mineGoodsId;
-//    private Long yoursGoodsId;
 }

@@ -11,7 +11,6 @@ import com.example.umc_insider.dto.request.PostExchangesReq;
 @RestController
 @RequestMapping("/exchanges")
 public class ExchangesController {
-
     private final ExchangesService exchangesService;
 
     @Autowired

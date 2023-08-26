@@ -1,6 +1,5 @@
 package com.example.umc_insider.domain;
 
-
 import jakarta.persistence.*;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -8,7 +7,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 import java.sql.Timestamp;
-
 @Entity
 @Getter
 @NoArgsConstructor

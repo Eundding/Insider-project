@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 
 
@@ -48,6 +49,9 @@ public class Users {
 
     @Column(nullable = true)
     private Integer seller_or_buyer; // 1: 판매자, 0: 구매자
+
+    @Column(nullable = true)
+    private Long register_number;
 
 
 //    public Users createUser(String userId, String nickName, String email, String password) {

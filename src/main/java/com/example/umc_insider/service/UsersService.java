@@ -11,32 +11,17 @@ import com.example.umc_insider.dto.request.PostUserReq;
 import com.example.umc_insider.repository.AddressRepository;
 import com.example.umc_insider.utils.JwtService;
 import com.example.umc_insider.utils.SHA256;
-import com.google.maps.GeoApiContext;
-import com.google.maps.GeocodingApi;
-import com.google.maps.model.GeocodingResult;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
 import com.example.umc_insider.repository.UserRepository;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.stereotype.Component;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.*;
-
 import static com.example.umc_insider.config.BaseResponseStatus.*;
-import com.google.maps.GeoApiContext;
+
 @Component
 @Configuration
 @RequiredArgsConstructor
@@ -72,7 +57,7 @@ public class UsersService {
     private List<GetUserRes> mapToUserResponseList(List<Users> users) {
         List<GetUserRes> userResponses = new ArrayList<>();
         for (Users user : users) {
-            userResponses.add(new GetUserRes(user.getId(), user.getUser_id(), user.getNickname(), user.getEmail(), user.getPw(), user.getAddress()));
+            userResponses.add(new GetUserRes(user.getId(), user.getUser_id(), user.getNickname(), user.getEmail(), user.getPw(), user.getAddress(), user.getSeller_or_buyer()));
         }
         return userResponses;
     }
@@ -84,9 +69,7 @@ public class UsersService {
     }
 
 
-    /**
-     * 유저 로그인
-     */
+    // 로그인
     public PostLoginRes logIn(PostLoginReq postLoginReq) throws BaseException {
         Users users = userRepository.findUserByUserId(postLoginReq.getUserId());
         String encryptPw;
@@ -183,7 +166,7 @@ public class UsersService {
     // id로 유저 조회
     public GetUserByIdRes getUserById(Long id){
         Users user = userRepository.findUsersById(id);
-        return new GetUserByIdRes(user.getNickname(), user.getUser_id(), user.getPw(), user.getEmail(), user.getAddress().getZipCode(), user.getAddress().getDetailAddress(), user.getImage_url());
+        return new GetUserByIdRes(user.getNickname(), user.getUser_id(), user.getPw(), user.getEmail(), user.getAddress().getZipCode(), user.getAddress().getDetailAddress(), user.getImage_url(), user.getSeller_or_buyer());
     }
 }
 

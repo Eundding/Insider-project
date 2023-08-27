@@ -27,8 +27,9 @@ public class GetGoodsRes {
     private String detailAddress;
     private Integer sale_price;
     private Integer sale_percent;
+    private Integer sellerOrBuyer;
 
-    public GetGoodsRes(Long id, Category categoryId, Users usersId, Markets marketsId, String title, String price, String weight, Integer rest, String shelfLife, String imageUrl, Integer salePrice, Integer salePercent, String name, Integer zipCode, String detailAddress) {
+    public GetGoodsRes(Long id, Category categoryId, Users usersId, Markets marketsId, String title, String price, String weight, Integer rest, String shelfLife, String imageUrl, Integer salePrice, Integer salePercent, String name, Integer zipCode, String detailAddress, Integer sellerOrBuyer) {
         this.id = id;
         this.category_id = categoryId;
         this.users_id = usersId;
@@ -44,5 +45,6 @@ public class GetGoodsRes {
         this.name = name;
         this.userZipCode = zipCode;
         this.detailAddress = detailAddress;
+        this.sellerOrBuyer = sellerOrBuyer;
     }
 }

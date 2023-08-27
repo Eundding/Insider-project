@@ -14,16 +14,17 @@ public class PostUserReq {
     private String email;
     private Integer zipCode;
     private String detailAddress;
+    private Integer sellerOrBuyer;
 
     public Users createUserWithAddress() {
         Users newUser = new Users();
-        // 사용자 관련 필드 설정 (예: newUser.setName(this.getName());)
         newUser.setUser_id(this.userId);
         newUser.setCreated_at();
         newUser.setUpdated_at();
         newUser.setEmail(this.email);
         newUser.setPw(this.pw);
         newUser.setNickname(this.nickname);
+        newUser.setSeller_or_buyer(this.sellerOrBuyer);
 
         Address newAddress = new Address();
         newAddress.setZipCode(this.getZipCode());

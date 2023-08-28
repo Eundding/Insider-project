@@ -5,14 +5,21 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Timestamp;
+
 @Getter
 @Setter
 @AllArgsConstructor
 public class PostExchangesRes {
-    private Long exchangeId;
-//    private Long mineGoodsId;
-    private Goods mineGoods;
-    private String exchangeItem;
-//    private Goods yoursGoods;
-//    private String status;
+    private Long id;
+    private String title;
+    private String imageUrl;
+    private String name;
+    private Integer count;
+    private String wantItem;
+    private String weight;
+    private String shelfLife;
+    private Timestamp createdAt;
+    private Long categoryId;
+    private Long userId;
 }

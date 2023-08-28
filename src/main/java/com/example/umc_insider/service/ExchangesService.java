@@ -1,6 +1,12 @@
 package com.example.umc_insider.service;
 
+import com.example.umc_insider.domain.Category;
+import com.example.umc_insider.domain.Users;
+import com.example.umc_insider.dto.request.PostExchangesReq;
+import com.example.umc_insider.dto.request.PostGoodsReq;
+import com.example.umc_insider.repository.CategoryRepository;
 import com.example.umc_insider.repository.GoodsRepository;
+import com.example.umc_insider.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,55 +14,46 @@ import com.example.umc_insider.repository.ExchangesRepository;
 import com.example.umc_insider.domain.Exchanges;
 import com.example.umc_insider.domain.Goods;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class ExchangesService {
     private ExchangesRepository exchangesRepository;
     private GoodsRepository goodsRepository;
+    private UserRepository userRepository;
+    private CategoryRepository categoryRepository;
+    private S3Service s3Service;
 
     @Autowired
-    public ExchangesService(ExchangesRepository exchangesRepository, GoodsRepository goodsRepository){
+    public ExchangesService(ExchangesRepository exchangesRepository, GoodsRepository goodsRepository, UserRepository userRepository, CategoryRepository categoryRepository, S3Service s3Service) {
         this.exchangesRepository = exchangesRepository;
         this.goodsRepository = goodsRepository;
+        this.userRepository = userRepository;
+        this.categoryRepository = categoryRepository;
+        this.s3Service = s3Service;
     }
 
-//    public Exchanges registerExchange(Long mineGoods, String exchangesItem) {
-//        Exchanges exchange = new Exchanges()
-//                .registerExchanges(mineGoods, exchangesItem, "교환");
-//        return exchangesRepository.save(exchange);
+    public Exchanges createNewExchangesInstance(PostExchangesReq postExchangesReq, MultipartFile file) {
+        Users user = userRepository.findUsersById(postExchangesReq.getUserId());
+        Category category = categoryRepository.findCategoryByCategoryId(postExchangesReq.getCategoryId());
+        Exchanges exchanges = new Exchanges(postExchangesReq, user, category);
 
+        exchangesRepository.save(exchanges);
 
-//    @Transactional
-//    public Exchanges registerExchange(Long mineGoodsId, String exchangeItem) {
-//        // Find the Goods entity by id.
-//        Goods mineGoods = goodsRepository.findById(mineGoodsId)
-//                .orElseThrow(() -> new IllegalArgumentException("Invalid mine_goods_id: " + mineGoodsId));
-//
-//        // Create a new Exchanges entity.
-//        Exchanges exchange = new Exchanges();
-//
-//        // Set the found Goods entity to the exchange.
-//        exchange.setMineGoods(mineGoods);
-//        exchange.setExchangeItem(exchangeItem);
-//
-//        return exchangesRepository.save(exchange);
-//    }
+        // S3에 이미지 업로드 및 URL 받기
+        String imageUrl = s3Service.uploadExchangesS3(file, exchanges);
 
-    public Exchanges registerExchange(Long mineGoodsId, String exchangesItem) {
-        Goods mineGoods = goodsRepository.findById(mineGoodsId)
-                .orElseThrow(() -> new EntityNotFoundException("Goods with ID " + mineGoodsId + " not found"));
+        // 이미지 URL 설정 후, 객체 업데이트
+        exchanges.setImageUrl(imageUrl);
 
-        Exchanges exchange = new Exchanges()
-                .registerExchanges(mineGoods.getId(), exchangesItem, "교환");
+        exchangesRepository.save(exchanges);
 
-        return exchangesRepository.save(exchange);
+        return exchanges;
     }
 
 
-    public Exchanges completeExchange(Long exchangeId) {
-        Exchanges exchange = exchangesRepository.findById(exchangeId)
-                .orElseThrow(() -> new EntityNotFoundException("Exchange not found with ID: " + exchangeId));
-        exchange.completionExchanges("교환완료");
-        return exchangesRepository.save(exchange);
-    }
+
+
+
+
 }

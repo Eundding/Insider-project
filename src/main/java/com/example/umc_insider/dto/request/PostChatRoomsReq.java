@@ -8,5 +8,6 @@ import lombok.Getter;
 public class PostChatRoomsReq {
     private Long sellerId;
     private Long buyerId;
-    private Long goodsId;
+    private Integer status; // 0이면 goods, 1이면 exchanges로
+    private Long goodsOrExchangesId;
 }

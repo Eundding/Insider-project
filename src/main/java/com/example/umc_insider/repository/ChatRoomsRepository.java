@@ -21,6 +21,7 @@ public interface ChatRoomsRepository extends JpaRepository<ChatRooms, Long> {
     List<ChatRooms> findBySellerIdOrBuyerId(Long id);
 
     ChatRooms findBySellerIdAndBuyerIdAndGoodsId(Long sellerId, Long buyerId, Long goodsId);
+    ChatRooms findBySellerIdAndBuyerIdAndExchangesId(Long sellerId, Long buyerId, Long exchangesId);
 
     // 해당 상품을 참조하는 모든 채팅방 레코드를 가져오는 메서드
     List<ChatRooms> findByGoodsId(Long goodsId);

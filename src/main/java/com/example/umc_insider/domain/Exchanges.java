@@ -72,5 +72,6 @@ public class Exchanges {
     public void setCount(Integer c){this.count = c;}
     public void setWantItem(String w){this.wantItem = w;}
     public void setShelfLife(String s){this.shelfLife = s;}
+    public void setId(Long id){this.id = id;}
 
 }

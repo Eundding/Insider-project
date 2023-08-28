@@ -32,6 +32,11 @@ public class ChatRooms {
     @JoinColumn(name = "goods_id")
     private Goods goods;
 
+    @ManyToOne
+    @JoinColumn(name = "exchanges_id")
+    private Exchanges exchanges;
+
+
     @Column(nullable=true)
     private Boolean seller_or_not;
 
@@ -48,13 +53,20 @@ public class ChatRooms {
         return this;
     }
 
-    public ChatRooms createChatRooms(Long sellerIdx, Long buyerIdx, Long goodsIdx){
+    public ChatRooms createChatRooms(Long sellerIdx, Long buyerIdx, Integer status, Long idx){
         this.seller = new Users();
         this.seller.setId(sellerIdx);
         this.buyer = new Users();
         this.buyer.setId(buyerIdx);
-        this.goods = new Goods();
-        this.goods.setId(goodsIdx);
+
+        if(status == 0){
+            this.goods = new Goods();
+            this.goods.setId(idx);
+        }
+        else{
+            this.exchanges = new Exchanges();
+            this.exchanges.setId(idx);
+        }
 
         this.created_at = new Timestamp(System.currentTimeMillis());
         return this;
@@ -74,6 +86,7 @@ public class ChatRooms {
     }
     public void setBuyer(Users user){this.buyer = user;}
     public void setGoods(Goods goods){this.goods = goods;}
+    public void setExchanges(Exchanges exchanges){this.exchanges = exchanges;}
 
 
     public Goods getGoods() {

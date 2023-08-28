@@ -60,8 +60,6 @@ public class ChatRoomsController {
     public ResponseEntity<ChatRooms> purchase(@PathVariable Long id) {
         return chatRoomsRepository.findById(id)
                 .map(chatRoom -> {
-//                    chatRoom.sellerCheck(true);
-//                    chatRoom.buyerCheck(true);
                     chatRoom.sellOrNot();
                     ChatRooms updatedChatRoom = chatRoomsRepository.save(chatRoom);  // Save the updated state
                     return new ResponseEntity<>(updatedChatRoom, HttpStatus.OK);

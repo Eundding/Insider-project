@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 @Service
 //     우편주소로 위도 경도
 public class GeoCodingService {
-
     private String googleMapsApiKey;
 
     @Value("${google.maps.api.key}")

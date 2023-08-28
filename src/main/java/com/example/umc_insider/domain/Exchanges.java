@@ -66,5 +66,11 @@ public class Exchanges {
     public void setImageUrl(String url) {
         this.imageUrl = url;
     }
+    public void setTitle(String t){this.title = t;}
+    public void setName(String n){this.name = n;}
+    public void setWeight(String w){this.weight = w;}
+    public void setCount(Integer c){this.count = c;}
+    public void setWantItem(String w){this.wantItem = w;}
+    public void setShelfLife(String s){this.shelfLife = s;}
 
 }

@@ -4,6 +4,7 @@ import com.example.umc_insider.domain.Exchanges;
 import com.example.umc_insider.domain.Goods;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,4 +18,9 @@ public interface ExchangesRepository extends JpaRepository<Exchanges, Long> {
     List<Exchanges> findAllWithUsers();
 
     List<Exchanges> findByTitleContaining(String title);
+
+    @Query("select g from Exchanges g where g.id=:id")
+    Exchanges findExchangesById(@Param("id") Long id);
+
+    List<Exchanges> findByCategory_Id(Long category_id);
 }

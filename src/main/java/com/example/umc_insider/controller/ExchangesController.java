@@ -52,36 +52,37 @@ public class ExchangesController {
         }
     }
 
-    // 교환삭제
-//    @DeleteMapping ("/delete/{id}")
-//    public long deleteGoods(@PathVariable long id){
-//        this.exchangesService.deleteGoods(id);
-//        return id;
-//    }
+    // id로 교환하기 조회
+    @GetMapping("/{id}")
+    public PostExchangesRes getGoodsById(@PathVariable Long id){
+        PostExchangesRes postExchangesRes = exchangesService.getExchangesById(id);
+        return postExchangesRes;
+    }
 
-//    // id로 Goods 조회
-//    @GetMapping("/{id}")
-//    public GetGoodsRes getGoodsById(@PathVariable Long id){
-//        GetGoodsRes getGoodsRes = goodsService.getGoodsById(id);
-//        return getGoodsRes;
-//    }
-//
-//    // category_id로 Goods 조회
-//    @GetMapping("/category/{category_id}")
-//    public ResponseEntity<List<GetGoodsRes>> getGoodsByCategoryId(@PathVariable Long category_id) {
-//        return ResponseEntity.ok(goodsService.getGoodsByCategoryId(category_id));
-//    }
-//
-//    // 상품수정 - PUT
-//    @PutMapping("/update/{id}")
-//    public ResponseEntity<Goods> update(@PathVariable Long id, @RequestBody Goods goods) {
-//        Goods updatedGoods = goodsService.update(id, goods);
-//        if (updatedGoods != null) {
-//            return ResponseEntity.ok(updatedGoods);
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
+    // category_id로 교환하기 조회
+    @GetMapping("/category/{category_id}")
+    public ResponseEntity<List<PostExchangesRes>> getExchangesByCategoryId(@PathVariable Long category_id) {
+        return ResponseEntity.ok(exchangesService.getExchangesByCategoryId(category_id));
+    }
+
+
+    // 교환하기 수정
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Exchanges> update(@PathVariable Long id, @RequestBody Exchanges exchanges) {
+        Exchanges e = exchangesService.update(id, exchanges);
+        if (exchanges != null) {
+            return ResponseEntity.ok(e);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // 교환삭제
+    @DeleteMapping ("/delete/{id}")
+    public long deleteGoods(@PathVariable long id){
+        this.exchangesService.deleteExchanges(id);
+        return id;
+    }
 
 
 }

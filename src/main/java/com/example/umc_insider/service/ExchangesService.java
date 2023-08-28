@@ -5,6 +5,7 @@ import com.example.umc_insider.domain.Category;
 import com.example.umc_insider.domain.Users;
 import com.example.umc_insider.dto.request.PostExchangesReq;
 import com.example.umc_insider.dto.request.PostGoodsReq;
+import com.example.umc_insider.dto.response.GetGoodsRes;
 import com.example.umc_insider.dto.response.PostExchangesRes;
 import com.example.umc_insider.repository.CategoryRepository;
 import com.example.umc_insider.repository.GoodsRepository;
@@ -70,6 +71,49 @@ public class ExchangesService {
                 .map(newExchanges -> new PostExchangesRes(newExchanges.getId(), newExchanges.getTitle(), newExchanges.getImageUrl(), newExchanges.getName(), newExchanges.getCount(), newExchanges.getWantItem(), newExchanges.getWeight(), newExchanges.getShelfLife(),newExchanges.getCreated_at() ,newExchanges.getCategory().getId(), newExchanges.getUser().getId()))
                 .collect(Collectors.toList());
         return response;
+    }
+
+    // id로 교환하기 조회
+    public PostExchangesRes getExchangesById(Long id) {
+        Exchanges newExchanges = exchangesRepository.findExchangesById(id);
+        return new PostExchangesRes(newExchanges.getId(), newExchanges.getTitle(), newExchanges.getImageUrl(), newExchanges.getName(), newExchanges.getCount(), newExchanges.getWantItem(), newExchanges.getWeight(), newExchanges.getShelfLife(),newExchanges.getCreated_at() ,newExchanges.getCategory().getId(), newExchanges.getUser().getId());
+    }
+
+    // category_id로 goods 조회
+    public List<PostExchangesRes> getExchangesByCategoryId(Long category_id) {
+        List<Exchanges> eList = exchangesRepository.findByCategory_Id(category_id);
+        List<PostExchangesRes> postExchangesRes = eList.stream()
+                .map(newExchanges -> new PostExchangesRes(newExchanges.getId(), newExchanges.getTitle(), newExchanges.getImageUrl(), newExchanges.getName(), newExchanges.getCount(), newExchanges.getWantItem(), newExchanges.getWeight(), newExchanges.getShelfLife(),newExchanges.getCreated_at() ,newExchanges.getCategory().getId(), newExchanges.getUser().getId()))
+                .collect(Collectors.toList());
+        return postExchangesRes;
+    }
+
+    // 모든 항목 수정
+    public Exchanges update(Long id, Exchanges exchanges){
+        Exchanges e = exchangesRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다. id=" + id));
+
+        e.setTitle(exchanges.getTitle());
+        e.setName(exchanges.getName());
+        e.setCount(exchanges.getCount());
+        e.setWeight(exchanges.getWeight());
+        e.setShelfLife(exchanges.getShelfLife());
+        e.setWantItem(exchanges.getWantItem());
+        e.setImageUrl(exchanges.getImageUrl());
+
+        return exchangesRepository.save(e);
+    }
+
+    // 교환하기 삭제
+    @Transactional
+    public void deleteExchanges(long id) {
+        Exchanges exchanges = exchangesRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
+
+//        // 해당 상품을 참조하는 채팅방 레코드의 상품 ID를 NULL로 업데이트
+//        chatRoomsService.updateGoodsIdToNullForChatRooms(id);
+
+        exchangesRepository.delete(exchanges);
     }
 
 

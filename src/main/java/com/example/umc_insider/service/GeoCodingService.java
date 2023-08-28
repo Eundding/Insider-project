@@ -21,11 +21,14 @@ public class GeoCodingService {
 
     public GetLatLngRes getLatLngByAddress(String address) {
         try {
+            String a = "대한민국 " + address;
             GeoApiContext context = new GeoApiContext.Builder()
                     .apiKey(googleMapsApiKey)
                     .build();
 
-            GeocodingResult[] results = GeocodingApi.geocode(context, address).await();
+            GeocodingResult[] results = GeocodingApi.geocode(context, a)
+                    .region("kr")
+                    .await();
 
             if (results.length > 0) {
                 GeocodingResult result = results[0];

@@ -83,7 +83,7 @@ public class UsersService {
         String originalEncryptPw = new SHA256().encrypt(users.getPw());
         if (originalEncryptPw.equals(encryptPw)) {
             String jwt = jwtService.createJwt(users.getId());
-            return new PostLoginRes(users.getId(), jwt);
+            return new PostLoginRes(users.getId(), jwt, users.getSeller_or_buyer());
         } else {
             throw new BaseException(FAILED_TO_LOGIN);
         }

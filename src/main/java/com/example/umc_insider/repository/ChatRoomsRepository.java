@@ -20,6 +20,21 @@ public interface ChatRoomsRepository extends JpaRepository<ChatRooms, Long> {
     @Query("SELECT c FROM ChatRooms c WHERE c.seller.id = :id OR c.buyer.id = :id")
     List<ChatRooms> findBySellerIdOrBuyerId(Long id);
 
+    @Query("SELECT c FROM ChatRooms c WHERE c.seller.id = :id and c.buyer_or_not=True and c.seller_or_not=True and c.exchanges=null")
+    List<ChatRooms> findSaleByUser(Long id); // 판매
+
+    @Query("SELECT c FROM ChatRooms c WHERE c.buyer.id = :id and c.buyer_or_not=True and c.seller_or_not=True and c.exchanges=null")
+    List<ChatRooms> findPurchaseByUser(Long id); // 구매
+
+    @Query("SELECT c FROM ChatRooms c WHERE c.seller.id = :id and c.buyer_or_not=True and c.seller_or_not=True and c.goods=null")
+    List<ChatRooms> findExchangesMeByUser(Long id); // 내가 교환
+
+    @Query("SELECT c FROM ChatRooms c WHERE c.buyer.id = :id and c.buyer_or_not=True and c.seller_or_not=True and c.goods=null")
+    List<ChatRooms> findExchangesOtherByUser(Long id); // 내가 교환 받음
+
+
+
+
     ChatRooms findBySellerIdAndBuyerIdAndGoodsId(Long sellerId, Long buyerId, Long goodsId);
     ChatRooms findBySellerIdAndBuyerIdAndExchangesId(Long sellerId, Long buyerId, Long exchangesId);
 
@@ -30,4 +45,6 @@ public interface ChatRoomsRepository extends JpaRepository<ChatRooms, Long> {
     @Modifying
     @Query("UPDATE ChatRooms c SET c.goods.id = NULL WHERE c.goods.id = :goodsId")
     void updateGoodsIdToNull(@Param("goodsId") Long goodsId);
+
+
 }

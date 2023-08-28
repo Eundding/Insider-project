@@ -4,9 +4,7 @@ import com.amazonaws.services.kms.model.NotFoundException;
 import com.example.umc_insider.config.BaseException;
 import com.example.umc_insider.domain.*;
 import com.example.umc_insider.dto.request.PostChatRoomsReq;
-import com.example.umc_insider.dto.response.GetChatRoomByUserRes;
-import com.example.umc_insider.dto.response.GetMessagesRes;
-import com.example.umc_insider.dto.response.PostChatRoomsRes;
+import com.example.umc_insider.dto.response.*;
 import com.example.umc_insider.repository.*;
 import com.example.umc_insider.utils.JwtService;
 import jakarta.transaction.Transactional;
@@ -131,6 +129,83 @@ public class ChatRoomsService {
         for (ChatRooms chatRoom : chatRooms) {
             chatRoom.setGoods(null);
         }
+    }
+
+    // 구매, 판매, 교환한, 받은 목록
+    public List<GetGoodsRes> getSaleByUser(Long id) {
+        List<ChatRooms> saleList = chatRoomsRepository.findSaleByUser(id);
+        List<Goods> goodsList = new ArrayList<>();
+
+        for (ChatRooms chatRoom : saleList) {
+            Long goodsId = chatRoom.getGoods().getId(); // ChatRooms에 있는 goods_id 추출
+            Goods goods = goodsRepository.findById(goodsId)
+                    .orElse(null); // goods_id를 사용하여 상품을 가져옴
+            if (goods != null) {
+                goodsList.add(goods);
+            }
+        }
+
+        List<GetGoodsRes> GetGoodsRes = goodsList.stream()
+                .map(goods -> new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getImageUrl(), goods.getSale_price(), goods.getSale_percent(), goods.getName(), goods.getUsers_id().getAddress().getZipCode(), goods.getUsers_id().getAddress().getDetailAddress(), goods.getUsers_id().getSeller_or_buyer()))
+                .collect(Collectors.toList());
+        return GetGoodsRes;
+    }
+
+    public List<GetGoodsRes> getPurchaseByUser(Long id) {
+        List<ChatRooms> purchaseList = chatRoomsRepository.findPurchaseByUser(id);
+        List<Goods> goodsList = new ArrayList<>();
+
+        for (ChatRooms chatRoom : purchaseList) {
+            Long goodsId = chatRoom.getGoods().getId();
+            Goods goods = goodsRepository.findById(goodsId)
+                    .orElse(null);
+            if (goods != null) {
+                goodsList.add(goods);
+            }
+        }
+
+        List<GetGoodsRes> GetGoodsRes = goodsList.stream()
+                .map(goods -> new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getImageUrl(), goods.getSale_price(), goods.getSale_percent(), goods.getName(), goods.getUsers_id().getAddress().getZipCode(), goods.getUsers_id().getAddress().getDetailAddress(), goods.getUsers_id().getSeller_or_buyer()))
+                .collect(Collectors.toList());
+        return GetGoodsRes;
+    }
+
+    public List<PostExchangesRes> getExchangesMeByUser(Long id) {
+        List<ChatRooms> saleList = chatRoomsRepository.findExchangesMeByUser(id);
+        List<Exchanges> exchangesList = new ArrayList<>();
+
+        for (ChatRooms chatRoom : saleList) {
+            Long exchangesid = chatRoom.getExchanges().getId();
+            Exchanges exchanges = exchangesRepository.findById(exchangesid)
+                    .orElse(null);
+            if (exchanges != null) {
+                exchangesList.add(exchanges);
+            }
+        }
+
+        List<PostExchangesRes> response = exchangesList.stream()
+                .map(newExchanges -> new PostExchangesRes(newExchanges.getId(), newExchanges.getTitle(), newExchanges.getImageUrl(), newExchanges.getName(), newExchanges.getCount(), newExchanges.getWantItem(), newExchanges.getWeight(), newExchanges.getShelfLife(),newExchanges.getCreated_at() ,newExchanges.getCategory().getId(), newExchanges.getUser().getId()))
+                .collect(Collectors.toList());
+        return response;
+    }
+
+    public List<PostExchangesRes> getExchangesOtherByUser(Long id) {
+        List<ChatRooms> saleList = chatRoomsRepository.findExchangesOtherByUser(id);
+        List<Exchanges> exchangesList = new ArrayList<>();
+
+        for (ChatRooms chatRoom : saleList) {
+            Long exchangesid = chatRoom.getExchanges().getId();
+            Exchanges exchanges = exchangesRepository.findById(exchangesid)
+                    .orElse(null);
+            if (exchanges != null) {
+                exchangesList.add(exchanges);
+            }
+        }
+
+        List<PostExchangesRes> response = exchangesList.stream()
+                .map(newExchanges -> new PostExchangesRes(newExchanges.getId(), newExchanges.getTitle(), newExchanges.getImageUrl(), newExchanges.getName(), newExchanges.getCount(), newExchanges.getWantItem(), newExchanges.getWeight(), newExchanges.getShelfLife(),newExchanges.getCreated_at() ,newExchanges.getCategory().getId(), newExchanges.getUser().getId()))
+                .collect(Collectors.toList());
+        return response;
     }
 
 

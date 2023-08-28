@@ -7,9 +7,7 @@ import com.example.umc_insider.domain.Messages;
 import com.example.umc_insider.domain.Users;
 import com.example.umc_insider.domain.ChatRooms;
 import com.example.umc_insider.dto.request.PostChatRoomsReq;
-import com.example.umc_insider.dto.response.GetChatRoomByUserRes;
-import com.example.umc_insider.dto.response.GetMessagesRes;
-import com.example.umc_insider.dto.response.PostChatRoomsRes;
+import com.example.umc_insider.dto.response.*;
 import com.example.umc_insider.repository.ChatRoomsRepository;
 import com.example.umc_insider.repository.MessagesRepository;
 import com.example.umc_insider.service.ChatRoomsService;
@@ -18,7 +16,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/chatRooms")
@@ -66,6 +66,35 @@ public class ChatRoomsController {
                 })
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
+    // 유저의 구매, 판매, 교환 목록 조회
+    @GetMapping("/goods/{id}")
+    public ResponseEntity<Map<String, List<GetGoodsRes>>> getGoodsByUser(@PathVariable("id") Long userId) {
+        Map<String, List<GetGoodsRes>> result = new HashMap<>();
+
+        List<GetGoodsRes> saleList = chatRoomsService.getSaleByUser(userId);
+        List<GetGoodsRes> purchaseList = chatRoomsService.getPurchaseByUser(userId);
+
+        result.put("sale", saleList);
+        result.put("purchase", purchaseList);
+
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/exchanges/{id}")
+    public ResponseEntity<Map<String, List<PostExchangesRes>>> getExchangesByUser(@PathVariable("id") Long userId) {
+        Map<String, List<PostExchangesRes>> result = new HashMap<>();
+
+        List<PostExchangesRes> saleList = chatRoomsService.getExchangesMeByUser(userId);
+        List<PostExchangesRes> purchaseList = chatRoomsService.getExchangesOtherByUser(userId);
+
+        result.put("Exchange my item", saleList);
+        result.put("Exchange your item", purchaseList);
+
+        return ResponseEntity.ok(result);
+    }
+
+
 
 }
 

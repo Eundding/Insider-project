@@ -3,7 +3,6 @@ package com.example.umc_insider.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 import java.sql.Timestamp;
 
@@ -43,16 +42,6 @@ public class ChatRooms {
     @Column(nullable = true)
     private Boolean buyer_or_not;
 
-    public ChatRooms sellerCheck(Boolean seller_or_not) {
-        this.seller_or_not = true;
-        return this;
-    }
-
-    public ChatRooms buyerCheck(Boolean buyer_or_not) {
-        this.buyer_or_not = true;
-        return this;
-    }
-
     public ChatRooms createChatRooms(Long sellerIdx, Long buyerIdx, Integer status, Long idx){
         this.seller = new Users();
         this.seller.setId(sellerIdx);
@@ -67,16 +56,10 @@ public class ChatRooms {
             this.exchanges = new Exchanges();
             this.exchanges.setId(idx);
         }
+        this.seller_or_not = false;
+        this.buyer_or_not = false;
 
         this.created_at = new Timestamp(System.currentTimeMillis());
-        return this;
-    }
-
-    public ChatRooms sellOrNot(){
-        // Check both seller and buyer
-        sellerCheck(true);
-        buyerCheck(true);
-
         return this;
     }
 
@@ -87,7 +70,8 @@ public class ChatRooms {
     public void setBuyer(Users user){this.buyer = user;}
     public void setGoods(Goods goods){this.goods = goods;}
     public void setExchanges(Exchanges exchanges){this.exchanges = exchanges;}
-
+    public void setSeller_or_not(Boolean b){this.seller_or_not = b;}
+    public void setBuyer_or_not(Boolean b){this.buyer_or_not = b;}
 
     public Goods getGoods() {
         return this.goods;

@@ -56,4 +56,10 @@ public class WishListsController {
             return false;
         }
     }
+
+    // 인기있는 goods
+    @GetMapping("/hot")
+    public  BaseResponse<List<GetGoodsRes>> getHotGoods(){
+        return new BaseResponse<>(wishListService.hotGoods());
+    }
 }

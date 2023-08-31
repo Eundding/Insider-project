@@ -1,22 +1,32 @@
 package com.example.umc_insider.controller;
 
 import com.example.umc_insider.domain.Users;
+import com.example.umc_insider.dto.KakaoUserInfo;
 import com.example.umc_insider.dto.request.PostLoginReq;
 import com.example.umc_insider.dto.request.PutUserProfileReq;
 import com.example.umc_insider.dto.request.PostUserReq;
 import com.example.umc_insider.dto.request.PutUserReq;
 import com.example.umc_insider.dto.response.*;
 import com.example.umc_insider.service.GeoCodingService;
+import com.example.umc_insider.service.KakaoService;
 import com.example.umc_insider.service.S3Service;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import com.example.umc_insider.config.BaseException;
 import com.example.umc_insider.config.BaseResponse;
 import com.example.umc_insider.service.UsersService;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.example.umc_insider.config.BaseResponseStatus.*;
 @RestController
@@ -24,11 +34,14 @@ public class UserController {
     private final UsersService usersService;
     private final S3Service s3Service;
     private final GeoCodingService geoCodingService;
+
+    private final KakaoService kakaoService;
     @Autowired
-    public UserController(UsersService usersService, S3Service s3Service, GeoCodingService geoCodingService) {
+    public UserController(UsersService usersService, S3Service s3Service, GeoCodingService geoCodingService, KakaoService kakaoService) {
         this.usersService = usersService;
         this.s3Service = s3Service;
         this.geoCodingService = geoCodingService;
+        this.kakaoService = kakaoService;
     }
 
     // 회원가입
@@ -98,5 +111,6 @@ public class UserController {
         GetLatLngRes getLatLngRes = geoCodingService.getLatLngByAddress(zipCode);
         return getLatLngRes;
     }
+
 
 }

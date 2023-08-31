@@ -49,6 +49,15 @@ public class Users {
     @Column(nullable = true)
     private Integer seller_or_buyer; // 1: 판매자, 0: 구매자
 
+    @Column
+    private Long kakaoId;
+
+    @Column
+    private String kakaoName;
+
+    @Column
+    private String kakaoEmail;
+
 
 //    public Users createUser(String userId, String nickName, String email, String password) {
 //        this.user_id = userId;

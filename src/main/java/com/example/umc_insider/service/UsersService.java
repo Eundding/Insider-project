@@ -168,6 +168,11 @@ public class UsersService {
         Users user = userRepository.findUsersById(id);
         return new GetUserByIdRes(user.getNickname(), user.getUser_id(), user.getPw(), user.getEmail(), user.getAddress().getZipCode(), user.getAddress().getDetailAddress(), user.getImage_url(), user.getSeller_or_buyer());
     }
+
+    // kakao Login
+    public void signUpUser(Users user) {
+        userRepository.save(user);
+    }
 }
 
 

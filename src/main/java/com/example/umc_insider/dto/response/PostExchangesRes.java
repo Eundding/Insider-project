@@ -1,6 +1,7 @@
 package com.example.umc_insider.dto.response;
 
 import com.example.umc_insider.domain.Goods;
+import com.example.umc_insider.domain.Users;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,5 +22,6 @@ public class PostExchangesRes {
     private String shelfLife;
     private Timestamp createdAt;
     private Long categoryId;
-    private Long userId;
+   // private Long userId;
+    private Users user;
 }

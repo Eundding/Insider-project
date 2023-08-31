@@ -14,6 +14,7 @@ import java.util.List;
 public interface WishListsRepository extends JpaRepository<WishLists, Long> {
     List<WishLists> findByUserId(Long userId);
 
+
     @Query("SELECT w.goods.id FROM WishListHasGoods w GROUP BY w.goods.id ORDER BY COUNT(w.goods.id) DESC")
     List<Long> findHotGoods();
 

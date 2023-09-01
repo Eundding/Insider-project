@@ -1,111 +1,63 @@
 package com.example.umc_insider.controller;
-import com.example.umc_insider.domain.Users;
-import com.example.umc_insider.dto.KakaoUserInfo;
-import com.example.umc_insider.service.GeoCodingService;
-import com.example.umc_insider.service.KakaoService;
-import com.example.umc_insider.service.S3Service;
-import com.google.gson.Gson;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.*;
-import com.example.umc_insider.service.UsersService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Map;
+import org.springframework.beans.factory.annotation.Value;
 
 @RestController
-
 public class KakaoController {
+    @Value("${kakao.clientId}")
+    private String clientId;
 
-    private final UsersService usersService;
-    private final S3Service s3Service;
-    private final GeoCodingService geoCodingService;
+    @Value("${kakao.redirectUri}")
+    private String redirectUri;
 
-    private final KakaoService kakaoService;
-    @Autowired
-    public KakaoController(UsersService usersService, S3Service s3Service, GeoCodingService geoCodingService, KakaoService kakaoService) {
-        this.usersService = usersService;
-        this.s3Service = s3Service;
-        this.geoCodingService = geoCodingService;
-        this.kakaoService = kakaoService;
-    }
+    @Value("${kakao.grantType}")
+    private String grantType;
 
-    // kakaoLogin
-    @PostMapping("/kakao")
-    public String signup(String accessToken) {
-        // Get user info from Kakao API using the access token.
-        KakaoUserInfo userInfo = kakaoService.getUserInfo(accessToken);
+    @Value("${kakao.clientSecret}")
+    private String clientSecret;
 
-        // Create a new user entity.
-        Users user = new Users();
-        user.setKakaoName(userInfo.getNickname());
-        user.setKakaoEmail(userInfo.getEmail());
-
-        // Save the user entity in the database.
-        usersService.signUpUser(user);
-
-        return "redirect:/";
-    }
-
-    @GetMapping("/login/oauth2/callback/kakao")
-    public String handleKakaoCallback() {
-        // 인증 코드를 받아 액세스 토큰을 얻고 사용자 정보를 조회하는 등의 작업 수행
-        return "/home";  // home 뷰로 리디렉션
-    }
-
-    @PostMapping("/oauth2/callback/kakao")
-    public String kakaoCallback(String code) { // 데이터를 리턴해주는 컨트롤러 함수
-
-        // 1. 액세스 토큰 얻기
+    @GetMapping("/oauth2/callback/kakao")
+    public @ResponseBody String kakaoCallback(String code){ // ResponseBody를 붙이면 데이터를 리턴해주는 컨트롤러 함수가 됨
+        // Post 방식으로 key = value 데이터로 요청 (카카오쪽으로)
         RestTemplate rt = new RestTemplate();
 
+        // HttpHeaders 오브젝트 생성
         HttpHeaders headers = new HttpHeaders();
+        // 헤더에 컨텐츠 타입을 담는다 -> 내가 전송한 http body data가 key data라고 헤더에게 알려줌
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
+        // HttpBody 오브젝트 생성
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("grant_type", "authorization_code");
-        params.add("client_id", "{cff93a78bd63fdc66fd6671549730716}");
-        params.add("redirect_uri", "{http://localhost:8080/login/oauth2/callback/kakao}");
+        params.add("grant_type", grantType);
+        params.add("client_id", clientId);
+        params.add("redirect_uri", redirectUri);
+        // 인가 코드는 동적
         params.add("code", code);
+        params.add("client_secret", clientSecret);
 
-        HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest =
-                new HttpEntity<>(params, headers);
+        // HttpHeader와 HttpBody를 하나의 오브젝트에 담기
+        HttpEntity<MultiValueMap<String, String>> kakaoTokenReq =
+                new HttpEntity<>(params, headers); // kakaoTokenReq은 body 부분과 headers값을 가지고 있는 엔티티가 됨
 
+        // Http 요청하기 - POST 방식으로 - 그리고 response 변수의 응답 받음
         ResponseEntity<String> response = rt.exchange(
-                "https://kauth.kakao.com/oauth/token",
+          "https://kauth.kakao.com/oauth/token",
                 HttpMethod.POST,
-                kakaoTokenRequest,
+                kakaoTokenReq,
                 String.class
         );
 
-        // Gson, Json Simple 등의 라이브러리로 파싱하여 필요한 값 추출
-        Gson gson = new Gson();
-        Map<String, Object> tokenMap = gson.fromJson(response.getBody(), Map.class);
-
-
-        // 2. 사용자 정보 조회
-        String accessToken = (String)tokenMap.get("access_token");
-
-        HttpHeaders headers2 = new HttpHeaders();
-        headers2.add("Authorization", "Bearer "+accessToken);
-        headers2.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-
-        HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest =
-                new HttpEntity<>(headers2);
-
-        ResponseEntity<String> response2 = rt.exchange(
-                "https://kapi.kakao.com/v2/user/me",
-                HttpMethod.POST,
-                kakaoProfileRequest,
-                String.class
-        );
-
-        return "home";
+        return "카카오 토큰 인증 완료 : 토큰 요청에 대한 응답 :" + response;
     }
-
 }

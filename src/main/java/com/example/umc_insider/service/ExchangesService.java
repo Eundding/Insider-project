@@ -1,6 +1,7 @@
 package com.example.umc_insider.service;
 
 import com.example.umc_insider.config.BaseException;
+import com.example.umc_insider.config.BaseResponseStatus;
 import com.example.umc_insider.domain.Category;
 import com.example.umc_insider.domain.Users;
 import com.example.umc_insider.dto.request.PostExchangesReq;
@@ -89,7 +90,7 @@ public class ExchangesService {
     }
 
     // 모든 항목 수정
-    public Exchanges update(Long id, Exchanges exchanges){
+    public Exchanges update(Long id, PostExchangesReq exchanges) throws BaseException {
         Exchanges e = exchangesRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다. id=" + id));
 
@@ -99,10 +100,22 @@ public class ExchangesService {
         e.setWeight(exchanges.getWeight());
         e.setShelfLife(exchanges.getShelfLife());
         e.setWantItem(exchanges.getWantItem());
-        e.setImageUrl(exchanges.getImageUrl());
-
+        Category category = categoryRepository.findCategoryByCategoryId(exchanges.getCategoryId());
+        e.setCategory(category);
         return exchangesRepository.save(e);
+
+
+//        try {
+//            Category category = categoryRepository.findCategoryByCategoryId();
+//            e.setCategory(category);
+//
+//            return exchangesRepository.save(e);
+//        } catch (Exception exception) {
+//            new BaseException(BaseResponseStatus.DATABASE_ERROR);
+//        }
+//        return e;
     }
+
 
     // 교환하기 삭제
     @Transactional

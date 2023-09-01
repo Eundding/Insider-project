@@ -2,12 +2,8 @@ package com.example.umc_insider.controller;
 
 import com.example.umc_insider.config.BaseException;
 import com.example.umc_insider.config.BaseResponse;
-import com.example.umc_insider.config.BaseResponseStatus;
 import com.example.umc_insider.domain.Exchanges;
-import com.example.umc_insider.domain.Goods;
-import com.example.umc_insider.dto.response.GetGoodsRes;
 import com.example.umc_insider.dto.response.PostExchangesRes;
-import com.example.umc_insider.dto.response.PostGoodsRes;
 import com.example.umc_insider.service.S3Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -68,13 +64,9 @@ public class ExchangesController {
 
     // 교환하기 수정
     @PutMapping("/update/{id}")
-    public ResponseEntity<Exchanges> update(@PathVariable Long id, @RequestBody Exchanges exchanges) {
+    public ResponseEntity<Exchanges> update(@PathVariable Long id, @RequestBody PostExchangesReq exchanges) throws BaseException {
         Exchanges e = exchangesService.update(id, exchanges);
-        if (exchanges != null) {
-            return ResponseEntity.ok(e);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(e);
     }
 
     // 교환삭제

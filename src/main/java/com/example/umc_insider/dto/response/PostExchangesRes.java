@@ -22,7 +22,8 @@ public class PostExchangesRes {
     private String shelfLife;
     private Timestamp createdAt;
     private Long categoryId;
-   // private Long userId;
     private Users user;
+    private Integer zipCode;
     private String detail;
+
 }

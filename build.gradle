@@ -55,7 +55,9 @@ dependencies {
 	implementation group: 'com.google.maps', name: 'google-maps-services', version: '2.2.0'
 
 
-
+	//websocket
+	implementation 'tech.gusavila92:java-android-websocket-client:1.2.2'
+	implementation fileTree(dir: 'libs', include: ['*.jar'])
 
 
 }

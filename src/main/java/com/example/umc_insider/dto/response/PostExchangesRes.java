@@ -24,4 +24,5 @@ public class PostExchangesRes {
     private Long categoryId;
    // private Long userId;
     private Users user;
+    private String detail;
 }

@@ -35,7 +35,7 @@ public class ExchangesController {
     public BaseResponse<PostExchangesRes> createExchanges(@RequestPart("postExchangesReq") PostExchangesReq postExchangesReq, @RequestPart("image") MultipartFile image) throws BaseException {
         Exchanges newExchanges = exchangesService.createNewExchangesInstance(postExchangesReq, image);
         String url = this.s3Service.uploadExchangesS3(image, newExchanges);
-        PostExchangesRes response = new PostExchangesRes(newExchanges.getId(), newExchanges.getTitle(), newExchanges.getImageUrl(), newExchanges.getName(), newExchanges.getCount(), newExchanges.getWantItem(), newExchanges.getWeight(), newExchanges.getShelfLife(),newExchanges.getCreated_at() ,newExchanges.getCategory().getId(), newExchanges.getUser());
+        PostExchangesRes response = new PostExchangesRes(newExchanges.getId(), newExchanges.getTitle(), newExchanges.getImageUrl(), newExchanges.getName(), newExchanges.getCount(), newExchanges.getWantItem(), newExchanges.getWeight(), newExchanges.getShelfLife(),newExchanges.getCreated_at() ,newExchanges.getCategory().getId(), newExchanges.getUser(), newExchanges.getUser().getAddress().getDetailAddress());
         return new BaseResponse<>(response);
     }
 

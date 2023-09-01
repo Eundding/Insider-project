@@ -48,7 +48,7 @@ public class ExchangesService {
         String imageUrl = s3Service.uploadExchangesS3(file, exchanges);
 
         // 이미지 URL 설정 후, 객체 업데이트
-        exchanges.setImageUrl(imageUrlc);
+        exchanges.setImageUrl(imageUrl);
 
         exchangesRepository.save(exchanges);
 
@@ -59,7 +59,7 @@ public class ExchangesService {
     public List<PostExchangesRes> getExchanges() throws BaseException{
         List<Exchanges> eList = exchangesRepository.findAllWithUsers();
         List<PostExchangesRes> response = eList.stream()
-                .map(newExchanges -> new PostExchangesRes(newExchanges.getId(), newExchanges.getTitle(), newExchanges.getImageUrl(), newExchanges.getName(), newExchanges.getCount(), newExchanges.getWantItem(), newExchanges.getWeight(), newExchanges.getShelfLife(),newExchanges.getCreated_at() ,newExchanges.getCategory().getId(), newExchanges.getUser()))
+                .map(newExchanges -> new PostExchangesRes(newExchanges.getId(), newExchanges.getTitle(), newExchanges.getImageUrl(), newExchanges.getName(), newExchanges.getCount(), newExchanges.getWantItem(), newExchanges.getWeight(), newExchanges.getShelfLife(),newExchanges.getCreated_at() ,newExchanges.getCategory().getId(), newExchanges.getUser(), newExchanges.getUser().getAddress().getDetailAddress()))
                 .collect(Collectors.toList());
         return response;
     }
@@ -68,7 +68,7 @@ public class ExchangesService {
     public List<PostExchangesRes> getExchangesByTitle(String title) throws BaseException{
         List<Exchanges> eList = exchangesRepository.findByTitleContaining(title);
         List<PostExchangesRes> response = eList.stream()
-                .map(newExchanges -> new PostExchangesRes(newExchanges.getId(), newExchanges.getTitle(), newExchanges.getImageUrl(), newExchanges.getName(), newExchanges.getCount(), newExchanges.getWantItem(), newExchanges.getWeight(), newExchanges.getShelfLife(),newExchanges.getCreated_at() ,newExchanges.getCategory().getId(), newExchanges.getUser()))
+                .map(newExchanges -> new PostExchangesRes(newExchanges.getId(), newExchanges.getTitle(), newExchanges.getImageUrl(), newExchanges.getName(), newExchanges.getCount(), newExchanges.getWantItem(), newExchanges.getWeight(), newExchanges.getShelfLife(),newExchanges.getCreated_at() ,newExchanges.getCategory().getId(), newExchanges.getUser(), newExchanges.getUser().getAddress().getDetailAddress()))
                 .collect(Collectors.toList());
         return response;
     }
@@ -76,14 +76,14 @@ public class ExchangesService {
     // id로 교환하기 조회
     public PostExchangesRes getExchangesById(Long id) {
         Exchanges newExchanges = exchangesRepository.findExchangesById(id);
-        return new PostExchangesRes(newExchanges.getId(), newExchanges.getTitle(), newExchanges.getImageUrl(), newExchanges.getName(), newExchanges.getCount(), newExchanges.getWantItem(), newExchanges.getWeight(), newExchanges.getShelfLife(),newExchanges.getCreated_at() ,newExchanges.getCategory().getId(), newExchanges.getUser());
+        return new PostExchangesRes(newExchanges.getId(), newExchanges.getTitle(), newExchanges.getImageUrl(), newExchanges.getName(), newExchanges.getCount(), newExchanges.getWantItem(), newExchanges.getWeight(), newExchanges.getShelfLife(),newExchanges.getCreated_at() ,newExchanges.getCategory().getId(), newExchanges.getUser(), newExchanges.getUser().getAddress().getDetailAddress());
     }
 
     // category_id로 goods 조회
     public List<PostExchangesRes> getExchangesByCategoryId(Long category_id) {
         List<Exchanges> eList = exchangesRepository.findByCategory_Id(category_id);
         List<PostExchangesRes> postExchangesRes = eList.stream()
-                .map(newExchanges -> new PostExchangesRes(newExchanges.getId(), newExchanges.getTitle(), newExchanges.getImageUrl(), newExchanges.getName(), newExchanges.getCount(), newExchanges.getWantItem(), newExchanges.getWeight(), newExchanges.getShelfLife(),newExchanges.getCreated_at() ,newExchanges.getCategory().getId(), newExchanges.getUser()))
+                .map(newExchanges -> new PostExchangesRes(newExchanges.getId(), newExchanges.getTitle(), newExchanges.getImageUrl(), newExchanges.getName(), newExchanges.getCount(), newExchanges.getWantItem(), newExchanges.getWeight(), newExchanges.getShelfLife(),newExchanges.getCreated_at() ,newExchanges.getCategory().getId(), newExchanges.getUser(), newExchanges.getUser().getAddress().getDetailAddress()))
                 .collect(Collectors.toList());
         return postExchangesRes;
     }

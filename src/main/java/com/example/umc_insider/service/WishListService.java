@@ -147,7 +147,7 @@ public class WishListService {
 
             if (exchanges != null) {
                 // GetGoodsRes 객체를 생성합니다.
-                PostExchangesRes exchangeDTO = new PostExchangesRes(exchanges.getId(), exchanges.getTitle(), exchanges.getImageUrl(), exchanges.getName(), exchanges.getCount(), exchanges.getWantItem(), exchanges.getWeight(), exchanges.getShelfLife(), exchanges.getCreated_at(), exchanges.getCategory().getId(), exchanges.getUser());
+                PostExchangesRes exchangeDTO = new PostExchangesRes(exchanges.getId(), exchanges.getTitle(), exchanges.getImageUrl(), exchanges.getName(), exchanges.getCount(), exchanges.getWantItem(), exchanges.getWeight(), exchanges.getShelfLife(), exchanges.getCreated_at(), exchanges.getCategory().getId(), exchanges.getUser(), exchanges.getUser().getAddress().getDetailAddress());
                 exchangeDTO.setId(exchangeDTO.getId());
                 exchangeDTO.setTitle(exchangeDTO.getTitle());
                 exchangeDTO.setImageUrl(exchanges.getImageUrl());

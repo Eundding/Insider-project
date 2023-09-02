@@ -25,14 +25,6 @@ public class KakaoService {
         this.passwordEncoder=passwordEncoder;
     }
 
-//    @Transactional
-//    public void signUpKakaoUser(Users user) {
-//        String rawPw = user.getPw();
-//        String encPw = passwordEncoder.encode(rawPw);
-//        user.setPw(encPw);
-//        userRepository.save(user);
-//    }
-
     public void signUpKakaoUser(String nickname, String userId, String pw, String email) {
         // 비밀번호 암호화
         String encPw = passwordEncoder.encode(pw);

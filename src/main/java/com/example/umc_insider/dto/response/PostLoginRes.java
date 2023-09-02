@@ -1,5 +1,6 @@
 package com.example.umc_insider.dto.response;
 
+import com.example.umc_insider.domain.Users;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

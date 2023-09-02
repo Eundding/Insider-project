@@ -53,17 +53,14 @@ public class Users {
     @Column(nullable = true)
     private Long register_number;
 
-
-//    public Users createUser(String userId, String nickName, String email, String password) {
-//        this.user_id = userId;
-//        this.email = email;
-//        this.nickname = nickName;
-//        this.pw = password;
-//        this.created_at = new Timestamp(System.currentTimeMillis());
-//        this.updated_at = new Timestamp(System.currentTimeMillis());
-//        this.address = address;
-//        return this;
-//    }
+    public Users(String nickname, String userId, String encPw, String email) {
+        this.user_id = userId;
+        this.email = email;
+        this.nickname = nickname;
+        this.pw = encPw;
+        this.created_at = new Timestamp(System.currentTimeMillis());
+        this.updated_at = new Timestamp(System.currentTimeMillis());
+    }
 
     public void setId(Long id) {
         this.id = id;

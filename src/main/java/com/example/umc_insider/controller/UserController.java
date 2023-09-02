@@ -9,11 +9,15 @@ import com.example.umc_insider.dto.response.*;
 import com.example.umc_insider.service.GeoCodingService;
 import com.example.umc_insider.service.S3Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import com.example.umc_insider.config.BaseException;
 import com.example.umc_insider.config.BaseResponse;
 import com.example.umc_insider.service.UsersService;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -30,6 +34,7 @@ public class UserController {
         this.s3Service = s3Service;
         this.geoCodingService = geoCodingService;
     }
+
 
     // 회원가입
     @PostMapping("/create")

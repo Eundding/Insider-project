@@ -168,6 +168,13 @@ public class UsersService {
         Users user = userRepository.findUsersById(id);
         return new GetUserByIdRes(user.getNickname(), user.getUser_id(), user.getPw(), user.getEmail(), user.getAddress().getZipCode(), user.getAddress().getDetailAddress(), user.getImage_url(), user.getSeller_or_buyer());
     }
+
+    // userId로 유저 조회
+    public Users getUserByUserID(String userId){
+        Users user = userRepository.findUserByUserId(userId);
+        return new Users();
+    }
+
 }
 
 

@@ -8,18 +8,26 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Table(name = "wish_lists_has_goods")
-@IdClass(WishListHasGoodsId.class)
+//@IdClass(WishListHasGoodsId.class)
 public class WishListHasGoods {
     @Id
-    @ManyToOne(fetch = FetchType.LAZY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
+    private Long id;
+
+    @ManyToOne
     @JoinColumn(name = "wish_lists_id")
     private WishLists wishList;
 
-    @Id
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "goods_id")
-    private Goods goods;
+    private Goods goods = null;
+
+    @ManyToOne
+    @JoinColumn(name = "exchanges_id")
+    private Exchanges exchanges = null;
 
     public void setWishList(WishLists w){this.wishList = w;}
     public void setGoods(Goods g){this.goods = g;}
+    public void setExchanges(Exchanges e){this.exchanges = e;}
 }

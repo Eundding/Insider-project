@@ -11,4 +11,5 @@ import lombok.Setter;
 public class PostLoginRes {
     private Long id;
     private String jwt;
+    private Integer sellerOrBuyer;
 }

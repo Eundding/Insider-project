@@ -7,9 +7,7 @@ import com.example.umc_insider.domain.Messages;
 import com.example.umc_insider.domain.Users;
 import com.example.umc_insider.domain.ChatRooms;
 import com.example.umc_insider.dto.request.PostChatRoomsReq;
-import com.example.umc_insider.dto.response.GetChatRoomByUserRes;
-import com.example.umc_insider.dto.response.GetMessagesRes;
-import com.example.umc_insider.dto.response.PostChatRoomsRes;
+import com.example.umc_insider.dto.response.*;
 import com.example.umc_insider.repository.ChatRoomsRepository;
 import com.example.umc_insider.repository.MessagesRepository;
 import com.example.umc_insider.service.ChatRoomsService;
@@ -18,7 +16,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/chatRooms")
@@ -55,19 +55,49 @@ public class ChatRoomsController {
         return ResponseEntity.ok(chatRoomByUserResList);
     }
 
-    // seller, buyer 둘 다 채팅방에서 구매완료 가능
-    @PutMapping("/{id}/purchase")
-    public ResponseEntity<ChatRooms> purchase(@PathVariable Long id) {
-        return chatRoomsRepository.findById(id)
-                .map(chatRoom -> {
-//                    chatRoom.sellerCheck(true);
-//                    chatRoom.buyerCheck(true);
-                    chatRoom.sellOrNot();
-                    ChatRooms updatedChatRoom = chatRoomsRepository.save(chatRoom);  // Save the updated state
-                    return new ResponseEntity<>(updatedChatRoom, HttpStatus.OK);
-                })
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    // 각 유저가 채팅방에서 구매완료
+    @PutMapping("/purchase/{chatRoomId}/{id}")
+    public ResponseEntity<ChatRooms> purchase(@PathVariable Long chatRoomId, @PathVariable Long id) {
+        ChatRooms chatRooms = chatRoomsRepository.findChatRoomsById(chatRoomId);
+
+        if(chatRooms.getSeller().getId().equals(id) && chatRooms.getSeller_or_not().booleanValue() != true){
+            chatRooms.setSeller_or_not(true);
+        }
+        else if(chatRooms.getBuyer().getId().equals(id) && chatRooms.getBuyer_or_not() != true){
+            chatRooms.setBuyer_or_not(true);
+        }
+        ChatRooms updatedChatRoom = chatRoomsRepository.save(chatRooms);
+        return new ResponseEntity<>(updatedChatRoom, HttpStatus.OK);
     }
+
+    // 유저의 구매, 판매, 교환 목록 조회
+    @GetMapping("/goods/{id}")
+    public ResponseEntity<Map<String, List<GetGoodsRes>>> getGoodsByUser(@PathVariable("id") Long userId) {
+        Map<String, List<GetGoodsRes>> result = new HashMap<>();
+
+        List<GetGoodsRes> saleList = chatRoomsService.getSaleByUser(userId);
+        List<GetGoodsRes> purchaseList = chatRoomsService.getPurchaseByUser(userId);
+
+        result.put("sale", saleList);
+        result.put("purchase", purchaseList);
+
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/exchanges/{id}")
+    public ResponseEntity<Map<String, List<PostExchangesRes>>> getExchangesByUser(@PathVariable("id") Long userId) {
+        Map<String, List<PostExchangesRes>> result = new HashMap<>();
+
+        List<PostExchangesRes> saleList = chatRoomsService.getExchangesMeByUser(userId);
+        List<PostExchangesRes> purchaseList = chatRoomsService.getExchangesOtherByUser(userId);
+
+        result.put("Exchange my item", saleList);
+        result.put("Exchange your item", purchaseList);
+
+        return ResponseEntity.ok(result);
+    }
+
+
 
 }
 

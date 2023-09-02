@@ -1,6 +1,6 @@
 package com.example.umc_insider.domain;
 
-
+import com.example.umc_insider.dto.request.PostExchangesReq;
 import jakarta.persistence.*;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 import java.sql.Timestamp;
-
 @Entity
 @Getter
 @NoArgsConstructor
@@ -19,38 +18,61 @@ public class Exchanges {
     @Column(name="id")
     private Long id; // PK
 
-    @ManyToOne
-    @JoinColumn(name = "mine_goods")
-    private Goods mineGoods; // FK
+    @OneToOne
+    @JoinColumn(name = "category_id")
+    private Category category; // FK
 
     @ManyToOne
-    @JoinColumn(name = "yours_goods")
-    private Goods yoursGoods; // FK
+    @JoinColumn(name = "user_id")
+    private Users user; // FK
 
-    @Column(name="status")
-    private String status;
+    @Column(nullable = false)
+    private String title;
 
-    @Column(name="exchange_item")
-    private String exchangeItem;
+    @Column(nullable = true)
+    private String imageUrl;
 
-    public Exchanges registerExchanges(Long mineGoodsId, String exchangeItem, String status){
-        this.mineGoods = new Goods();
-        this.mineGoods.setId(mineGoodsId);
-        this.exchangeItem = exchangeItem;
-        this.status=status;
-        return this;
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private Integer count;
+
+    @Column(nullable = false)
+    private String wantItem;
+
+    @Column(nullable = false)
+    private String weight;
+
+    @Column(nullable = false)
+    private String shelfLife;
+
+    @Column(nullable = false)
+    private Timestamp created_at;
+
+    public Exchanges(PostExchangesReq postExchangesReq, Users user, Category category){
+        super();
+        this.user = user;
+        this.category = category;
+        this.count = postExchangesReq.getCount();
+        this.title = postExchangesReq.getTitle();
+        this.name = postExchangesReq.getName();
+        this.shelfLife = postExchangesReq.getShelfLife();
+        this.wantItem = postExchangesReq.getWantItem();
+        this.weight = postExchangesReq.getWeight();
+        this.created_at =  new Timestamp(System.currentTimeMillis());
     }
 
-    public Exchanges completionExchanges(String status){
-        this.status = status;
-        return this;
+    public void setImageUrl(String url) {
+        this.imageUrl = url;
     }
+    public void setTitle(String t){this.title = t;}
+    public void setName(String n){this.name = n;}
+    public void setWeight(String w){this.weight = w;}
+    public void setCount(Integer c){this.count = c;}
+    public void setWantItem(String w){this.wantItem = w;}
+    public void setShelfLife(String s){this.shelfLife = s;}
+    public void setId(Long id){this.id = id;}
+    public void setCategory(Category c){this.category = c;}
 
-    public void setMineGoods(Goods mineGoods) {
-        this.mineGoods = mineGoods;
-    }
-
-    public void setExchangeItem(String exchangeItem) {
-        this.exchangeItem = exchangeItem;
-    }
 }

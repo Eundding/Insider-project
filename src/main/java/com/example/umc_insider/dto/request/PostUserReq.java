@@ -18,6 +18,7 @@ public class PostUserReq {
     private Integer zipCode;
     private String detailAddress;
     private Integer sellerOrBuyer;
+    private Long registerNum;
 
     public Users createUserWithAddress() {
         Users newUser = new Users();
@@ -28,6 +29,11 @@ public class PostUserReq {
         newUser.setPw(this.pw);
         newUser.setNickname(this.nickname);
         newUser.setSeller_or_buyer(this.sellerOrBuyer);
+        if(newUser.getSeller_or_buyer() == 1){
+            newUser.setRegister_number(this.registerNum);
+        } else{
+            newUser.setRegister_number(0L);
+        }
 
         Address newAddress = new Address();
         newAddress.setZipCode(this.getZipCode());

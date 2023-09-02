@@ -16,4 +16,7 @@ public class GetUserRes {
     private String email;
     private Address address; // fk
     private Integer sellerOrBuyer;
+
+    public GetUserRes() {
+    }
 }

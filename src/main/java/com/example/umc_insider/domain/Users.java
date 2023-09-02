@@ -49,14 +49,23 @@ public class Users {
     @Column(nullable = true)
     private Integer seller_or_buyer; // 1: 판매자, 0: 구매자
 
-    @Column
-    private Long kakaoId;
+    public Users(String nickname, String userId, String encPw, String email) {
+        this.user_id = userId;
+        this.email = email;
+        this.nickname = nickname;
+        this.pw = encPw;
+        this.created_at = new Timestamp(System.currentTimeMillis());
+        this.updated_at = new Timestamp(System.currentTimeMillis());
+    }
 
-    @Column
-    private String kakaoName;
-
-    @Column
-    private String kakaoEmail;
+//    @Column
+//    private Long kakaoId;
+//
+//    @Column
+//    private String kakaoName;
+//
+//    @Column
+//    private String kakaoEmail;
 
 
 //    public Users createUser(String userId, String nickName, String email, String password) {

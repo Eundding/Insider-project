@@ -1,10 +1,13 @@
 package com.example.umc_insider.dto.request;
 
+import com.example.umc_insider.controller.KakaoController;
 import com.example.umc_insider.domain.Address;
 import com.example.umc_insider.domain.Users;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
+@Builder
 @Getter
 @AllArgsConstructor
 public class PostUserReq {

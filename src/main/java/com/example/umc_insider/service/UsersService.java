@@ -169,10 +169,12 @@ public class UsersService {
         return new GetUserByIdRes(user.getNickname(), user.getUser_id(), user.getPw(), user.getEmail(), user.getAddress().getZipCode(), user.getAddress().getDetailAddress(), user.getImage_url(), user.getSeller_or_buyer());
     }
 
-    // kakao Login
-    public void signUpUser(Users user) {
-        userRepository.save(user);
+    // userId로 유저 조회
+    public Users getUserByUserID(String userId){
+        Users user = userRepository.findUserByUserId(userId);
+        return new Users();
     }
+
 }
 
 

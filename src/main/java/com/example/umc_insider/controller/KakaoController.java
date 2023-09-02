@@ -1,5 +1,19 @@
 package com.example.umc_insider.controller;
 
+import com.example.umc_insider.config.BaseException;
+import com.example.umc_insider.domain.KakaoProfile;
+import com.example.umc_insider.domain.OAuthToken;
+import com.example.umc_insider.domain.Users;
+import com.example.umc_insider.dto.KakaoUserInfo;
+import com.example.umc_insider.dto.request.PostLoginReq;
+import com.example.umc_insider.dto.request.PostUserReq;
+import com.example.umc_insider.dto.response.PostLoginRes;
+import com.example.umc_insider.repository.UserRepository;
+import com.example.umc_insider.service.KakaoService;
+import com.example.umc_insider.service.UsersService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -13,22 +27,30 @@ import org.springframework.web.client.RestTemplate;
 
 import org.springframework.beans.factory.annotation.Value;
 
+import java.util.UUID;
+
 @RestController
 public class KakaoController {
-    @Value("${kakao.clientId}")
+    @Value("${oauth2.client.registration.kakao.client-id}")
     private String clientId;
 
-    @Value("${kakao.redirectUri}")
+    @Value("${oauth2.client.registration.kakao.redirect-uri}")
     private String redirectUri;
 
-    @Value("${kakao.grantType}")
+    @Value("${oauth2.client.registration.kakao.grant-type}")
     private String grantType;
 
-    @Value("${kakao.clientSecret}")
+    @Value("${oauth2.client.registration.kakao.client-secret}")
     private String clientSecret;
 
+    @Autowired
+    private KakaoService kakaoService;
+    @Autowired
+    private UsersService usersService;
+
+
     @GetMapping("/oauth2/callback/kakao")
-    public @ResponseBody String kakaoCallback(String code){ // ResponseBody를 붙이면 데이터를 리턴해주는 컨트롤러 함수가 됨
+    public String kakaoCallback(String code) throws BaseException { // ResponseBody를 붙이면 데이터를 리턴해주는 컨트롤러 함수가 됨
         // Post 방식으로 key = value 데이터로 요청 (카카오쪽으로)
         RestTemplate rt = new RestTemplate();
 
@@ -39,6 +61,7 @@ public class KakaoController {
 
         // HttpBody 오브젝트 생성
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        // 변수 사용
         params.add("grant_type", grantType);
         params.add("client_id", clientId);
         params.add("redirect_uri", redirectUri);
@@ -52,12 +75,80 @@ public class KakaoController {
 
         // Http 요청하기 - POST 방식으로 - 그리고 response 변수의 응답 받음
         ResponseEntity<String> response = rt.exchange(
-          "https://kauth.kakao.com/oauth/token",
+                "https://kauth.kakao.com/oauth/token",
                 HttpMethod.POST,
                 kakaoTokenReq,
                 String.class
         );
 
-        return "카카오 토큰 인증 완료 : 토큰 요청에 대한 응답 :" + response;
+        // ObjectMapper
+        ObjectMapper objectMapper = new ObjectMapper();
+        OAuthToken oAuthToken = null;
+
+        try {
+            oAuthToken = objectMapper.readValue(response.getBody(), OAuthToken.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        // token을 통한 사용자 정보 조회
+        RestTemplate rt2 = new RestTemplate();
+
+        HttpHeaders headers2 = new HttpHeaders();
+        headers2.add("Authorization", "Bearer " + oAuthToken.getAccess_token());
+        headers2.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        HttpEntity<MultiValueMap<String, String>> kakaoProfileReq =
+                new HttpEntity<>(headers2);
+
+        ResponseEntity<String> response2 = rt2.exchange(
+                "https://kapi.kakao.com/v2/user/me",
+                HttpMethod.POST,
+                kakaoProfileReq,
+                String.class
+        );
+
+        ObjectMapper objectMapper2 = new ObjectMapper();
+        KakaoProfile kakaoProfile = null;
+
+        try {
+            kakaoProfile = objectMapper2.readValue(response2.getBody(), KakaoProfile.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Users 오브젝트: user_id, pw, email, nickname
+//        System.out.println("카카오 아이디: " + kakaoProfile.getId());
+//        System.out.println("카카오 닉네임: " + kakaoProfile.getProperties().nickname);
+//        System.out.println("카카오 이메일: " + kakaoProfile.getKakaoAccount().email);
+
+        // kakao로부터 받은 3가지 정보를 통해서 insider 회원 구성을 다음과 같이 하였다.
+//        System.out.println("insider user_id: " + kakaoProfile.getKakaoAccount().email + "_" + kakaoProfile.getId());
+//        System.out.println("insider email: " + kakaoProfile.getKakaoAccount().email);
+        UUID garbagePassword = UUID.randomUUID(); // 임시 패스워드 garbage
+//        System.out.println("insider pw: " + garbagePassword);
+
+        PostUserReq kakaoUser = PostUserReq.builder()
+                .userId(kakaoProfile.getKakaoAccount().email + "_" + kakaoProfile.getId())
+                .pw(garbagePassword.toString())
+                .nickname(kakaoProfile.getProperties().nickname)
+                .email(kakaoProfile.getKakaoAccount().email)
+                .build();
+
+        // 가입자 혹은 비가입자인지 체크해서 처리
+        Users originUser = usersService.getUserByUserID(kakaoUser.getUserId());
+//        System.out.println(kakaoUser.getUserId());
+//        System.out.println(kakaoUser.getNickname());
+        kakaoService.signUpKakaoUser(kakaoUser.getNickname(), kakaoUser.getUserId(), kakaoUser.getPw(), kakaoUser.getEmail());
+//        if(originUser == null) {
+//            System.out.println("새로운 회원입니다............");
+////            kakaoService.signUpKakaoUser(kakaoUser.createUserWithAddress());
+//            kakaoService.signUpKakaoUser(kakaoUser.getNickname(), kakaoUser.getUserId(), kakaoUser.getPw(), kakaoUser.getEmail());
+//        } else {
+//            System.out.println("기존 회원입니다............");
+//            kakaoService.signUpKakaoUser(kakaoUser.getNickname(), kakaoUser.getUserId(), kakaoUser.getPw(), kakaoUser.getEmail());
+//        }
+
+        return "redirect:/";
     }
 }

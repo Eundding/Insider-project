@@ -48,7 +48,8 @@ public class Users {
     private String image_url;
 
     @Column(nullable = true)
-    private Integer seller_or_buyer; // 1: 판매자, 0: 구매자
+    private Integer seller_or_buyer = 0; // 1: 판매자, 0: 구매자
+    // 디폴트 0으로 설정
 
     @Column(nullable = true)
     private Long register_number;

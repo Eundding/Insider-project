@@ -287,7 +287,7 @@ public class WishListService {
         List<Long> hotGoodsIds = wishListsRepository.findHotGoods();
         List<Goods> popularGoods = new ArrayList<>();
         for (Long goodsId : hotGoodsIds) {
-            Goods goods = goodsRepository.findById(goodsId).orElse(null);
+            Goods goods = goodsRepository.findGoodsById(goodsId);
             if (goods != null) {
                 popularGoods.add(goods);
             }
@@ -295,7 +295,6 @@ public class WishListService {
         List<GetGoodsRes> GetGoodsRes = popularGoods.stream()
             .map(goods -> new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getImageUrl(), goods.getSale_price(), goods.getSale_percent(), goods.getName(), goods.getUsers_id().getAddress().getZipCode(), goods.getUsers_id().getAddress().getDetailAddress(), goods.getUsers_id().getSeller_or_buyer()))
             .collect(Collectors.toList());
-
         return GetGoodsRes;
 
     }

@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -49,6 +52,10 @@ public class Exchanges {
 
     @Column(nullable = false)
     private Timestamp created_at;
+
+    // 게시물 삭제되면 wishlist도 삭제
+    @OneToMany(mappedBy = "exchanges", cascade = CascadeType.ALL)
+    private List<WishListHasGoods> wishListHasGoodsList2 = new ArrayList<>();
 
     public Exchanges(PostExchangesReq postExchangesReq, Users user, Category category){
         super();

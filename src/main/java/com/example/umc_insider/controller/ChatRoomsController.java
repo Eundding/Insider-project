@@ -1,5 +1,6 @@
 package com.example.umc_insider.controller;
 
+import com.amazonaws.Response;
 import com.amazonaws.services.kms.model.NotFoundException;
 import com.example.umc_insider.config.BaseException;
 import com.example.umc_insider.config.BaseResponse;
@@ -84,6 +85,7 @@ public class ChatRoomsController {
         return ResponseEntity.ok(result);
     }
 
+    //userId로 exchanges 정보 조회
     @GetMapping("/exchanges/{id}")
     public ResponseEntity<Map<String, List<PostExchangesRes>>> getExchangesByUser(@PathVariable("id") Long userId) {
         Map<String, List<PostExchangesRes>> result = new HashMap<>();
@@ -95,6 +97,13 @@ public class ChatRoomsController {
         result.put("Exchange your item", purchaseList);
 
         return ResponseEntity.ok(result);
+    }
+
+    // 채팅방 id로 채팅방 조회
+    @GetMapping("/info/{chatId}")
+    public BaseResponse<GetChatRoomByChatRoomIdRes> getChatRoomByChatRoomId(@PathVariable("chatId") Long chatId){
+        GetChatRoomByChatRoomIdRes response = chatRoomsService.getChatRoomByChatRoomId(chatId);
+        return new BaseResponse<>(response);
     }
 
 

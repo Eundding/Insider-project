@@ -131,6 +131,14 @@ public class ChatRoomsService {
         }
     }
 
+    @Transactional
+    public void updateExchangesIdToNullForChatRooms(Long eId) {
+        List<ChatRooms> chatRooms = chatRoomsRepository.findByExchangesId(eId);
+        for (ChatRooms chatRoom : chatRooms) {
+            chatRoom.setGoods(null);
+        }
+    }
+
     // 구매, 판매, 교환한, 받은 목록
     public List<GetGoodsRes> getSaleByUser(Long id) {
         List<ChatRooms> saleList = chatRoomsRepository.findSaleByUser(id);
@@ -206,6 +214,18 @@ public class ChatRoomsService {
                 .map(newExchanges -> new PostExchangesRes(newExchanges.getId(), newExchanges.getTitle(), newExchanges.getImageUrl(), newExchanges.getName(), newExchanges.getCount(), newExchanges.getWantItem(), newExchanges.getWeight(), newExchanges.getShelfLife(),newExchanges.getCreated_at() ,newExchanges.getCategory().getId(), newExchanges.getUser(), newExchanges.getUser().getAddress().getZipCode(), newExchanges.getUser().getAddress().getDetailAddress()))
                 .collect(Collectors.toList());
         return response;
+    }
+
+    // 채팅방 id로 채팅방 조회
+    public GetChatRoomByChatRoomIdRes getChatRoomByChatRoomId(Long chatId){
+        ChatRooms chatRooms = chatRoomsRepository.findChatRoomsById(chatId);
+        if(chatRooms.getGoods() != null) {
+            GetChatRoomByChatRoomIdRes response = new GetChatRoomByChatRoomIdRes(chatRooms.getSeller().getId(), chatRooms.getBuyer().getId(),0, chatRooms.getGoods().getId(), chatRooms.getSeller_or_not(), chatRooms.getBuyer_or_not(), chatRooms.getCreated_at());
+            return response;
+        } else{
+            GetChatRoomByChatRoomIdRes response = new GetChatRoomByChatRoomIdRes(chatRooms.getSeller().getId(), chatRooms.getBuyer().getId(),1, chatRooms.getExchanges().getId(), chatRooms.getSeller_or_not(), chatRooms.getBuyer_or_not(), chatRooms.getCreated_at());
+            return response;
+        }
     }
 
 

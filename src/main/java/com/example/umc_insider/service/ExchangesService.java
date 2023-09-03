@@ -8,13 +8,10 @@ import com.example.umc_insider.dto.request.PostExchangesReq;
 import com.example.umc_insider.dto.request.PostGoodsReq;
 import com.example.umc_insider.dto.response.GetGoodsRes;
 import com.example.umc_insider.dto.response.PostExchangesRes;
-import com.example.umc_insider.repository.CategoryRepository;
-import com.example.umc_insider.repository.GoodsRepository;
-import com.example.umc_insider.repository.UserRepository;
+import com.example.umc_insider.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.example.umc_insider.repository.ExchangesRepository;
 import com.example.umc_insider.domain.Exchanges;
 import com.example.umc_insider.domain.Goods;
 import org.springframework.stereotype.Service;
@@ -29,13 +26,20 @@ public class ExchangesService {
     private UserRepository userRepository;
     private CategoryRepository categoryRepository;
     private S3Service s3Service;
+    private ChatRoomsRepository chatRoomsRepository;
+    private WishListsRepository wishListsRepository;
+    private WishListHasGoodsRepository wishListHasGoodsRepository;
+    private ChatRoomsService chatRoomsService;
 
     @Autowired
-    public ExchangesService(ExchangesRepository exchangesRepository, UserRepository userRepository, CategoryRepository categoryRepository, S3Service s3Service) {
+    public ExchangesService(ExchangesRepository exchangesRepository, ChatRoomsService chatRoomsService, UserRepository userRepository, CategoryRepository categoryRepository, S3Service s3Service, ChatRoomsRepository chatRoomsRepository,  WishListHasGoodsRepository wishListHasGoodsRepository) {
         this.exchangesRepository = exchangesRepository;
+        this.chatRoomsService = chatRoomsService;
         this.userRepository = userRepository;
         this.categoryRepository = categoryRepository;
         this.s3Service = s3Service;
+        this.chatRoomsRepository = chatRoomsRepository;
+        this.wishListHasGoodsRepository = wishListHasGoodsRepository;
     }
 
     public Exchanges createNewExchangesInstance(PostExchangesReq postExchangesReq, MultipartFile file) {
@@ -110,9 +114,11 @@ public class ExchangesService {
     // 교환하기 삭제
     @Transactional
     public void deleteExchanges(long id) {
-        Exchanges exchanges = exchangesRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
-        exchangesRepository.delete(exchanges);
+        // 1. exchanges_id에 해당하는 wishlist_has_goods 행 삭제
+        wishListHasGoodsRepository.deleteByExchangesId(id);
+
+        // 2. exchanges 테이블에서 행 삭제
+        exchangesRepository.deleteById(id);
     }
 
 

@@ -208,6 +208,18 @@ public class ChatRoomsService {
         return response;
     }
 
+    // 채팅방 id로 채팅방 조회
+    public GetChatRoomByChatRoomIdRes getChatRoomByChatRoomId(Long chatId){
+        ChatRooms chatRooms = chatRoomsRepository.findChatRoomsById(chatId);
+        if(chatRooms.getGoods() != null) {
+            GetChatRoomByChatRoomIdRes response = new GetChatRoomByChatRoomIdRes(chatRooms.getSeller().getId(), chatRooms.getBuyer().getId(),0, chatRooms.getGoods().getId(), chatRooms.getSeller_or_not(), chatRooms.getBuyer_or_not(), chatRooms.getCreated_at());
+            return response;
+        } else{
+            GetChatRoomByChatRoomIdRes response = new GetChatRoomByChatRoomIdRes(chatRooms.getSeller().getId(), chatRooms.getBuyer().getId(),1, chatRooms.getExchanges().getId(), chatRooms.getSeller_or_not(), chatRooms.getBuyer_or_not(), chatRooms.getCreated_at());
+            return response;
+        }
+    }
+
 
 }
 

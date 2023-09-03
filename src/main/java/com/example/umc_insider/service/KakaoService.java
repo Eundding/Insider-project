@@ -2,7 +2,6 @@ package com.example.umc_insider.service;
 
 import com.example.umc_insider.config.PasswordEncoderConfig;
 import com.example.umc_insider.domain.Users;
-import com.example.umc_insider.dto.KakaoUserInfo;
 import com.example.umc_insider.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

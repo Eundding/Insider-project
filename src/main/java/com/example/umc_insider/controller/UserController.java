@@ -1,13 +1,12 @@
 package com.example.umc_insider.controller;
 
+import com.example.umc_insider.domain.Goods;
 import com.example.umc_insider.domain.Users;
-import com.example.umc_insider.dto.request.PostLoginReq;
-import com.example.umc_insider.dto.request.PutUserProfileReq;
-import com.example.umc_insider.dto.request.PostUserReq;
-import com.example.umc_insider.dto.request.PutUserReq;
+import com.example.umc_insider.dto.request.*;
 import com.example.umc_insider.dto.response.*;
 import com.example.umc_insider.service.GeoCodingService;
 import com.example.umc_insider.service.S3Service;
+import jakarta.persistence.Entity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +18,7 @@ import com.example.umc_insider.config.BaseResponse;
 import com.example.umc_insider.service.UsersService;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.function.EntityResponse;
 
 import java.util.List;
 
@@ -102,6 +102,13 @@ public class UserController {
     public GetLatLngRes getLatLng(@PathVariable String zipCode){
         GetLatLngRes getLatLngRes = geoCodingService.getLatLngByAddress(zipCode);
         return getLatLngRes;
+    }
+
+    // buyer -> seller
+    @PatchMapping("/user/transfer")
+    public ResponseEntity<Users> patchTransfer(@RequestBody PatchUserReq patchUserReq){
+        Users updatedUsers = usersService.patchTransfer(patchUserReq);
+        return ResponseEntity.ok(updatedUsers);
     }
 
 }

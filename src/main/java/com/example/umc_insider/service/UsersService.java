@@ -175,6 +175,15 @@ public class UsersService {
         return new Users();
     }
 
+    // buyer -> seller
+    public Users patchTransfer(PatchUserReq patchUserReq){
+        Users user = userRepository.findUsersById(patchUserReq.id);
+        user.setSeller_or_buyer(1);
+        user.setRegister_number(patchUserReq.getRegisterNum());
+
+        return userRepository.save(user);
+    }
+
 }
 
 

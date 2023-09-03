@@ -41,4 +41,7 @@ public interface WishListHasGoodsRepository extends JpaRepository<WishListHasGoo
     @Query("SELECT w FROM WishLists w, WishListHasGoods wh WHERE w.user.id = :userId and wh.goods.id = null")
     List<WishLists> findByUserIdExchanges(Long userId);
 
+    void deleteWishListHasGoodsByExchangesId(Long exchangesId);
+
+    void deleteByExchangesId(long id);
 }

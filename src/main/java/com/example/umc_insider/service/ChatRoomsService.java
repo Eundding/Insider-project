@@ -131,6 +131,14 @@ public class ChatRoomsService {
         }
     }
 
+    @Transactional
+    public void updateExchangesIdToNullForChatRooms(Long eId) {
+        List<ChatRooms> chatRooms = chatRoomsRepository.findByExchangesId(eId);
+        for (ChatRooms chatRoom : chatRooms) {
+            chatRoom.setGoods(null);
+        }
+    }
+
     // 구매, 판매, 교환한, 받은 목록
     public List<GetGoodsRes> getSaleByUser(Long id) {
         List<ChatRooms> saleList = chatRoomsRepository.findSaleByUser(id);

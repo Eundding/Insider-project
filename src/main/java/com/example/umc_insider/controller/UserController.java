@@ -93,7 +93,7 @@ public class UserController {
 
     // id로 유저 정보 조회
     @GetMapping("/user/{id}")
-    public GetUserByIdRes getUserById(@PathVariable Long id){
+    public GetUserByIdRes getUserById(@PathVariable Long id) throws BaseException {
         GetUserByIdRes getUserByIdRes = usersService.getUserById(id);
         return getUserByIdRes;
     }

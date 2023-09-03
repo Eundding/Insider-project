@@ -77,4 +77,11 @@ public class Users {
         this.image_url = url;
     }
 
+    public Integer getSellerOrBuyer() {
+        return seller_or_buyer;
+    }
+
+    public void setSellerOrBuyer(Integer sellerOrBuyer) {
+        this.seller_or_buyer = sellerOrBuyer;
+    }
 }

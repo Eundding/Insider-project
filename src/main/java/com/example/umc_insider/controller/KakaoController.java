@@ -2,6 +2,7 @@ package com.example.umc_insider.controller;
 
 import com.example.umc_insider.config.BaseException;
 import com.example.umc_insider.config.BaseResponse;
+import com.example.umc_insider.config.BaseResponseStatus;
 import com.example.umc_insider.domain.KakaoProfile;
 import com.example.umc_insider.domain.OAuthToken;
 import com.example.umc_insider.domain.Users;
@@ -138,9 +139,20 @@ public class KakaoController {
                 .email(kakaoProfile.getKakaoAccount().email)
                 .build();
 
-        kakaoService.signUpKakaoUser(kakaoUser.getNickname(), kakaoUser.getUserId(), kakaoUser.getPw(), kakaoUser.getEmail());
-
-        Users user = usersService.getUserByUserID(kakaoProfile.getKakaoAccount().email + "_" + kakaoProfile.getId());
+//        kakaoService.signUpKakaoUser(kakaoUser.getNickname(), kakaoUser.getUserId(), kakaoUser.getPw(), kakaoUser.getEmail());
+//
+//        Users user = usersService.getUserByUserID(kakaoProfile.getKakaoAccount().email + "_" + kakaoProfile.getId());
+        Users user;
+        try {
+            user = usersService.getUserByUserID(kakaoUser.getUserId());
+            if(user == null) {
+                throw new BaseException(BaseResponseStatus.USERS_EXISTS_USER_ID);  // or your custom exception indicating that the user was not found.
+            }
+        } catch (BaseException e) {
+            // 유저가 없으면 회원가입
+            kakaoService.signUpKakaoUser(kakaoUser.getNickname(), kakaoUser.getUserId(), kakaoUser.getPw(), kakaoUser.getEmail());
+            user = usersService.getUserByUserID(kakaoUser.getUserId());
+        }
 
         String jwt = jwtService.createJwt(user.getId());
         PostLoginRes postLoginRes = new PostLoginRes(user.getId(), jwt, user.getSellerOrBuyer());

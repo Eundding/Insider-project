@@ -42,6 +42,7 @@ public interface WishListHasGoodsRepository extends JpaRepository<WishListHasGoo
     List<WishLists> findByUserIdExchanges(Long userId);
 
     void deleteWishListHasGoodsByExchangesId(Long exchangesId);
+    
 
     void deleteByExchangesId(long id);
 }

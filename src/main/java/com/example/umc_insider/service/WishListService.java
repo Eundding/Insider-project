@@ -156,11 +156,9 @@ public class WishListService {
                 exchangeDTO.setWantItem(exchangeDTO.getWantItem());
                 exchangeDTO.setWeight(exchangeDTO.getWeight());
                 exchangeDTO.setShelfLife(exchanges.getShelfLife());
-                exchangeDTO.setCreatedAt(exchangeDTO.getCreatedAt());
+                exchangeDTO.setCreatedAt(wishLists.get(i).getCreatedAt());
                 exchangeDTO.setCategoryId(exchangeDTO.getCategoryId());
                 exchangeDTO.setUser(exchangeDTO.getUser());
-
-
                 eList.add(exchangeDTO);
                 i = i + 1;
             }

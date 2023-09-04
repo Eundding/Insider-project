@@ -1,12 +1,18 @@
 package com.example.umc_insider.controller;
 
 import com.example.umc_insider.config.BaseException;
+import com.example.umc_insider.config.BaseResponse;
+import com.example.umc_insider.config.BaseResponseStatus;
 import com.example.umc_insider.domain.KakaoProfile;
 import com.example.umc_insider.domain.OAuthToken;
 import com.example.umc_insider.domain.Users;
+import com.example.umc_insider.dto.request.PostLoginReq;
 import com.example.umc_insider.dto.request.PostUserReq;
+import com.example.umc_insider.dto.response.GetUserByIdRes;
+import com.example.umc_insider.dto.response.PostLoginRes;
 import com.example.umc_insider.service.KakaoService;
 import com.example.umc_insider.service.UsersService;
+import com.example.umc_insider.utils.JwtService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,10 +49,12 @@ public class KakaoController {
     private KakaoService kakaoService;
     @Autowired
     private UsersService usersService;
+    @Autowired
+    private JwtService jwtService;
 
 
     @GetMapping("/oauth2/callback/kakao")
-    public String kakaoCallback(String code) throws BaseException { // ResponseBody를 붙이면 데이터를 리턴해주는 컨트롤러 함수가 됨
+    public BaseResponse kakaoCallback(String code) throws BaseException { // ResponseBody를 붙이면 데이터를 리턴해주는 컨트롤러 함수가 됨
         // Post 방식으로 key = value 데이터로 요청 (카카오쪽으로)
         RestTemplate rt = new RestTemplate();
 
@@ -131,20 +139,26 @@ public class KakaoController {
                 .email(kakaoProfile.getKakaoAccount().email)
                 .build();
 
-        // 가입자 혹은 비가입자인지 체크해서 처리
-        Users originUser = usersService.getUserByUserID(kakaoUser.getUserId());
-//        System.out.println(kakaoUser.getUserId());
-//        System.out.println(kakaoUser.getNickname());
-        kakaoService.signUpKakaoUser(kakaoUser.getNickname(), kakaoUser.getUserId(), kakaoUser.getPw(), kakaoUser.getEmail());
-//        if(originUser == null) {
-//            System.out.println("새로운 회원입니다............");
-////            kakaoService.signUpKakaoUser(kakaoUser.createUserWithAddress());
-//            kakaoService.signUpKakaoUser(kakaoUser.getNickname(), kakaoUser.getUserId(), kakaoUser.getPw(), kakaoUser.getEmail());
-//        } else {
-//            System.out.println("기존 회원입니다............");
-//            kakaoService.signUpKakaoUser(kakaoUser.getNickname(), kakaoUser.getUserId(), kakaoUser.getPw(), kakaoUser.getEmail());
-//        }
+//        kakaoService.signUpKakaoUser(kakaoUser.getNickname(), kakaoUser.getUserId(), kakaoUser.getPw(), kakaoUser.getEmail());
+//
+//        Users user = usersService.getUserByUserID(kakaoProfile.getKakaoAccount().email + "_" + kakaoProfile.getId());
+        Users user;
+        try {
+            user = usersService.getUserByUserID(kakaoUser.getUserId());
+            if(user == null) {
+                throw new BaseException(BaseResponseStatus.USERS_EXISTS_USER_ID);  // or your custom exception indicating that the user was not found.
+            }
+        } catch (BaseException e) {
+            // 유저가 없으면 회원가입
+            kakaoService.signUpKakaoUser(kakaoUser.getNickname(), kakaoUser.getUserId(), kakaoUser.getPw(), kakaoUser.getEmail());
+            user = usersService.getUserByUserID(kakaoUser.getUserId());
+        }
 
-        return "redirect:/";
+        String jwt = jwtService.createJwt(user.getId());
+        PostLoginRes postLoginRes = new PostLoginRes(user.getId(), jwt, user.getSellerOrBuyer());
+        postLoginRes.setId(kakaoProfile.getId()); // Kakao API에서 받은 유저 인덱스 값 설정
+
+        return new BaseResponse<>(postLoginRes);
+
     }
 }

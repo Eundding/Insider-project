@@ -11,6 +11,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class PostUserReq {
+    private Long id;
     private String userId;
     private String nickname;
     private String pw;

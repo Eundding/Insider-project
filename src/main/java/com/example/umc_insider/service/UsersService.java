@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 import com.example.umc_insider.repository.UserRepository;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.*;
+
+import static com.amazonaws.services.kms.model.ConnectionErrorCodeType.USER_NOT_FOUND;
 import static com.example.umc_insider.config.BaseResponseStatus.*;
 
 @Component
@@ -164,9 +166,24 @@ public class UsersService {
     }
 
     // id로 유저 조회
-    public GetUserByIdRes getUserById(Long id){
+    public GetUserByIdRes getUserById(Long id) throws BaseException {
         Users user = userRepository.findUsersById(id);
-        return new GetUserByIdRes(user.getNickname(), user.getUser_id(), user.getPw(), user.getEmail(), user.getAddress().getZipCode(), user.getAddress().getDetailAddress(), user.getImage_url(), user.getSeller_or_buyer());
+        if (user == null) {
+            // 사용자가 존재하지 않는 경우 예외 처리 또는 기본값 반환 등을 수행할 수 있습니다.
+            throw new BaseException(USER_NOT_FOUND);
+        }
+
+        return new GetUserByIdRes(
+                user.getNickname(),
+                user.getUser_id(),
+                user.getPw(),
+                user.getEmail(),
+                user.getAddress().getZipCode(),
+                user.getAddress().getDetailAddress(),
+                user.getImage_url(),
+                user.getSeller_or_buyer()
+        );
+
     }
 
     // userId로 유저 조회

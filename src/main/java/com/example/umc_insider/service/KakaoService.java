@@ -23,7 +23,7 @@ public class KakaoService {
         this.userRepository=userRepository;
         this.passwordEncoder=passwordEncoder;
     }
-
+    @Transactional
     public void signUpKakaoUser(String nickname, String userId, String pw, String email) {
         // 비밀번호 암호화
         String encPw = passwordEncoder.encode(pw);

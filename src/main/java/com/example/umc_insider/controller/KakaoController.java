@@ -139,26 +139,12 @@ public class KakaoController {
                 .email(kakaoProfile.getKakaoAccount().email)
                 .build();
 
-        kakaoService.signUpKakaoUser(kakaoUser.getNickname(), kakaoUser.getUserId(), kakaoUser.getPw(), kakaoUser.getEmail());
-//
-//        Users user = usersService.getUserByUserID(kakaoProfile.getKakaoAccount().email + "_" + kakaoProfile.getId());
-//        Users user;
-//        try {
-//            user = usersService.getUserByUserID(kakaoUser.getUserId());
-//            if(user == null) {
-//                throw new BaseException(BaseResponseStatus.USERS_EXISTS_USER_ID);  // or your custom exception indicating that the user was not found.
-//            }
-//        } catch (BaseException e) {
-//            // 유저가 없으면 회원가입
-//            kakaoService.signUpKakaoUser(kakaoUser.getNickname(), kakaoUser.getUserId(), kakaoUser.getPw(), kakaoUser.getEmail());
-//            user = usersService.getUserByUserID(kakaoUser.getUserId());
-//        }
-
         Users user;
         try {
             user = usersService.getUserByUserID(kakaoUser.getUserId());
-            if(user == null) {
-                throw new BaseException(BaseResponseStatus.USERS_EXISTS_USER_ID);  // or your custom exception indicating that the user was not found.
+            if (user != null) {
+                // 이미 해당 사용자가 존재하는 경우, 예외를 던져 처리합니다.
+                throw new BaseException(BaseResponseStatus.USERS_EXISTS_USER_ID);
             }
         } catch (BaseException e) {
             // 유저가 없으면 회원가입
@@ -167,7 +153,7 @@ public class KakaoController {
             // 데이터 저장 후 다시 조회
             try {
                 user = usersService.getUserByUserID(kakaoUser.getUserId());
-                if(user == null) {
+                if (user == null) {
                     throw new BaseException(BaseResponseStatus.USERS_FAILED_TO_SIGN_UP);  // or your custom exception indicating failed sign-up.
                 }
             } catch (BaseException ex) {
@@ -175,7 +161,6 @@ public class KakaoController {
                 throw ex;
             }
         }
-
 
         String jwt = jwtService.createJwt(user.getId());
         PostLoginRes postLoginRes = new PostLoginRes(user.getId(), jwt, user.getSellerOrBuyer());

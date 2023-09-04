@@ -181,7 +181,8 @@ public class UsersService {
                 user.getAddress().getZipCode(),
                 user.getAddress().getDetailAddress(),
                 user.getImage_url(),
-                user.getSeller_or_buyer()
+                user.getSeller_or_buyer(),
+                user.getRegister_number()
         );
 
     }

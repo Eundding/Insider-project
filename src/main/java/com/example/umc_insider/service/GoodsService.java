@@ -157,6 +157,7 @@ public class GoodsService {
         existingGoods.setShelf_life(goods.getShelf_life());
         existingGoods.setCategory(goods.getCategory());
         existingGoods.setRest(goods.getRest());
+        existingGoods.setName(goods.getName());
         existingGoods.setWeight(goods.getWeight());
         existingGoods.setSale_price(goods.getSale_price());
         existingGoods.setSale_percent(goods.getSale_percent());

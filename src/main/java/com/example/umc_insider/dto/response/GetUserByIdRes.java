@@ -17,8 +17,9 @@ public class GetUserByIdRes {
     private String detailAddress;
     private String img;
     private Integer sellerOrBuyer;
+    private Long registerNum;
 
-    public GetUserByIdRes(String nickname, String userId, String pw, String email, Integer zipCode, String detailAddress, String imageUrl, Integer sellerOrBuyer) {
+    public GetUserByIdRes(String nickname, String userId, String pw, String email, Integer zipCode, String detailAddress, String imageUrl, Integer sellerOrBuyer, Long registerNumber) {
         this.nickname = nickname;
         this.userId = userId;
         this.pw = pw;

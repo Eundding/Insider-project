@@ -149,5 +149,6 @@ public class Goods {
 
     public void setSale_price(Integer sale_price) {this.sale_price = sale_price;}
     public void setSale_percent(Integer sale_percent) {this.sale_percent = sale_percent;}
+    public void setName(String n){this.name = n;}
 
 }

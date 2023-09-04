@@ -192,7 +192,7 @@ public class WishListService {
 
                 WishListHasGoods temp = wishListHasGoodsRepository.findByWishListId(wishList.getId());
                 wishListHasGoodsRepository.delete(temp);
-                wishListsRepository.delete(wishList);
+//                wishListsRepository.delete(wishList);
                 return new PostWishListsRes(wishList.getId(), wishList.getUser().getId(), temp.getGoods().getId(), wishList.getCreatedAt(), 0);
             }
         }
@@ -216,7 +216,7 @@ public class WishListService {
 
                 WishListHasGoods temp = wishListHasGoodsRepository.findByWishListId(wishList.getId());
                 wishListHasGoodsRepository.delete(temp);
-                wishListsRepository.delete(wishList);
+//                wishListsRepository.delete(wishList);
                 return new PostWishListsRes(wishList.getId(), wishList.getUser().getId(), temp.getExchanges().getId(), wishList.getCreatedAt(), 1);
             }
         }

@@ -183,9 +183,10 @@ public class ChatRoomsService {
         List<Exchanges> exchangesList = new ArrayList<>();
 
         for (ChatRooms chatRoom : saleList) {
-            Long exchangesid = chatRoom.getExchanges().getId();
-            Exchanges exchanges = exchangesRepository.findById(exchangesid)
-                    .orElse(null);
+//            Long exchangesid = chatRoom.getExchanges();
+//            Exchanges exchanges = exchangesRepository.findById(exchangesid)
+//                    .orElse(null);
+            Exchanges exchanges = chatRoom.getExchanges();
             if (exchanges != null) {
                 exchangesList.add(exchanges);
             }

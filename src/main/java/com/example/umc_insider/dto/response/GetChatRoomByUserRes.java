@@ -16,4 +16,5 @@ public class GetChatRoomByUserRes {
     private String lastMessage;
     private Timestamp createdAt;
     private Long goodsId;
+    private String otherImgUrl;
 }

@@ -117,8 +117,9 @@ public class ChatRoomsService {
 
             Goods goods = chatRoom.getGoods();
             Long goodsId = (goods != null) ? goods.getId() : null;
+            String otherImg = userRepository.findById(otherUserId).get().getImage_url();
 
-            return new GetChatRoomByUserRes(chatRoomId, otherNickName, lastMessage, createdAt, goodsId);
+            return new GetChatRoomByUserRes(chatRoomId, otherNickName, lastMessage, createdAt, goodsId, otherImg);
         }).collect(Collectors.toList());
 
     }

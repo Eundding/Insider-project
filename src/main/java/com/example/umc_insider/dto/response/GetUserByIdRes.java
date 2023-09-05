@@ -8,7 +8,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class GetUserByIdRes {
-    private Long id;
     private String nickname;
     private String userId;
     private String pw;
@@ -18,25 +17,5 @@ public class GetUserByIdRes {
     private String img;
     private Integer sellerOrBuyer;
     private Long registerNum;
-
-    public GetUserByIdRes(String nickname, String userId, String pw, String email, Integer zipCode, String detailAddress, String imageUrl, Integer sellerOrBuyer, Long registerNumber) {
-        this.nickname = nickname;
-        this.userId = userId;
-        this.pw = pw;
-        this.email = email;
-        this.zipCode = zipCode;
-        this.detailAddress = detailAddress;
-        this.img = imageUrl;
-        this.sellerOrBuyer = sellerOrBuyer;
-        this.registerNum = registerNumber;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
 }

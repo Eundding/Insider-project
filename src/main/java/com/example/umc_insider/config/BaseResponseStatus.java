@@ -10,6 +10,7 @@ public enum BaseResponseStatus {
     USERS_EXISTS_USER_ID(false, 2011, "중복된 아이디입니다."),
     USERS_EXISTS_NICKNAME(false, 2012, "중복된 닉네임입니다."),
     USERS_FAILED_TO_SIGN_UP(false, 2013, "회원 가입에 실패하였습니다."),
+    USER_NOT_FOUND(false, 2014, "유저를 찾을 수 없습니다."),
 
 
     POST_USERS_EMPTY_EMAIL(false, 2015, "이메일을 입력해주세요."),
@@ -36,7 +37,8 @@ public enum BaseResponseStatus {
     CHATROOM_NOT_FOUND(false, 5001, "채팅방을 찾을 수 없습니다."),
     CHATROOM_NOT_SOLD(false, 5002, "상품이 판매되지 않았습니다."),
     CHATROOM_ID_NOT_PROVIDED(false, 5003, "채팅방 ID가 제공되지 않았습니다."),
-    GOODS_NOT_FOUND_IN_CHATROOM(false, 5004, "채팅방에서 상품을 찾을 수 없습니다.");
+    GOODS_NOT_FOUND_IN_CHATROOM(false, 5004, "채팅방에서 상품을 찾을 수 없습니다."),
+    DUPLICATE_USER_ID(false, 5005, "DB상에 동일한 userID가 존재합니다.");
 
 
     private final boolean isSuccess;

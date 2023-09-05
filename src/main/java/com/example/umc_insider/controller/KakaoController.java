@@ -17,6 +17,7 @@ import com.example.umc_insider.utils.JwtService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -32,8 +33,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 import java.util.UUID;
 
-import static com.example.umc_insider.config.BaseResponseStatus.USERS_EXISTS_USER_ID;
-import static com.example.umc_insider.config.BaseResponseStatus.USERS_FAILED_TO_SIGN_UP;
+import static com.example.umc_insider.config.BaseResponseStatus.*;
 
 @RestController
 public class KakaoController {
@@ -153,7 +153,6 @@ public class KakaoController {
         } catch (BaseException e) {
             // 유저가 없으면 회원가입
             kakaoService.signUpKakaoUser(kakaoUser.getNickname(), kakaoUser.getUserId(), kakaoUser.getPw(), kakaoUser.getEmail());
-
             // 데이터 저장 후 다시 조회
             try {
                 user = usersService.getUserByUserID(kakaoUser.getUserId());
@@ -165,10 +164,8 @@ public class KakaoController {
                 throw ex;
             }
         }
-//        String jwt = jwtService.createJwt(user.getId());
-        PostKakaoRes postKakaoRes = new PostKakaoRes(kakaoUser.getUserId(), kakaoUser.getPw());
-//        postKakaoRes.setId(kakaoProfile.getId()); // Kakao API에서 받은 유저 인덱스 값 설정
 
+        PostKakaoRes postKakaoRes = new PostKakaoRes(kakaoUser.getUserId(), kakaoUser.getPw());
         return new BaseResponse<>(postKakaoRes);
 
     }

@@ -170,7 +170,7 @@ public class UsersService {
         Users user = userRepository.findUsersById(id);
         if (user == null) {
             // 사용자가 존재하지 않는 경우 예외 처리 또는 기본값 반환 등을 수행할 수 있습니다.
-            throw new BaseException(USER_NOT_FOUND);
+            throw new BaseException(BaseResponseStatus.USER_NOT_FOUND);
         }
 
         return new GetUserByIdRes(

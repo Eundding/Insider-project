@@ -4,6 +4,7 @@ import com.example.umc_insider.config.BaseResponse;
 import com.example.umc_insider.config.BaseResponseStatus;
 import com.example.umc_insider.domain.Users;
 import com.example.umc_insider.dto.request.PutUserImgReq;
+import com.example.umc_insider.dto.response.GetUserByIdRes;
 import com.example.umc_insider.dto.response.GetUserRes;
 import com.example.umc_insider.repository.UserRepository;
 import com.example.umc_insider.service.UsersService;
@@ -32,8 +33,8 @@ public class MyPageController {
 
     // 특정 유저정보 조회
     @GetMapping("/{id}")
-    public ResponseEntity<List<GetUserRes>> findById(@PathVariable("id") long id) throws BaseException {
-        List<GetUserRes> users = usersService.getReferenceById(id);
+    public ResponseEntity<List<GetUserByIdRes>> getUserById(@PathVariable("id") long id) throws BaseException {
+        List<GetUserByIdRes> users = usersService.getUserByIdResList(id);
         return ResponseEntity.ok(users);
     }
 

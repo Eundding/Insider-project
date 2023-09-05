@@ -137,6 +137,7 @@ public class KakaoController {
 //        System.out.println("insider pw: " + garbagePassword);
 
         PostUserReq kakaoUser = PostUserReq.builder()
+                .id(kakaoProfile.getId())
                 .userId(kakaoProfile.getKakaoAccount().email)
                 .pw(garbagePassword.toString().replace("-", "")) // 하이픈 없는 UUID 문자열을 생성
                 .nickname(kakaoProfile.getProperties().nickname)

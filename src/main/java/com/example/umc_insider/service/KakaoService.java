@@ -25,21 +25,13 @@ public class KakaoService {
     }
     @Transactional
     public void signUpKakaoUser(String nickname, String userId, String pw, String email) {
-        // 비밀번호 암호화
-//        String encPw = passwordEncoder.encode(pw);
 
         // Users 엔티티 생성
         Users user = new Users(nickname, userId, pw, email);
-//        Users user = new Users();
-//        user.setNickname(nickname);
-//        user.setUser_id(userId);
-//        user.setPw(pw);
-//        user.setEmail(email);
-//        user.setCreated_at();
-//        user.setUpdated_at();
 
         // DB에 저장
         userRepository.save(user);
     }
+
 
 }

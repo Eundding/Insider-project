@@ -21,7 +21,6 @@ import com.example.umc_insider.repository.UserRepository;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.*;
 
-import static com.amazonaws.services.kms.model.ConnectionErrorCodeType.USER_NOT_FOUND;
 import static com.example.umc_insider.config.BaseResponseStatus.*;
 
 @Component
@@ -68,6 +67,26 @@ public class UsersService {
     public List<GetUserRes> getReferenceById(long id) throws BaseException {
         List<Users> users = userRepository.findAllById(id);
         return mapToUserResponseList(users);
+    }
+
+    // Mypage UserIdx 조회
+    private List<GetUserByIdRes> mapToUserByIdResponseList(List<Users> users) {
+        List<GetUserByIdRes> userResponses = new ArrayList<>();
+        for (Users user : users) {
+            userResponses.add(new GetUserByIdRes(
+                    user.getUser_id(), user.getNickname(),
+                    user.getEmail(), user.getPw(),
+                    user.getAddress().getZipCode(), user.getAddress().getDetailAddress(),
+                    user.getImage_url(),
+                    user.getSeller_or_buyer(),
+                    user.getRegister_number()));
+        }
+        return userResponses;
+    }
+
+    public List<GetUserByIdRes> getUserByIdResList(long id) throws BaseException {
+        List<Users> users = userRepository.findAllById(id);
+        return mapToUserByIdResponseList(users);
     }
 
 
@@ -173,13 +192,23 @@ public class UsersService {
             throw new BaseException(BaseResponseStatus.USER_NOT_FOUND);
         }
 
+        Integer zipCode = null;
+        String detailAddress = null;
+
+        if (user.getAddress() != null) { // user.getAddress()가 null을 반환하는 경우
+            zipCode = user.getAddress().getZipCode();
+            detailAddress = user.getAddress().getDetailAddress();
+        }
+
         return new GetUserByIdRes(
-                user.getNickname(),
                 user.getUser_id(),
+                user.getNickname(),
                 user.getPw(),
                 user.getEmail(),
-                user.getAddress().getZipCode(),
-                user.getAddress().getDetailAddress(),
+                zipCode,
+                detailAddress,
+//                user.getAddress().getZipCode(),
+//                user.getAddress().getDetailAddress(),
                 user.getImage_url(),
                 user.getSeller_or_buyer(),
                 user.getRegister_number()

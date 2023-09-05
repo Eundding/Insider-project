@@ -1,5 +1,6 @@
 package com.example.umc_insider.service;
 
+import com.amazonaws.HttpMethod;
 import com.example.umc_insider.config.BaseException;
 import com.example.umc_insider.config.BaseResponseStatus;
 import com.example.umc_insider.domain.Address;
@@ -11,14 +12,23 @@ import com.example.umc_insider.dto.request.PostUserReq;
 import com.example.umc_insider.repository.AddressRepository;
 import com.example.umc_insider.utils.JwtService;
 import com.example.umc_insider.utils.SHA256;
+import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import com.example.umc_insider.repository.UserRepository;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.net.http.HttpHeaders;
 import java.util.*;
 
 import static com.amazonaws.services.kms.model.ConnectionErrorCodeType.USER_NOT_FOUND;
@@ -33,13 +43,15 @@ public class UsersService {
     private AddressRepository addressRepository;
     private final JwtService jwtService;
     private final S3Service s3Service;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UsersService(UserRepository userRepository, JwtService jwtService, AddressRepository addressRepository, S3Service s3Service) {
+    public UsersService(UserRepository userRepository, JwtService jwtService, AddressRepository addressRepository, S3Service s3Service, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.jwtService = jwtService;
         this.addressRepository = addressRepository;
         this.s3Service = s3Service;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public PostUserRes createUser(PostUserReq postUserReq) throws BaseException {

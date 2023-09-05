@@ -111,4 +111,11 @@ public class UserController {
         return ResponseEntity.ok(updatedUsers);
     }
 
+    // 구글 로그인
+//    @GetMapping("/login/google")
+//    public BaseResponse<PostLoginRes> socialLogin(@RequestParam String code) throws BaseException {
+//        return new BaseResponse<>(usersService.socialLogin(code));
+//    }
+
+
 }

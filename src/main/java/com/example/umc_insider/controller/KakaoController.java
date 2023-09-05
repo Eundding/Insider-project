@@ -9,6 +9,7 @@ import com.example.umc_insider.domain.Users;
 import com.example.umc_insider.dto.request.PostLoginReq;
 import com.example.umc_insider.dto.request.PostUserReq;
 import com.example.umc_insider.dto.response.GetUserByIdRes;
+import com.example.umc_insider.dto.response.PostKakaoRes;
 import com.example.umc_insider.dto.response.PostLoginRes;
 import com.example.umc_insider.service.KakaoService;
 import com.example.umc_insider.service.UsersService;
@@ -16,6 +17,7 @@ import com.example.umc_insider.utils.JwtService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -30,6 +32,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.UUID;
+
+import static com.example.umc_insider.config.BaseResponseStatus.*;
 
 @RestController
 public class KakaoController {
@@ -133,8 +137,8 @@ public class KakaoController {
 //        System.out.println("insider pw: " + garbagePassword);
 
         PostUserReq kakaoUser = PostUserReq.builder()
-                .userId(kakaoProfile.getKakaoAccount().email + "_" + kakaoProfile.getId())
-                .pw(garbagePassword.toString())
+                .userId(kakaoProfile.getKakaoAccount().email)
+                .pw(garbagePassword.toString().replace("-", "")) // 하이픈 없는 UUID 문자열을 생성
                 .nickname(kakaoProfile.getProperties().nickname)
                 .email(kakaoProfile.getKakaoAccount().email)
                 .build();
@@ -149,7 +153,6 @@ public class KakaoController {
         } catch (BaseException e) {
             // 유저가 없으면 회원가입
             kakaoService.signUpKakaoUser(kakaoUser.getNickname(), kakaoUser.getUserId(), kakaoUser.getPw(), kakaoUser.getEmail());
-
             // 데이터 저장 후 다시 조회
             try {
                 user = usersService.getUserByUserID(kakaoUser.getUserId());
@@ -162,11 +165,8 @@ public class KakaoController {
             }
         }
 
-        String jwt = jwtService.createJwt(user.getId());
-        PostLoginRes postLoginRes = new PostLoginRes(user.getId(), jwt, user.getSellerOrBuyer());
-        postLoginRes.setId(kakaoProfile.getId()); // Kakao API에서 받은 유저 인덱스 값 설정
-
-        return new BaseResponse<>(postLoginRes);
+        PostKakaoRes postKakaoRes = new PostKakaoRes(kakaoUser.getUserId(), kakaoUser.getPw());
+        return new BaseResponse<>(postKakaoRes);
 
     }
 }

@@ -28,6 +28,7 @@ public class GetUserByIdRes {
         this.detailAddress = detailAddress;
         this.img = imageUrl;
         this.sellerOrBuyer = sellerOrBuyer;
+        this.registerNum = registerNumber;
     }
 
     public Long getId() {
@@ -38,7 +39,4 @@ public class GetUserByIdRes {
         this.id = id;
     }
 
-    public Integer getSeller_or_buyer() {
-        return sellerOrBuyer;
-    }
 }

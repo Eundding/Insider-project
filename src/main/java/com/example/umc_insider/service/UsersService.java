@@ -69,27 +69,6 @@ public class UsersService {
         return mapToUserResponseList(users);
     }
 
-    // Mypage UserIdx 조회
-    private List<GetUserByIdRes> mapToUserByIdResponseList(List<Users> users) {
-        List<GetUserByIdRes> userResponses = new ArrayList<>();
-        for (Users user : users) {
-            userResponses.add(new GetUserByIdRes(
-                    user.getUser_id(), user.getNickname(),
-                    user.getEmail(), user.getPw(),
-                    user.getAddress().getZipCode(), user.getAddress().getDetailAddress(),
-                    user.getImage_url(),
-                    user.getSeller_or_buyer(),
-                    user.getRegister_number()));
-        }
-        return userResponses;
-    }
-
-    public List<GetUserByIdRes> getUserByIdResList(long id) throws BaseException {
-        List<Users> users = userRepository.findAllById(id);
-        return mapToUserByIdResponseList(users);
-    }
-
-
     // 로그인
     public PostLoginRes logIn(PostLoginReq postLoginReq) throws BaseException {
         Users users = userRepository.findUserByUserId(postLoginReq.getUserId());

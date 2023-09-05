@@ -9,6 +9,7 @@ import com.example.umc_insider.domain.Users;
 import com.example.umc_insider.dto.request.PostLoginReq;
 import com.example.umc_insider.dto.request.PostUserReq;
 import com.example.umc_insider.dto.response.GetUserByIdRes;
+import com.example.umc_insider.dto.response.PostKakaoRes;
 import com.example.umc_insider.dto.response.PostLoginRes;
 import com.example.umc_insider.service.KakaoService;
 import com.example.umc_insider.service.UsersService;
@@ -30,6 +31,9 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.UUID;
+
+import static com.example.umc_insider.config.BaseResponseStatus.USERS_EXISTS_USER_ID;
+import static com.example.umc_insider.config.BaseResponseStatus.USERS_FAILED_TO_SIGN_UP;
 
 @RestController
 public class KakaoController {
@@ -133,8 +137,8 @@ public class KakaoController {
 //        System.out.println("insider pw: " + garbagePassword);
 
         PostUserReq kakaoUser = PostUserReq.builder()
-                .userId(kakaoProfile.getKakaoAccount().email + "_" + kakaoProfile.getId())
-                .pw(garbagePassword.toString())
+                .userId(kakaoProfile.getKakaoAccount().email)
+                .pw(garbagePassword.toString().replace("-", "")) // 하이픈 없는 UUID 문자열을 생성
                 .nickname(kakaoProfile.getProperties().nickname)
                 .email(kakaoProfile.getKakaoAccount().email)
                 .build();
@@ -161,12 +165,11 @@ public class KakaoController {
                 throw ex;
             }
         }
+//        String jwt = jwtService.createJwt(user.getId());
+        PostKakaoRes postKakaoRes = new PostKakaoRes(kakaoUser.getUserId(), kakaoUser.getPw());
+//        postKakaoRes.setId(kakaoProfile.getId()); // Kakao API에서 받은 유저 인덱스 값 설정
 
-        String jwt = jwtService.createJwt(user.getId());
-        PostLoginRes postLoginRes = new PostLoginRes(user.getId(), jwt, user.getSellerOrBuyer());
-        postLoginRes.setId(kakaoProfile.getId()); // Kakao API에서 받은 유저 인덱스 값 설정
-
-        return new BaseResponse<>(postLoginRes);
+        return new BaseResponse<>(postKakaoRes);
 
     }
 }

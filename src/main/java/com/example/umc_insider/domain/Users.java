@@ -38,10 +38,10 @@ public class Users {
     @JsonIgnore // 무한 재귀를 방지하기 위한 설정
     private Address address;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp created_at;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp updated_at;
 
     @Column(nullable = true)
@@ -84,4 +84,5 @@ public class Users {
     public void setSellerOrBuyer(Integer sellerOrBuyer) {
         this.seller_or_buyer = sellerOrBuyer;
     }
+
 }

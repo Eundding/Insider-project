@@ -31,6 +31,9 @@ import org.springframework.beans.factory.annotation.Value;
 
 import java.util.UUID;
 
+import static com.example.umc_insider.config.BaseResponseStatus.USERS_EXISTS_USER_ID;
+import static com.example.umc_insider.config.BaseResponseStatus.USERS_FAILED_TO_SIGN_UP;
+
 @RestController
 public class KakaoController {
     @Value("${oauth2.client.registration.kakao.client-id}")
@@ -140,27 +143,34 @@ public class KakaoController {
                 .build();
 
         Users user;
-        try {
-            user = usersService.getUserByUserID(kakaoUser.getUserId());
-            if (user != null) {
-                // 이미 해당 사용자가 존재하는 경우, 예외를 던져 처리합니다.
-                throw new BaseException(BaseResponseStatus.USERS_EXISTS_USER_ID);
-            }
-        } catch (BaseException e) {
-            // 유저가 없으면 회원가입
+        user = usersService.getUserByUserID(kakaoUser.getUserId());
+        if (user != null) {
+            // 이미 해당 사용자가 존재하는 경우, 예외를 던져 처리합니다.
+            return new BaseResponse<>(USERS_EXISTS_USER_ID);
+        }
+        else { // 유저가 없으면 회원가입 진행
             kakaoService.signUpKakaoUser(kakaoUser.getNickname(), kakaoUser.getUserId(), kakaoUser.getPw(), kakaoUser.getEmail());
-
-            // 데이터 저장 후 다시 조회
-            try {
-                user = usersService.getUserByUserID(kakaoUser.getUserId());
-                if (user == null) {
-                    throw new BaseException(BaseResponseStatus.USERS_FAILED_TO_SIGN_UP);  // or your custom exception indicating failed sign-up.
-                }
-            } catch (BaseException ex) {
-                // 실패 처리 로직
-                throw ex;
+            user = usersService.getUserByUserID(kakaoUser.getUserId());
+            if (user == null) {
+                return new BaseResponse<>(USERS_FAILED_TO_SIGN_UP);
             }
         }
+
+//    } catch (BaseException e) {
+//        // 유저가 없으면 회원가입
+//        kakaoService.signUpKakaoUser(kakaoUser.getNickname(), kakaoUser.getUserId(), kakaoUser.getPw(), kakaoUser.getEmail());
+//
+//        // 데이터 저장 후 다시 조회
+//        try {
+//            user = usersService.getUserByUserID(kakaoUser.getUserId());
+//            if (user == null) {
+//                throw new BaseException(BaseResponseStatus.USERS_FAILED_TO_SIGN_UP);  // or your custom exception indicating failed sign-up.
+//            }
+//        } catch (BaseException ex) {
+//            // 실패 처리 로직
+//            throw ex;
+//        }
+//    }
 
         String jwt = jwtService.createJwt(user.getId());
         PostLoginRes postLoginRes = new PostLoginRes(user.getId(), jwt, user.getSellerOrBuyer());

@@ -192,8 +192,8 @@ public class UsersService {
         }
 
         return new GetUserByIdRes(
-                user.getUser_id(),
                 user.getNickname(),
+                user.getUser_id(),
                 user.getPw(),
                 user.getEmail(),
                 zipCode,

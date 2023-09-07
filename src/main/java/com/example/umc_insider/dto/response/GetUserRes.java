@@ -17,6 +17,4 @@ public class GetUserRes {
     private Address address; // fk
     private Integer sellerOrBuyer;
 
-    public GetUserRes() {
-    }
 }

@@ -31,7 +31,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.net.http.HttpHeaders;
 import java.util.*;
 
-import static com.amazonaws.services.kms.model.ConnectionErrorCodeType.USER_NOT_FOUND;
 import static com.example.umc_insider.config.BaseResponseStatus.*;
 
 @Component
@@ -81,7 +80,6 @@ public class UsersService {
         List<Users> users = userRepository.findAllById(id);
         return mapToUserResponseList(users);
     }
-
 
     // 로그인
     public PostLoginRes logIn(PostLoginReq postLoginReq) throws BaseException {
@@ -185,13 +183,23 @@ public class UsersService {
             throw new BaseException(BaseResponseStatus.USER_NOT_FOUND);
         }
 
+        Integer zipCode = null;
+        String detailAddress = null;
+
+        if (user.getAddress() != null) { // user.getAddress()가 null을 반환하는 경우
+            zipCode = user.getAddress().getZipCode();
+            detailAddress = user.getAddress().getDetailAddress();
+        }
+
         return new GetUserByIdRes(
-                user.getNickname(),
                 user.getUser_id(),
+                user.getNickname(),
                 user.getPw(),
                 user.getEmail(),
-                user.getAddress().getZipCode(),
-                user.getAddress().getDetailAddress(),
+                zipCode,
+                detailAddress,
+//                user.getAddress().getZipCode(),
+//                user.getAddress().getDetailAddress(),
                 user.getImage_url(),
                 user.getSeller_or_buyer(),
                 user.getRegister_number()

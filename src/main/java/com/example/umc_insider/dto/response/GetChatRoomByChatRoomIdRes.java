@@ -6,15 +6,15 @@ import lombok.Setter;
 
 import java.sql.Timestamp;
 
-
 @Getter
 @Setter
 @AllArgsConstructor
-public class GetChatRoomByUserRes {
-    private Long chatRoomId;
-    private String otherNickName;
-    private String lastMessage;
+public class GetChatRoomByChatRoomIdRes {
+    private Long sellerId;
+    private Long buyerId;
+    private Integer status;
+    private Long goodsOrExchangesId;
+    private Boolean sellerOrNot;
+    private Boolean buyerOrNot;
     private Timestamp createdAt;
-    private Long goodsId;
-    private String otherImgUrl;
 }

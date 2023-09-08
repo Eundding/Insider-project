@@ -1,5 +1,6 @@
 package com.example.umc_insider.service;
 
+import com.amazonaws.HttpMethod;
 import com.example.umc_insider.config.BaseException;
 import com.example.umc_insider.config.BaseResponseStatus;
 import com.example.umc_insider.domain.Address;
@@ -11,32 +12,27 @@ import com.example.umc_insider.dto.request.PostUserReq;
 import com.example.umc_insider.repository.AddressRepository;
 import com.example.umc_insider.utils.JwtService;
 import com.example.umc_insider.utils.SHA256;
-import com.google.maps.GeoApiContext;
-import com.google.maps.GeocodingApi;
-import com.google.maps.model.GeocodingResult;
+import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
 import com.example.umc_insider.repository.UserRepository;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.stereotype.Component;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.net.http.HttpHeaders;
 import java.util.*;
 
 import static com.example.umc_insider.config.BaseResponseStatus.*;
-import com.google.maps.GeoApiContext;
+
 @Component
 @Configuration
 @RequiredArgsConstructor
@@ -46,13 +42,15 @@ public class UsersService {
     private AddressRepository addressRepository;
     private final JwtService jwtService;
     private final S3Service s3Service;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UsersService(UserRepository userRepository, JwtService jwtService, AddressRepository addressRepository, S3Service s3Service) {
+    public UsersService(UserRepository userRepository, JwtService jwtService, AddressRepository addressRepository, S3Service s3Service, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.jwtService = jwtService;
         this.addressRepository = addressRepository;
         this.s3Service = s3Service;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public PostUserRes createUser(PostUserReq postUserReq) throws BaseException {
@@ -72,7 +70,7 @@ public class UsersService {
     private List<GetUserRes> mapToUserResponseList(List<Users> users) {
         List<GetUserRes> userResponses = new ArrayList<>();
         for (Users user : users) {
-            userResponses.add(new GetUserRes(user.getId(), user.getUser_id(), user.getNickname(), user.getEmail(), user.getPw(), user.getAddress()));
+            userResponses.add(new GetUserRes(user.getId(), user.getUser_id(), user.getNickname(), user.getEmail(), user.getPw(), user.getAddress(), user.getSeller_or_buyer()));
         }
         return userResponses;
     }
@@ -83,10 +81,7 @@ public class UsersService {
         return mapToUserResponseList(users);
     }
 
-
-    /**
-     * 유저 로그인
-     */
+    // 로그인
     public PostLoginRes logIn(PostLoginReq postLoginReq) throws BaseException {
         Users users = userRepository.findUserByUserId(postLoginReq.getUserId());
         String encryptPw;
@@ -100,7 +95,7 @@ public class UsersService {
         String originalEncryptPw = new SHA256().encrypt(users.getPw());
         if (originalEncryptPw.equals(encryptPw)) {
             String jwt = jwtService.createJwt(users.getId());
-            return new PostLoginRes(users.getId(), jwt);
+            return new PostLoginRes(users.getId(), jwt, users.getSeller_or_buyer());
         } else {
             throw new BaseException(FAILED_TO_LOGIN);
         }
@@ -181,10 +176,52 @@ public class UsersService {
     }
 
     // id로 유저 조회
-    public GetUserByIdRes getUserById(Long id){
+    public GetUserByIdRes getUserById(Long id) throws BaseException {
         Users user = userRepository.findUsersById(id);
-        return new GetUserByIdRes(user.getNickname(), user.getUser_id(), user.getPw(), user.getEmail(), user.getAddress().getZipCode(), user.getAddress().getDetailAddress(), user.getImage_url());
+        if (user == null) {
+            // 사용자가 존재하지 않는 경우 예외 처리 또는 기본값 반환 등을 수행할 수 있습니다.
+            throw new BaseException(BaseResponseStatus.USER_NOT_FOUND);
+        }
+
+        Integer zipCode = null;
+        String detailAddress = null;
+
+        if (user.getAddress() != null) { // user.getAddress()가 null을 반환하는 경우
+            zipCode = user.getAddress().getZipCode();
+            detailAddress = user.getAddress().getDetailAddress();
+        }
+
+        return new GetUserByIdRes(
+                user.getNickname(),
+                user.getUser_id(),
+                user.getPw(),
+                user.getEmail(),
+                zipCode,
+                detailAddress,
+//                user.getAddress().getZipCode(),
+//                user.getAddress().getDetailAddress(),
+                user.getImage_url(),
+                user.getSeller_or_buyer(),
+                user.getRegister_number()
+        );
+
     }
+
+    // userId로 유저 조회
+    public Users getUserByUserID(String userId){
+        Users user = userRepository.findUserByUserId(userId);
+        return new Users();
+    }
+
+    // buyer -> seller
+    public Users patchTransfer(PatchUserReq patchUserReq){
+        Users user = userRepository.findUsersById(patchUserReq.id);
+        user.setSeller_or_buyer(1);
+        user.setRegister_number(patchUserReq.getRegisterNum());
+
+        return userRepository.save(user);
+    }
+
 }
 
 

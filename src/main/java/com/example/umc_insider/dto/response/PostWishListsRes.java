@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 public class PostWishListsRes {
     private Long wishListId;
     private Long userId;
-    private Long goodsId;
+    private Long goodsOrExchangesId;
     private Timestamp createdAt;
+    private Integer status; // 0: goods, 1: exchanges
 }

@@ -66,7 +66,7 @@ public class GoodsService {
     public List<GetGoodsRes> getGoods() throws BaseException {
         List<Goods> goodsList = goodsRepository.findAllWithUsers();
         List<GetGoodsRes> getGoodsRes = goodsList.stream()
-                .map(goods -> new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getImageUrl(), goods.getSale_price(), goods.getSale_percent(), goods.getName(), goods.getUsers_id().getAddress().getZipCode(), goods.getUsers_id().getAddress().getDetailAddress()))
+                .map(goods -> new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getImageUrl(), goods.getSale_price(), goods.getSale_percent(), goods.getName(), goods.getUsers_id().getAddress().getZipCode(), goods.getUsers_id().getAddress().getDetailAddress(), goods.getUsers_id().getSeller_or_buyer()))
                 .collect(Collectors.toList());
         return getGoodsRes;
     }
@@ -75,7 +75,7 @@ public class GoodsService {
     public List<GetGoodsRes> getGoodsByTitle(String title) throws BaseException {
         List<Goods> goodsList = goodsRepository.findByTitleContainingWithUsers(title);
         List<GetGoodsRes> getGoodsRes = goodsList.stream()
-                .map(goods -> new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getImageUrl(), goods.getSale_price(), goods.getSale_percent(), goods.getName(), goods.getUsers_id().getAddress().getZipCode(), goods.getUsers_id().getAddress().getDetailAddress()))
+                .map(goods -> new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getImageUrl(), goods.getSale_price(), goods.getSale_percent(), goods.getName(), goods.getUsers_id().getAddress().getZipCode(), goods.getUsers_id().getAddress().getDetailAddress(), goods.getUsers_id().getSeller_or_buyer()))
                 .collect(Collectors.toList());
         return getGoodsRes;
     }
@@ -85,7 +85,7 @@ public class GoodsService {
     public List<GetGoodsRes> getGoodsWithSalePrice() throws BaseException {
         List<Goods> goodsList = goodsRepository.findAllBySale_priceIsNotNull();
         List<GetGoodsRes> getGoodsRes = goodsList.stream()
-                .map(goods -> new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getImageUrl(), goods.getSale_price(), goods.getSale_percent(), goods.getName(), goods.getUsers_id().getAddress().getZipCode(), goods.getUsers_id().getAddress().getDetailAddress()))
+                .map(goods -> new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getImageUrl(), goods.getSale_price(), goods.getSale_percent(), goods.getName(), goods.getUsers_id().getAddress().getZipCode(), goods.getUsers_id().getAddress().getDetailAddress(), goods.getUsers_id().getSeller_or_buyer()))
                 .collect(Collectors.toList());
         return getGoodsRes;
     }
@@ -133,7 +133,7 @@ public class GoodsService {
     // id로 goods 조회
     public GetGoodsRes getGoodsById(Long id) {
         Goods goods = goodsRepository.findGoodsById(id);
-        return new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getImageUrl(), goods.getSale_price(), goods.getSale_percent(), goods.getName(), goods.getUsers_id().getAddress().getZipCode(), goods.getUsers_id().getAddress().getDetailAddress());
+        return new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getImageUrl(), goods.getSale_price(), goods.getSale_percent(), goods.getName(), goods.getUsers_id().getAddress().getZipCode(), goods.getUsers_id().getAddress().getDetailAddress(), goods.getUsers_id().getSeller_or_buyer());
     }
 
     // category_id로 goods 조회
@@ -141,7 +141,7 @@ public class GoodsService {
         List<Goods> goodsList = goodsRepository.findByCategory_Id(category_id);
         //return goodsList.stream().map(goods -> new GetGoodsRes(goods.getId(), goods.getUsers_id(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getImageUrl(), goods.getName())).collect(Collectors.toList());
         List<GetGoodsRes> GetGoodsRes = goodsList.stream()
-                .map(goods -> new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getImageUrl(), goods.getSale_price(), goods.getSale_percent(), goods.getName(), goods.getUsers_id().getAddress().getZipCode(), goods.getUsers_id().getAddress().getDetailAddress()))
+                .map(goods -> new GetGoodsRes(goods.getId(), goods.getCategory(), goods.getUsers_id(), goods.getMarkets_id(), goods.getTitle(), goods.getPrice(), goods.getWeight(), goods.getRest(), goods.getShelf_life(), goods.getImageUrl(), goods.getSale_price(), goods.getSale_percent(), goods.getName(), goods.getUsers_id().getAddress().getZipCode(), goods.getUsers_id().getAddress().getDetailAddress(), goods.getUsers_id().getSeller_or_buyer()))
                 .collect(Collectors.toList());
         return GetGoodsRes;
 
@@ -155,9 +155,9 @@ public class GoodsService {
         existingGoods.setTitle(goods.getTitle());
         existingGoods.setPrice(goods.getPrice());
         existingGoods.setShelf_life(goods.getShelf_life());
-//        existingGoods.setImageUrl(goods.getImageUrl());
         existingGoods.setCategory(goods.getCategory());
         existingGoods.setRest(goods.getRest());
+        existingGoods.setName(goods.getName());
         existingGoods.setWeight(goods.getWeight());
         existingGoods.setSale_price(goods.getSale_price());
         existingGoods.setSale_percent(goods.getSale_percent());

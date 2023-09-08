@@ -7,5 +7,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class PostWishListsReq {
     public Long userId;
-    public Long goodsId;
+    public Long goodsOrExchangesId;
+    public Integer status; // 0: goods, 1: exchanges
 }

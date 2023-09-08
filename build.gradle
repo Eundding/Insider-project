@@ -22,6 +22,15 @@ repositories {
 }
 
 dependencies {
+	// kakao
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+	implementation platform('org.springframework.cloud:spring-cloud-dependencies:2022.0.3')
+//	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
+//	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+//	implementation "org.springframework.cloud:spring-cloud-starter-openfeign:3.1.0"
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'com.mastfrog.builder:builder-builder-parent:1.0.9'
 	implementation 'com.mastfrog.builder:builder-builder-parent:1.0.9'
@@ -35,7 +44,6 @@ dependencies {
 	implementation 'org.mariadb.jdbc:mariadb-java-client:3.0.4'
 
 	runtimeOnly 'com.mysql:mysql-connector-j'
-	annotationProcessor 'org.projectlombok:lombok'
 
 	//AWS
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
@@ -50,12 +58,9 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 //	compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
-    implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 	// https://mvnrepository.com/artifact/com.google.maps/google-maps-services
 	implementation group: 'com.google.maps', name: 'google-maps-services', version: '2.2.0'
-
-
-
 
 
 }

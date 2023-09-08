@@ -3,6 +3,7 @@ package com.example.umc_insider.service;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
+import com.example.umc_insider.domain.Exchanges;
 import com.example.umc_insider.domain.Goods;
 import com.example.umc_insider.domain.Users;
 import com.example.umc_insider.repository.GoodsRepository;
@@ -52,6 +53,25 @@ public class S3Service {
 
     public String uploadProfileS3(MultipartFile file, Users users) {
         String keyName = "users/" + users.getId() + "_" + file.getOriginalFilename();
+
+        try {
+            byte[] bytes = file.getBytes();
+
+            // 메타데이터 객체를 생성하고 콘텐츠 타입을 설정
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentLength(bytes.length);
+            metadata.setContentType(file.getContentType());
+
+            s3Client.putObject(new PutObjectRequest(bucketName, keyName, new ByteArrayInputStream(bytes), new ObjectMetadata()));
+            url = s3Client.getUrl(bucketName, keyName).toString();
+            return url;
+        } catch (IOException e) {
+            throw new RuntimeException("File loading failed.", e);
+        }
+    }
+
+    public String uploadExchangesS3(MultipartFile file, Exchanges exchanges) {
+        String keyName = "exchanges/" + exchanges.getId() + "_" + file.getOriginalFilename();
 
         try {
             byte[] bytes = file.getBytes();

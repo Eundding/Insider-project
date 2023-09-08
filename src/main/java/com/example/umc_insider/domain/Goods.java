@@ -8,6 +8,8 @@ import org.apache.catalina.User;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -63,6 +65,10 @@ public class Goods {
 
     @Column(nullable = true)
     private Integer sale_percent;
+
+    // 게시물 삭제되면 wishlist도 삭제
+    @OneToMany(mappedBy = "goods", cascade = CascadeType.ALL)
+    private List<WishListHasGoods> wishListHasGoodsList  = new ArrayList<>();
 
     public Goods createGoods(String title, String price, Integer rest, String shelf_life, Long userIdx, String name) {
         this.title = title;
@@ -143,5 +149,6 @@ public class Goods {
 
     public void setSale_price(Integer sale_price) {this.sale_price = sale_price;}
     public void setSale_percent(Integer sale_percent) {this.sale_percent = sale_percent;}
+    public void setName(String n){this.name = n;}
 
 }

@@ -44,14 +44,6 @@ public class Messages {
         return this;
     }
 
-//    public Messages(PostMessagesReq postMessagesReq, Users user, ChatRooms chatRoom){
-//        super();
-//        this.sender = user;
-//        this.readOrNot = false;
-//        this.content = postMessagesReq.getContent();
-//        this.created_at = new Timestamp(System.currentTimeMillis());
-//        this.chatRoom = chatRoom;
-//    }
 
     public void setSender(Users user){this.sender = user;}
     public void setChatRoom(ChatRooms chatroom){this.chatRoom = chatroom;}

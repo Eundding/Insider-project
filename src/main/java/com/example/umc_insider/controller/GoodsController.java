@@ -49,28 +49,6 @@ public class GoodsController {
 
     }
 
-//    // 상품등록(Jwt)
-//    @PostMapping("/create")
-//    public BaseResponse<PostGoodsRes> createGoods(@RequestPart("postgoodsReq") PostGoodsReq postgoodsReq, @RequestPart("image") MultipartFile image) throws BaseException {
-//        try {
-//            Long userByJwt = jwtService.getId();
-//            if(postgoodsReq.getUserIdx() != userByJwt){
-//                return new BaseResponse<>(BaseResponseStatus.INVALID_USER_JWT);
-//            }
-//
-//            // Goods 객체 생성
-//            Goods newGoods = goodsService.createNewGoodsInstance(postgoodsReq, image);
-//
-//            // Goods 객체를 uploadFileToS3 함수에 전달
-//            String url = this.s3Service.uploadFileToS3(image, newGoods);
-//
-//            PostGoodsRes response = new PostGoodsRes(newGoods.getId(), newGoods.getTitle());
-//
-//            return new BaseResponse<>(response);
-//        } catch (BaseException e) {
-//            return new BaseResponse<>(e.getStatus());
-//        }
-//    }
 
     // 상품조회
     @GetMapping("/read")

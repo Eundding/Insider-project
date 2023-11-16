@@ -63,5 +63,7 @@ out/
 .vscode/
 
 ### Properties ###
-application.properties
 application.yml
+
+Secret.java
+SHA256.java

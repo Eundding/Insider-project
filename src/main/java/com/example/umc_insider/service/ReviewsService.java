@@ -38,19 +38,7 @@ public class ReviewsService {
         // You might need to adjust the following line based on how you have implemented PostReviewsRes.
         return new PostReviewsRes(review.getContent(), review.getPoint());
     }
-    
 
-// sell_or_not 추가 전 코드
-//    public PostReviewsRes createReviews(PostReviewsReq postReviewsReq) throws BaseException {
-//        try {
-//            Reviews reviews = new Reviews();
-//            reviews.createReviews(postReviewsReq.getGoods_id(), postReviewsReq.getContent(), postReviewsReq.getPoint());
-//            reviewsRepository.save(reviews);
-//            return new PostReviewsRes(reviews.getContent(), reviews.getPoint());
-//        } catch (Exception exception) {
-//            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
-//        }
-//    }
 
     // all 상품 조회
     public List<GetReviewsRes> getAllReviews() throws BaseException {

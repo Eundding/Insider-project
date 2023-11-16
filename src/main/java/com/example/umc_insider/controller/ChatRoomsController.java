@@ -1,7 +1,5 @@
 package com.example.umc_insider.controller;
 
-import com.amazonaws.Response;
-import com.amazonaws.services.kms.model.NotFoundException;
 import com.example.umc_insider.config.BaseException;
 import com.example.umc_insider.config.BaseResponse;
 import com.example.umc_insider.domain.Messages;
